@@ -25,76 +25,76 @@ $emailTemplate     = App\Models\EmailTemplate::first();
 
         <div class="navbar-content">
             <ul class="dash-navbar">
-                <li class="dash-item {{ \Request::route()->getName() == 'dashboard' ? ' active' : '' }}">
+                <!-- <li class="dash-item {{ \Request::route()->getName() == 'dashboard' ? ' active' : '' }}">
                     <a href="{{ route('dashboard') }}" class="dash-link">
                         <span class="dash-micon"><i class="ti ti-home-2"></i></span><span class="dash-mtext">{{ __('Dashboard') }}</span></a>
-                </li>
+                </li> -->
 
-                @can('Manage Role')
+                <!-- @can('Manage Role')
                     <li class="dash-item {{ \Request::route()->getName() == 'role' ? ' active' : '' }}">
                         <a href="{{ route('role.index') }}" class="dash-link"><span class="dash-micon">
                             <i class="ti ti-license"></i></span><span class="dash-mtext">{{ __('Role') }}</span></a>
                     </li>
-                @endcan
+                @endcan -->
 
-                @can('Manage User')
+                <!-- @can('Manage User')
                     <li class="dash-item {{ \Request::route()->getName() == 'user' || \Request::route()->getName() == 'user.edit' ? ' active' : '' }}">
                         <a class="dash-link" href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('user')) ? route(\Auth::user()->getDefualtViewRouteByModule('user')) : route('user.index') }}">
                             <span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext">{{ __('User') }}</span></a>
                     </li>
-                @endcan
+                @endcan -->
 
-                {{-- @if(\Auth::user()->type == 'owner')
+                 <!-- @if(\Auth::user()->type == 'owner')
                 <li class="dash-item {{ \Request::route()->getName() == 'userlog' ? 'active' : ''}}">
                     <a class="dash-link" href={{route('userlog.index')}}>
                         <span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext">{{ __('User Logs') }}</span></a>
                 </li>
-                @endif --}}
+                @endif  -->
 
-                @if (\Auth::user()->type == 'super admin')
+                <!-- @if (\Auth::user()->type == 'super admin')
                     <li class="dash-item {{ \Request::route()->getName() == 'coupon' || \Request::route()->getName() == 'coupon.show' ? ' active' : '' }}">
                         <a href="{{ route('coupon.index') }}" class="dash-link">
                             <span class="dash-micon"> <i class="ti ti-briefcase"></i></span><span class="dash-mtext">{{ __('Coupon') }}</span></a>
                         </a>
                     </li>
-                @endif
+                @endif -->
 
-                @if (\Auth::user()->type != 'super admin')
+                <!-- @if (\Auth::user()->type != 'super admin')
                     <li class="dash-item {{ \Request::route()->getName() == 'messages' ? ' active' : '' }}">
                         <a href="{{ url('chats') }}" class="dash-link {{ Request::segment(1) == 'messages' ? 'active' : '' }}">
                             <span class="dash-micon"><i class="ti ti-brand-messenger"></i></span><span class="dash-mtext">{{ __('Messenger') }}</span>
                         </a>
                     </li>
-                @endif
+                @endif -->
 
-                @if(\Auth::user()->type == 'owner')
+                <!-- @if(\Auth::user()->type == 'owner')
                 <li class="dash-item {{ \Request::route()->getName() == 'notification_templates' ? 'active' : ''}}">
                     <a class="dash-link" href={{url('notification-templates')}}>
                         <span class="dash-micon"><i class="ti ti-notification"></i></span><span class="dash-mtext">{{ __('Notification Template') }}</span></a>
                 </li>
-                @endif
+                @endif -->
 
-                @can('Manage Form Builder')
+                <!-- @can('Manage Form Builder')
                     <li class="dash-item  {{ \Request::route()->getName() == 'form_builder' || \Request::route()->getName() == 'form_builder.show' || \Request::route()->getName() == 'form.response' ? ' active' : '' }}">
                         <a href="{{ route('form_builder.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-align-justified"></i></span><span class="dash-mtext">{{ __('Form Builder') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('Manage Account')
+                @endcan -->
+                <!-- @can('Manage Account')
                     <li class="dash-item {{ \Request::route()->getName() == 'account' || \Request::route()->getName() == 'account.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('account')) ? route(\Auth::user()->getDefualtViewRouteByModule('account')) : route('account.index') }}" class="dash-link">
                             <span class="dash-micon"> <i class="ti ti-building"></i></span><span class="dash-mtext">{{ __('Accounts') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('Manage Contact')
+                @endcan -->
+                <!-- @can('Manage Contact')
                     <li class="dash-item {{ \Request::route()->getName() == 'contact' || \Request::route()->getName() == 'contact.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('contact')) ? route(\Auth::user()->getDefualtViewRouteByModule('contact')) : route('contact.index') }}" class="dash-link ">
                             <span class="dash-micon"><i class="ti ti-file-phone"></i></span><span class="dash-mtext">{{ __('Contacts') }}</span>
                         </a>
                     </li>
-                @endcan
+                @endcan -->
                 @can('Manage Lead')
                     <li class="dash-item {{ \Request::route()->getName() == 'lead' || \Request::route()->getName() == 'lead.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('lead')) ? route(\Auth::user()->getDefualtViewRouteByModule('lead')) : route('lead.index') }}" class="dash-link">
@@ -102,44 +102,44 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                         </a>
                     </li>
                 @endcan
-                @can('Manage Opportunities')
+                <!-- @can('Manage Opportunities')
                     <li class="dash-item {{ \Request::route()->getName() == 'opportunities' || \Request::route()->getName() == 'opportunities.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('opportunities')) ? route(\Auth::user()->getDefualtViewRouteByModule('opportunities')) : route('opportunities.index') }}"
                             class="dash-link">
                             <span class="dash-micon"><i class="ti ti-currency-dollar-singapore"></i></span><span class="dash-mtext">{{ __('Opportunities') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('Manage Product')
+                @endcan -->
+                <!-- @can('Manage Product')
                     <li class="dash-item {{ \Request::route()->getName() == 'product' || \Request::route()->getName() == 'product.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('product')) ? route(\Auth::user()->getDefualtViewRouteByModule('product')) : route('product.index') }}"
                             class="dash-link">
                             <span class="dash-micon"><i class="ti ti-brand-producthunt"></i></span><span class="dash-mtext">{{ __('Products') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('Manage Quote')
+                @endcan -->
+                <!-- @can('Manage Quote')
                     <li class="dash-item {{ \Request::route()->getName() == 'quote' || \Request::route()->getName() == 'quote.show' || \Request::route()->getName() == 'quote.edit' ? ' active' : '' }}">
                         <a href="{{ route('quote.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-blockquote"></i></span><span class="dash-mtext">{{ __('Quotes') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('Manage SalesOrder')
+                @endcan -->
+                <!-- @can('Manage SalesOrder')
                     <li class="dash-item {{ \Request::route()->getName() == 'salesorder' || \Request::route()->getName() == 'salesorder.show' || \Request::route()->getName() == 'salesorder.edit' ? ' active' : '' }}">
                         <a href="{{ route('salesorder.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-file-invoice"></i></span><span class="dash-mtext">{{ __('Sales Orders') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('Manage Invoice')
+                @endcan -->
+                <!-- @can('Manage Invoice')
                     <li class="dash-item {{ \Request::route()->getName() == 'invoice' || \Request::route()->getName() == 'invoice.show' || \Request::route()->getName() == 'invoice.edit' ? ' active' : '' }}">
                         <a href="{{ route('invoice.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-receipt"></i></span><span class="dash-mtext">{{ __('Invoices') }}</span>
                         </a>
                     </li>
-                @endcan
-                @if (\Auth::user()->type != 'super admin')
+                @endcan -->
+                <!-- @if (\Auth::user()->type != 'super admin')
                     @can('Manage Invoice Payment')
                         <li class="dash-item {{ \Request::route()->getName() == 'invoices-payments' ? ' active' : '' }}">
                             <a class="dash-link " href="{{ route('invoices.payments') }} ">
@@ -147,58 +147,58 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                             </a>
                         </li>
                     @endcan
-                @endif
-                @can('Manage CommonCase')
+                @endif -->
+                <!-- @can('Manage CommonCase')
                     <li class="dash-item {{ \Request::route()->getName() == 'commoncases' || \Request::route()->getName() == 'commoncases.show' || \Request::route()->getName() == 'commoncases.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('commoncases')) ? route(\Auth::user()->getDefualtViewRouteByModule('commoncases')) : route('commoncases.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-briefcase"></i></span><span class="dash-mtext">{{ __('Cases') }}</span>
                         </a>
                     </li>
-                @endcan
-                @if(\Auth::user()->type!='super admin')
+                @endcan -->
+                <!-- @if(\Auth::user()->type!='super admin')
                     <li class="dash-item {{ \Request::route()->getName() == 'calendar' || \Request::route()->getName() == 'calendar.index' ? ' active' : '' }}">
                         <a href="{{ route('calendar.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="far fa-calendar-alt"></i></span><span class="dash-mtext">{{ __('Calendar') }}</span>
                         </a>
                     </li>
-                @endif
-                @can('Manage Task')
+                @endif -->
+                <!-- @can('Manage Task')
                     <li class="dash-item {{ \Request::route()->getName() == 'task' || \Request::route()->getName() == 'task.show' || \Request::route()->getName() == 'task.edit' || \Request::route()->getName() == 'task.gantt.chart' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('task')) ? route(\Auth::user()->getDefualtViewRouteByModule('task')) : route('task.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="fas fa-tasks"></i></span><span class="dash-mtext">{{ __('Task') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('Manage Meeting')
+                @endcan -->
+                <!-- @can('Manage Meeting')
                     <li class="dash-item {{ \Request::route()->getName() == 'meeting' || \Request::route()->getName() == 'meeting.show' || \Request::route()->getName() == 'meeting.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('meeting')) ? route(\Auth::user()->getDefualtViewRouteByModule('meeting')) : route('meeting.index') }}"
                             class="dash-link">
                             <span class="dash-micon"><i class="ti ti-calendar"></i></span><span class="dash-mtext">{{ __('Meeting') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('Manage Call')
+                @endcan -->
+                <!-- @can('Manage Call')
                     <li class="dash-item {{ \Request::route()->getName() == 'call' || \Request::route()->getName() == 'call.show' || \Request::route()->getName() == 'call.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('call')) ? route(\Auth::user()->getDefualtViewRouteByModule('call')) : route('call.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-phone-call"></i></span><span class="dash-mtext">{{ __('Call') }}</span>
                         </a>
                     </li>
-                @endcan
-               @can('Manage Contract')
+                @endcan -->
+               <!-- @can('Manage Contract')
                     @can('Manage Contract')
                         <li class="dash-item  {{ (Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show') ? 'active' : '' }}">
                             <a href="{{route('contract.index')}}" class="dash-link"><span class="dash-micon"><i class="ti ti-device-floppy"></i></span><span class="dash-mtext">{{__('Contracts')}}</span></a>
                         </li>
                     @endcan
-              @endcan
-                @can('Manage Document')
+              @endcan -->
+                <!-- @can('Manage Document')
                     <li class="dash-item {{ \Request::route()->getName() == 'document' || \Request::route()->getName() == 'document.show' || \Request::route()->getName() == 'document.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('document')) ? route(\Auth::user()->getDefualtViewRouteByModule('document')) : route('document.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-file-analytics"></i></span><span class="dash-mtext">{{ __('Document') }}</span>
                         </a>
                     </li>
-                @endcan
-                @can('Manage Campaign')
+                @endcan -->
+                <!-- @can('Manage Campaign')
                     <li class="dash-item {{ \Request::route()->getName() == 'campaign' || \Request::route()->getName() == 'campaign.show' || \Request::route()->getName() == 'campaign.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('campaign')) ? route(\Auth::user()->getDefualtViewRouteByModule('campaign')) : route('campaign.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-chart-line"></i></span><span class="dash-mtext">{{ __('Campaigns') }}</span>
@@ -211,8 +211,8 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                             <span class="dash-micon"><i class="ti ti-rss"></i></span><span class="dash-mtext">{{ __('Stream') }}</span>
                         </a>
                     </li>
-                @endif
-                {{-- @if (\Auth::user()->type == 'super admin')
+                @endif -->
+                <!-- {{-- @if (\Auth::user()->type == 'super admin')
                     <li class="dash-item {{ \Request::route()->getName() == 'manage-language' || \Request::route()->getName() == 'manage-language.show' || \Request::route()->getName() == 'manage-language.edit' ? ' active' : '' }}">
                         <a href="{{ route('manage.language', [$currantLang]) }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-language"></i></span><span class="dash-mtext">{{ __('Language') }}</span>
@@ -225,8 +225,8 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                             <span class="dash-micon"><i class="ti ti-award"></i></span><span class="dash-mtext">{{ __('Plan') }}</span>
                         </a>
                     </li>
-                @endif
-                @if (\Auth::user()->type == 'super admin')
+                @endif -->
+                <!-- @if (\Auth::user()->type == 'super admin')
                     <li class="dash-item  {{ \Request::route()->getName() == 'plan_request' || \Request::route()->getName() == 'plan_request.show' || \Request::route()->getName() == 'plan_request.edit' ? ' active' : '' }}">
                         <a href="{{ route('plan_request.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-brand-telegram"></i></span><span class="dash-mtext">{{ __('Plan Request') }}</span>
@@ -240,8 +240,8 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                                 class="dash-mtext">{{ __('Order') }}</span>
                         </a>
                     </li>
-                @endif
-
+                @endif -->
+<!-- 
                 @if (\Auth::user()->type == 'super admin')
                     <li class="dash-item {{ (Request::route()->getName() == 'email_template.index' || Request::segment(1) == 'email_template_lang' || Request::route()->getName() == 'manageemail.lang') ? 'active' : '' }}">
                         <a href="{{ route('manage.email.language',[$emailTemplate ->id,\Auth::user()->lang]) }}" class="dash-link"><span
@@ -258,7 +258,7 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                     </li>
                 @endif --}}
 
-                @if (Gate::check('Manage Report'))
+                 @if (Gate::check('Manage Report'))
                     <li class="dash-item dash-hasmenu  {{ \Request::route()->getName() == 'report.index' || \Request::route()->getName() == 'report.show' || \Request::route()->getName() == 'report.edit' ? ' active dash-trigger' : '' }}">
                         <a class="dash-link collapsed">
                             <span class="dash-micon"><i class="ti ti-trending-up"></i></span>{{ __('Reports') }}<span class="dash-arrow"><i data-feather="chevron-right"></i></span>
@@ -295,7 +295,7 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                             @endcan
                         </ul>
                     </li>
-                @endif
+                @endif 
 
                 @if (Gate::check('Manage AccountType') || Gate::check('Manage AccountIndustry') || Gate::check('Manage LeadSource') || Gate::check('Manage OpportunitiesStage') || Gate::check('Manage CaseType') || Gate::check('Manage DocumentType') || Gate::check('Manage DocumentFolder') || Gate::check('Manage TargetList') || Gate::check('Manage CampaignType') || Gate::check('Manage ProductCategory') || Gate::check('Manage ProductBrand') || Gate::check('Manage ProductTax') || Gate::check('Manage ShippingProvider') || Gate::check('Manage TaskStage') || Gate::check('Manage Contract Types') || Gate::check('Manage Tax'))
                     <li class="dash-item dash-hasmenu">
@@ -451,7 +451,7 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                             <span class="dash-micon"><i class="ti ti-settings"></i></span><span class="dash-mtext">{{ __('Settings') }}</span>
                         </a>
                     </li>
-                @endif
+                @endif -->
 
 
 

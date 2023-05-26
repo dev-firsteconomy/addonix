@@ -77,7 +77,7 @@ $unseenCounter = App\Models\ChMessage::where('to_id', Auth::user()->id)
                 </li>
             </ul>
         </div>
-        <div class="ms-auto">
+        <!-- <div class="ms-auto">
             <ul class="list-unstyled">
                 @if (\Auth::user()->type != 'super admin')
                     <li class="dash-h-item">
@@ -111,6 +111,6 @@ $unseenCounter = App\Models\ChMessage::where('to_id', Auth::user()->id)
                     </div>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </header>

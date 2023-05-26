@@ -109,5 +109,13 @@ class Lead extends Model
         return $this->hasOne('App\Models\TaskStage', 'id', 'stage');
     }
 
+    public function industryPerson()
+    {
+        return $this->hasMany('App\Models\IndustryPerson','lead_id','id');
+    }
+    public function industryProduct()
+    {
+        return $this->hasMany('App\Models\IndustryProduct','lead_id','id');
+    }
 
 }

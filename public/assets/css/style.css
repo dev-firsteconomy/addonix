@@ -29486,3 +29486,22 @@ table.dataTable tbody > tr.selected th.select-checkbox:after {
 }
 
 /**====== End Sidebar scroll css  ======**/
+
+.data-table{
+    /* border: 1px solid black; */
+    border-collapse: collapse;
+    width: 100%;
+}
+.data-table thead td p{
+    margin-bottom: 5px !important;
+    font-weight: 600;
+    color: #000;
+    text-align: center;
+}
+input.top-buffer {
+    float: right;
+    margin-top: 10px;
+}
+.data-table tbody td input{
+    width: 100%;
+}

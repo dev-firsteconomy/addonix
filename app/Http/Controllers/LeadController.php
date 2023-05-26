@@ -15,7 +15,11 @@ use App\Models\Task;
 use App\Models\Utility;
 use App\Models\User;
 use App\Models\UserDefualtView;
+use App\Models\IndustryPerson;
+use App\Models\IndustryProduct;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LeadController extends Controller
@@ -29,7 +33,8 @@ class LeadController extends Controller
     {
             if (\Auth::user()->can('Manage Lead')) {
                 if(\Auth::user()->type == 'owner'){
-                $leads = Lead::where('created_by', \Auth::user()->creatorId())->get();
+                // $leads = Lead::where('created_by', \Auth::user()->creatorId())->get();
+                $leads = Lead::get();
                 $defualtView         = new UserDefualtView();
                 $defualtView->route  = \Request::route()->getName();
                 $defualtView->module = 'lead';
@@ -54,20 +59,29 @@ class LeadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($type, $id)
+    public function create($type, $id,Request $request)
     {
-        if (\Auth::user()->can('Create Lead')) {
+        
+        if (\Auth::user()->can('Create Lead')) 
+        {
             $user       = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $user->prepend('--', 0);
             $leadsource = LeadSource::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $campaign   = Campaign::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $campaign->prepend('--', 0);
             $industry   = AccountIndustry::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $industry->prepend('Select Industry', 0);
+            $type   = AccountIndustry::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $type->prepend('Select Type', 0);
+            $industryVertical   = AccountIndustry::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $industryVertical->prepend('Select Industry Vertical', 0);
             $account    = Account::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $account->prepend('--', 0);
+            $activities   = AccountIndustry::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $activities->prepend('Select Type', 0);
             $status     = Lead::$status;
 
-            return view('lead.create', compact('status', 'leadsource', 'user', 'account', 'industry', 'campaign', 'type', 'id'));
+            return view('lead.create', compact('status', 'leadsource', 'user', 'account', 'type', 'industry', 'activities','industryVertical', 'campaign', 'type', 'id'));
         } else {
             return redirect()->back()->with('error', 'permission Denied');
         }
@@ -82,114 +96,62 @@ class LeadController extends Controller
      */
     public function store(Request $request)
     {
-
-        if (\Auth::user()->can('Create Lead')) {
-
-            $validator = \Validator::make(
-                $request->all(),
-                [
-                    'name' => 'required|max:120',
-                    'email' => 'required|email|unique:users',
-                    'lead_postalcode' => 'required',
-                    'opportunity_amount' => 'required|numeric',
-                    'status' => 'required',
-                    'source' => 'required',
-                ]
-            );
-            if ($validator->fails()) {
-                $messages = $validator->getMessageBag();
-
-                return redirect()->back()->with('error', $messages->first());
-            }
-
-            $lead                       = new Lead();
-            $lead['user_id']            = $request->user;
-            $lead['name']               = $request->name;
-            $lead['account']            = $request->account;
-            $lead['email']              = $request->email;
-            $lead['phone']              = $request->phone;
-            $lead['title']              = $request->title;
+        // dd($request->all(),Auth::user()->id);
+        if(Auth::user()->can('Create Lead'))
+        {
+            // dd($request->all());
+            $lead                           = new Lead();
+            $lead['user_id']                = Auth::user()->id;
+            $lead['company_name']           = $request->company_name;
+            $lead['lead_type_id']            = $request->lead_type_id;
+            $lead['company_address']         = $request->company_address;
+            $lead['company_mobile']          = $request->company_mobile;
+            $lead['company_email']           = $request->company_email;
             $lead['website']            = $request->website;
-            $lead['lead_address']       = $request->lead_address;
-            $lead['lead_city']          = $request->lead_city;
-            $lead['lead_state']         = $request->lead_state;
-            $lead['lead_country']       = $request->lead_country;
-            $lead['lead_postalcode']    = $request->lead_postalcode;
-            $lead['status']             = $request->status;
-            $lead['source']             = $request->source;
-            $lead['opportunity_amount'] = $request->opportunity_amount;
-            $lead['campaign']           = $request->campaign;
-            $lead['industry']           = $request->industry;
-            $lead['description']        = $request->description;
-            $lead['created_by']         = \Auth::user()->creatorId();
-            $lead->save();
-
-            Stream::create(
-                [
-                    'user_id' => \Auth::user()->id, 'created_by' => \Auth::user()->creatorId(),
-                    'log_type' => 'created',
-                    'remark' => json_encode(
-                        [
-                            'owner_name' => \Auth::user()->username,
-                            'title' => 'lead',
-                            'stream_comment' => '',
-                            'user_name' => $lead->name,
-                        ]
-                    ),
-                ]
-            );
-
-            //webhook
-            $module = 'New Lead';
-            $webhook =  Utility::webhookSetting($module);
-            if ($webhook) {
-                $parameter = json_encode($lead);
-                // 1 parameter is  URL , 2 parameter is data , 3 parameter is method
-                $status = Utility::WebhookCall($webhook['url'], $parameter, $webhook['method']);
-                if ($status == true) {
-                    return redirect()->back()->with('success', __('Lead successfully created!'));
-                } else {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+            $lead['industry_vertical']       = $request->industry_vertical;
+            $lead['assign_user_id']          = $request->assign_user_id;
+            $lead['activities']          = $request->activities;
+            $lead->save();   
+            
+            foreach($request->name as $k=>$item)
+            {
+                if(!empty($request->name))
+                {
+                    IndustryPerson::create([
+                        'lead_id'=> $lead->id,
+                        'name'=>$item,
+                        'designation'=>$request->designation[$k],
+                        'contact_number'=>$request->contact_number[$k],
+                        'email_id'=>$request->email_id[$k]
+                    ]);  
                 }
             }
 
-            $Assign_user_phone = User::where('id', $request->user)->first();
-            //  dd($Assign_user_phone);
-            $setting  = Utility::settings(\Auth::user()->creatorId());
-            // dd($setting);
-            $uArr = [
-                'lead_name' => $lead->name,
-                'lead_email' => $lead->email,
-                // 'lead_assign_user' => $Assign_user_phone->name,
-            ];
-
-            // $resp = Utility::sendEmailTemplate('lead_assigned', [$lead->id => $Assign_user_phone->email], $uArr);
-
-            //  $uArr = [
-            //     'lead_name' => $lead->name,
-            //     'lead_email' => $lead->email,
-
-            // ];
-
-            // // dd($lead->email);
-            // $resp = Utility::sendEmailTemplate('lead_assign', [$lead->id => $lead->email], $uArr);
-
-            if (isset($setting['twilio_lead_create']) && $setting['twilio_lead_create'] == 1) {
-                // $msg = __("New Lead created by") . ' ' . \Auth::user()->name . '.';
-
-                $uArr = [
-                    // 'company_name'  => $lead->name,
-                    'lead_email' => $lead->email,
-                    'lead_name' => $lead->name
-                ];
-                Utility::send_twilio_msg($Assign_user_phone->phone, 'new_lead',$uArr);
-                // dd($uArr,$Assign_user_phone->phone);
+            foreach($request->product_name as $k=>$item)
+            {
+                if(!empty($request->product_name))
+                {
+                    IndustryProduct::create([
+                        'lead_id'=> $lead->id,
+                        'product_name'=>$item,
+                        'serial_number'=>$request->serial_number[$k],
+                        'sub_start_date'=>$request->sub_start_date[$k],
+                        'sub_end_date'=>$request->sub_end_date[$k],
+                        'price'=>$request->price[$k],
+                        'sale_date'=>$request->sale_date[$k],
+                        'created_by'=>$request->created_by[$k],
+                    ]);
+                }
             }
 
             return redirect()->back()->with('success', __('Lead Successfully Created.'));
-        } else {
+        } 
+        else 
+        {
             return redirect()->back()->with('error', 'permission Denied');
         }
+
+       
     }
 
     /**
@@ -201,7 +163,7 @@ class LeadController extends Controller
      */
     public function show(Lead $lead)
     {
-
+        // dd($lead);
         if (\Auth::user()->can('Show Lead')) {
             return view('lead.view', compact('lead'));
         } else {
@@ -218,30 +180,44 @@ class LeadController extends Controller
      */
     public function edit(Lead $lead)
     {
-        if (\Auth::user()->can('Edit Lead')) {
-            $status   = Lead::$status;
-            $source   = LeadSource::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $user     = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $user->prepend('--', 0);
-            $account  = Account::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $account->prepend('--', 0);
-            $industry = AccountIndustry::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $parent   = 'lead';
-            $tasks    = Task::where('parent', $parent)->where('parent_id', $lead->id)->get();
-            $log_type = 'lead comment';
-            $streams  = Stream::where('log_type', $log_type)->get();
-            $campaign = Campaign::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $campaign->prepend('--', 0);
-            // get previous user id
+        
+        if (Auth::user()->can('Edit Lead')) 
+        {
+            $lead = Lead::first();
             $previous = Lead::where('id', '<', $lead->id)->max('id');
-            // get next user id
             $next = Lead::where('id', '>', $lead->id)->min('id');
-
-
-            return view('lead.edit', compact('lead', 'account', 'user', 'source', 'industry', 'status', 'tasks', 'streams', 'campaign', 'previous', 'next'));
-        } else {
+            return view('lead.edit', compact('lead','previous','next'));
+        } 
+        else 
+        {
             return redirect()->back()->with('error', 'permission Denied');
         }
+
+        // dd($lead);
+        // if (\Auth::user()->can('Edit Lead')) {
+        //     $status   = Lead::$status;
+        //     $source   = LeadSource::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        //     $user     = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        //     $user->prepend('--', 0);
+        //     $account  = Account::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        //     $account->prepend('--', 0);
+        //     $industry = AccountIndustry::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        //     $parent   = 'lead';
+        //     $tasks    = Task::where('parent', $parent)->where('parent_id', $lead->id)->get();
+        //     $log_type = 'lead comment';
+        //     $streams  = Stream::where('log_type', $log_type)->get();
+        //     $campaign = Campaign::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        //     $campaign->prepend('--', 0);
+            // get previous user id
+            // $previous = Lead::where('id', '<', $lead->id)->max('id');
+            // get next user id
+            // $next = Lead::where('id', '>', $lead->id)->min('id');
+
+
+        //     return view('lead.edit', compact('lead', 'account', 'user', 'source', 'industry', 'status', 'tasks', 'streams', 'campaign', 'previous', 'next'));
+        // } else {
+        //     return redirect()->back()->with('error', 'permission Denied');
+        // }
     }
 
     /**
@@ -254,58 +230,62 @@ class LeadController extends Controller
      */
     public function update(Request $request, Lead $lead)
     {
-        if (\Auth::user()->can('Edit Lead')) {
-            $validator = \Validator::make(
-                $request->all(),
-                [
-                    'name' => 'required|max:120',
-                    'email' => 'required|email|unique:users',
-                    'lead_postalcode' => 'required',
-                    'opportunity_amount' => 'required|numeric',
-                ]
-            );
-            if ($validator->fails()) {
-                $messages = $validator->getMessageBag();
+        if (\Auth::user()->can('Edit Lead')) 
+        {           
+            $update['user_id']                 = Auth::user()->id;
+            $update['company_name']            = $request->company_name;
+            $update['lead_type_id']            = $request->lead_type_id;
+            $update['company_address']         = $request->company_address;
+            $update['company_mobile']          = $request->company_mobile;
+            $update['company_email']           = $request->company_email;
+            $update['website']                 = $request->website;
+            $update['industry_vertical']       = $request->industry_vertical;
+            $update['assign_user_id']          = $request->assign_user_id;
+            $update['activities']              = $request->activities;
 
-                return redirect()->back()->with('error', $messages->first());
+            Lead::where('id',$lead->id)->update($update);
+            
+
+            foreach ($request->name as $k => $item) 
+            {
+                if (!empty($item)) 
+                {
+                    $existingRecord = IndustryPerson::where('name', $item)->where('lead_id',$lead->id)->first();
+                    if($existingRecord)
+                    {                        
+                        $existingRecord->update([
+                            'lead_id' => $lead->id,
+                            'name' => $item,
+                            'designation' => $request->designation[$k],
+                            'contact_number' => $request->contact_number[$k],
+                            'email_id' => $request->email_id[$k]
+                        ]);
+                    }
+                }
             }
-            $lead['user_id']            = $request->user;
-            $lead['name']               = $request->name;
-            $lead['account']            = $request->account;
-            $lead['email']              = $request->email;
-            $lead['phone']              = $request->phone;
-            $lead['title']              = $request->title;
-            $lead['website']            = $request->website;
-            $lead['lead_address']       = $request->lead_address;
-            $lead['lead_city']          = $request->lead_city;
-            $lead['lead_state']         = $request->lead_state;
-            $lead['lead_country']       = $request->lead_country;
-            $lead['lead_postalcode']    = $request->lead_postalcode;
-            $lead['status']             = $request->status;
-            $lead['source']             = $request->source;
-            $lead['opportunity_amount'] = $request->opportunity_amount;
-            $lead['campaign']           = $request->source;
-            $lead['industry']           = $request->industry;
-            $lead['description']        = $request->description;
-            $lead['created_by']         = \Auth::user()->creatorId();
-            $lead->update();
 
-            Stream::create(
-                [
-                    'user_id' => \Auth::user()->id, 'created_by' => \Auth::user()->creatorId(),
-                    'log_type' => 'updated',
-                    'remark' => json_encode(
-                        [
-                            'owner_name' => \Auth::user()->username,
-                            'title' => 'lead',
-                            'stream_comment' => '',
-                            'user_name' => $lead->name,
-                        ]
-                    ),
-                ]
-            );
+            foreach($request->product_name as $k=>$item)
+            {
+                if(!empty($request->product_name))
+                {
+                    $productExistingRecord = IndustryProduct::where('product_name', $item)->where('lead_id',$lead->id)->first();
+                    if($existingRecord)
+                    {  
+                        $productExistingRecord->update([
+                            'lead_id'=> $lead->id,
+                            'product_name'=>$item,
+                            'serial_number'=>$request->serial_number[$k],
+                            'sub_start_date'=>$request->sub_start_date[$k],
+                            'sub_end_date'=>$request->sub_end_date[$k],
+                            'price'=>$request->price[$k],
+                            'sale_date'=>$request->sale_date[$k],
+                            'created_by'=>$request->created_by[$k],
+                        ]);
+                    }
+                }
+            }
 
-            return redirect()->back()->with('success', __('Lead Successfully Updated.'));
+            return redirect()->back()->with('message', __('Lead Successfully Updated.'));
         } else {
             return redirect()->back()->with('error', 'permission Denied');
         }

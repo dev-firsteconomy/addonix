@@ -10,14 +10,15 @@
 <script src="{{asset ('js/plugins/sweetalert2.all.min.js') }}"></script>
 
 <script src="{{ asset('js/letter.avatar.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/jquery.min.js')}}"></script>
+<!-- <script type="text/javascript" src="{{ asset('js/jquery.min.js')}}"></script> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script src="{{ asset('assets/js/plugins/bootstrap-switch-button.min.js') }}"></script>
 <script src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
 <script src="{{ asset('public/libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 {{-- <script src="{{asset ('assets/js/pages/ac-alert.js') }}"></script> --}}
 <script src="{{asset('assets/js/plugins/datepicker-full.min.js')}}"></script>
-{{-- <script type="text/javascript" src="{{ asset('js/jquery-1.11.1.min.js')}}"></script> --}}
+ <!-- <script type="text/javascript" src="{{ asset('js/jquery-1.11.1.min.js')}}"></script>  -->
 <script>
 (function () {
   const d_week = new Datepicker(document.querySelector('#pc-datepicker-2_modal'), {
@@ -53,6 +54,8 @@
 <script src="{{asset('assets/js/plugins/datepicker-full.min.js')}}"></script>
 
 <script src="{{ asset('js/custom.js') }}"></script>
+
+
 
 
 <!-- Demo JS - remove it when starting your project -->

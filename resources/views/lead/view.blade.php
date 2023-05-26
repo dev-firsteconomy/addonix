@@ -1,107 +1,165 @@
 <div class="row">
     <div class="col-lg-12">
 
-            <div class="">
-                <dl class="row">
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Name')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ $lead->name }}</span></dd>
+        <div class="">
+            <dl class="row">
+                <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Company Name')}}</span></dt>
+                <dd class="col-md-8"><span class="text-md">{{ $lead->company_name }}</span></dd>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Account name')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ !empty($lead->accounts)?$lead->accounts->name:'-'}}</span></dd>
+                <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Lead')}}</span></dt>
+                <dd class="col-md-8"><span class="text-md">{{ !empty($lead->lead_type_id) ? $lead->lead_type_id : '-' }}</span></dd>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Email')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ $lead->email }}</span></dd>
+                <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Company Address')}}</span></dt>
+                <dd class="col-md-8"><span class="text-md">{{ $lead->company_address }}</span></dd>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Phone')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ $lead->phone }}</span></dd>
+                <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Contact No.')}}</span></dt>
+                <dd class="col-md-8"><span class="text-md">{{ $lead->company_mobile }}</span></dd>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Title')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ $lead->title }}</span></dd>
+                <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Email')}}</span></dt>
+                <dd class="col-md-8"><span class="text-md">{{ $lead->company_email }}</span></dd>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Website')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ $lead->website }}</span></dd>
+                <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Website')}}</span></dt>
+                <dd class="col-md-8"><span class="text-md">{{ $lead->website }}</span></dd>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('lead Address')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ $lead->lead_address }}</span></dd>
+                <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Industry Vertical')}}</span></dt>
+                <dd class="col-md-8"><span class="text-md">{{ $lead->industry_vertical }}</span></dd>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('City')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ $lead->lead_city }}</span></dd>
+                <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Assign User')}}</span></dt>
+                <dd class="col-md-8"><span class="text-md">{{ $lead->assign_user_id }}</span></dd>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('State')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ $lead->lead_state }}</span></dd>
+                <div class="col-12">
+                    <hr class="mt-2 mb-2">
+                    <h5>Persons</h5>
+                </div>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Country')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ $lead->lead_country }}</span></dd>
+                <div class="col-12 table-responsive">
+                    <table id="data" class="table data-table data-table-horizontal data-table-highlight">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th>
+                                    <p class="mb-0">Name</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Designation</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Contact Number</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Email Id</p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $i =1; @endphp
+                            @foreach ($lead->industryPerson as $person)
+                            <tr class="repeater mt-repeater">
+                                <th scope="col">{{ $i}}</th>
+                                <td><input name="name[]" class="form-control" type="text" value="{{ $person->name }}" readonly/></td>
+                                <td><input name="designation[]" class="form-control" type="text" value="{{ $person->designation }}"  readonly/></td>
+                                <td><input name="contact_number[]" class="form-control" type="tel"  value="{{ $person->contact_number }}" readonly/></td>
+                                <td><input name="email_id[]" class="form-control" type="email" value="{{ $person->email_id }}"  readonly/></td>
+                            </tr>
+                            @php $i++; @endphp
+                            @endforeach
+                            <!-- <tr class="repeater mt-repeater">
+                                <th scope="col">2</th>
+                                <td><input name="name[]" class="form-control" type="text" /></td>
+                                <td><input name="designation[]" class="form-control" type="text" /></td>
+                                <td><input name="contact_number[]" class="form-control" type="tel" /></td>
+                                <td><input name="email_id[]" class="form-control" type="email" /></td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Assigned User')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ !empty($lead->assign_user)?$lead->assign_user->name:''}}</span></dd>
+                <div class="col-12">
+                    <hr class="mt-2 mb-2">
+                    <h5>Product</h5>
+                </div>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Created')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{\Auth::user()->dateFormat($lead->created_at)}}</span></dd>
+                <div class="col-12 table-responsive">
+                    <table id="data" class="table data-table data-table-horizontal data-table-highlight">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th>
+                                    <p class="mb-0">Product Name</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Serial Number</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Subscriptiion start date</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Subscriptiion End date</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Price</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Sale Date</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Created by</p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $i =1; @endphp
+                            @foreach ($lead->industryProduct as $product)
+                            <tr class="repeater mt-repeater">
+                                <th scope="col">{{ $i }}</th>
+                                <td><input name="product_name[]" class="form-control" type="text" value="{{ $product->product_name }}" readonly /></td>
+                                <td><input name="serial_number[]" class="form-control" type="text" value="{{ $product->serial_number }}" readonly /></td>
+                                <td><input name="sub_start_date[]" class="form-control" type="date" value="{{ $product->sub_start_date }}"  readonly /></td>
+                                <td><input name="sub_end_date[]" class="form-control" type="date" value="{{ $product->sub_end_date }}"  readonly /></td>
+                                <td><input name="price[]" class="form-control" type="text" value="1000" style="width:120px" value="{{ $product->price }}" readonly /></td>
+                                <td><input name="sale_date[]" class="form-control" type="date" value="{{ $product->sale_date }}"  readonly /></td>
+                                <td><input name="created_by[]" class="form-control" type="text" value="{{ $product->created_by }}"  readonly /></td>
+                            </tr>
+                            @php $i++; @endphp
+                            @endforeach
+                            
 
-                    <div class="col-12">
-                        <hr class="mt-2 mb-2">
-                        <h5>{{__('Details')}}</h5>
-                    </div>
+                            <!-- <tr class="repeater mt-repeater">
+                                <th scope="col">2</th>
+                                <td><input name="product_name[]" class="form-control" type="text" /></td>
+                                <td><input name="serial_number[]" class="form-control" type="text" /></td>
+                                <td><input name="sub_start_date[]" class="form-control" type="date" /></td>
+                                <td><input name="sub_end_date[]" class="form-control" type="date" /></td>
+                                <td><input name="price[]" class="form-control" type="text" value="1000"
+                                        style="width:120px" /></td>
+                                <td><input name="sale_date[]" class="form-control" type="date" /></td>
+                                <td><input name="created_by[]" class="form-control" type="text" /></td>
+                            </tr> -->
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Status')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">
-                            @if($lead  ->status == 0)
-                                <span class="badge bg-success p-2 px-3 rounded">{{ __(\App\Models\Lead::$status[$lead->status]) }}</span>
-                            @elseif($lead->status == 1)
-                                <span class="badge bg-info p-2 px-3 rounded">{{ __(\App\Models\Lead::$status[$lead->status]) }}</span>
-                            @elseif($lead->status == 2)
-                                <span class="badge bg-warning p-2 px-3 rounded">{{ __(\App\Models\Lead::$status[$lead->status]) }}</span>
-                            @elseif($lead->status == 3)
-                                <span class="badge bg-danger p-2 px-3 rounded">{{ __(\App\Models\Lead::$status[$lead->status]) }}</span>
-                            @elseif($lead->status == 4)
-                                <span class="badge bg-danger p-2 px-3 rounded">{{ __(\App\Models\Lead::$status[$lead->status]) }}</span>
-                            @elseif($lead->status == 5)
-                                <span class="badge bg-warning p-2 px-3 rounded">{{ __(\App\Models\Lead::$status[$lead->status]) }}</span>
-                            @endif
-                        </span></dd>
+                        </tbody>
+                    </table>
+                </div>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Source')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ !empty($lead->LeadSource)?$lead->LeadSource->name:''}}</span></dd>
+                <div class="col-12">
+                    <hr class="mt-2 mb-2">
+                    <h5>Activities History Scroling</h5>
+                </div>
 
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Opportunity Amount')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{\Auth::user()->priceFormat($lead->opportunity_amount)}}</span></dd>
-
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Campaign')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ !empty($lead->campaigns)?$lead->campaigns->name:'-'}}</span></dd>
-
-                    <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Industry')}}</span></dt>
-                    <dd class="col-md-8"><span class="text-md">{{ !empty($lead->accountIndustry)?$lead->accountIndustry->name:''}}</span></dd>
+                <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Activities')}}</span></dt>
+                <dd class="col-md-8"><span class="text-md">{{ $lead->activities }}</span></dd>
 
 
-                </dl>
-            </div>
-
-    {{-- </div>
-    <div class="col-sm-4">
-        <div class="card">
-            <div class="card-footer py-0">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item px-0">
-                        <div class="row align-items-center">
-                            <dt class="col-md-12"><span class="h6 text-md mb-0">{{__('Assigned User')}}</span></dt>
-                            <dd class="col-md-12"><span class="text-md">{{ !empty($lead->assign_user)?$lead->assign_user->name:''}}</span></dd>
-
-                            <dt class="col-md-12"><span class="h6 text-md mb-0">{{__('Created')}}</span></dt>
-                            <dd class="col-md-12"><span class="text-md">{{\Auth::user()->dateFormat($lead->created_at)}}</span></dd>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            </dl>
         </div>
-    </div> --}}
-    <div class="w-100 text-end pr-2">
-        @can('Edit Lead')
-        <div class="action-btn bg-info ms-2">
-            <a href="{{ route('lead.edit',$lead->id) }}" class="mx-3 btn btn-sm d-inline-flex align-items-center text-white" data-bs-toggle="tooltip"data-title="{{__('Lead Edit')}}" title="{{__('Edit')}}"><i class="ti ti-edit"></i>
-            </a>
+
+        <div class="w-100 text-end pr-2">
+            @can('Edit Lead')
+            <div class="action-btn bg-info ms-2">
+                <a href="{{ route('lead.edit',$lead->id) }}"
+                    class="mx-3 btn btn-sm d-inline-flex align-items-center text-white" data-bs-toggle="tooltip"
+                    data-title="{{__('Lead Edit')}}" title="{{__('Edit')}}"><i class="ti ti-edit"></i>
+                </a>
+            </div>
+            @endcan
         </div>
-        @endcan
     </div>
-</div>
-
