@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class LeadController extends Controller
 {
@@ -31,7 +32,8 @@ class LeadController extends Controller
      */
     public function index()
     {
-            if (\Auth::user()->can('Manage Lead')) {
+            if (\Auth::user()->can('Manage Lead')) 
+            {
                 if(\Auth::user()->type == 'owner'){
                 // $leads = Lead::where('created_by', \Auth::user()->creatorId())->get();
                 $leads = Lead::get();
@@ -100,17 +102,17 @@ class LeadController extends Controller
         if(Auth::user()->can('Create Lead'))
         {
             // dd($request->all());
-            $lead                           = new Lead();
-            $lead['user_id']                = Auth::user()->id;
-            $lead['company_name']           = $request->company_name;
-            $lead['lead_type_id']            = $request->lead_type_id;
-            $lead['company_address']         = $request->company_address;
-            $lead['company_mobile']          = $request->company_mobile;
-            $lead['company_email']           = $request->company_email;
-            $lead['website']            = $request->website;
-            $lead['industry_vertical']       = $request->industry_vertical;
-            $lead['assign_user_id']          = $request->assign_user_id;
-            $lead['activities']          = $request->activities;
+            $lead                      = new Lead();
+            $lead['user_id']           = Auth::user()->id;
+            $lead['company_name']      = $request->company_name;
+            $lead['lead_type_id']      = $request->lead_type_id;
+            $lead['company_address']   = $request->company_address;
+            $lead['company_mobile']    = $request->company_mobile;
+            $lead['company_email']     = $request->company_email;
+            $lead['website']           = $request->website;
+            $lead['industry_vertical'] = $request->industry_vertical;
+            $lead['assign_user_id']    = $request->assign_user_id;
+            $lead['activities']        = $request->activities;
             $lead->save();   
             
             foreach($request->name as $k=>$item)
@@ -423,5 +425,31 @@ class LeadController extends Controller
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
+    }
+
+    public function leadSearch(Request $request)
+    {
+        $currentDate = Carbon::now()->format('Y-m-d');
+        $oldestDate = Lead::orderBy('created_at', 'ASC')->value('created_at');
+
+        $fromDate = !empty($request->fromDate) ? $request->fromDate : $oldestDate;
+        $toDate = !empty($request->toDate) ? $request->toDate : $currentDate;
+        $leadType = !empty($request->leadType) ? $request->leadType : null;
+
+        $leads = Lead::query();
+
+        if ($leadType) {
+            $leads->where('lead_type_id', $leadType);
+        }
+
+        if (isset($fromDate) && isset($toDate))
+        {
+            $leads->whereBetween('created_at', [$fromDate, $toDate]);
+        }
+
+        $leads = $leads->orderBy('id', 'DESC')->get();
+
+        return view('lead.index', compact('leads'));
+       
     }
 }

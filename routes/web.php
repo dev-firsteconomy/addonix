@@ -325,6 +325,8 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('lead/create/{type}/{id}', [LeadController::class, 'create'])->name('lead.create');
             Route::get('lead/{id}/show_convert', [LeadController::class, 'showConvertToAccount'])->name('lead.convert.account');
             Route::post('lead/{id}/convert', [LeadController::class, 'convertToAccount'])->name('lead.convert.to.account');
+            
+            Route::get('leadSearch', [LeadController::class, 'leadSearch'])->name('lead.leadSearch');
         }
     );
     Route::group(

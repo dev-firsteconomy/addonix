@@ -26,10 +26,52 @@
 </a>
 @endcan
 @endsection
+
 @section('filter')
 @endsection
 
+
 @section('content')
+
+<form action="leadSearch" method="get">
+<div class="row">
+        <div class="col-lg-3">
+            <div class="input-group mb-3">
+            <span class="input-group-text">From Date:</span>
+            <input type="date" name="fromDate" class="form-control" value="<?php echo isset($_REQUEST['fromDate']) ? $_REQUEST['fromDate'] : ''; ?>" >
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="input-group mb-3">
+            <span class="input-group-text">To Date:</span>
+            <input type="date" name="toDate" class="form-control" value="<?php echo isset($_REQUEST['toDate']) ? $_REQUEST['toDate'] : ''; ?>">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group mb-3">
+            <span class="input-group-text">Filter status Wise:</span>
+            <select class="form-select" aria-label="Default select example" name="leadType">
+                <option value="">Select...</option>
+                <option value="lead" {{isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'lead' ? 'selected' : ''}}>lead</option>
+                <option value="Opportunity" {{isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Opportunity' ? 'selected' : ''}} >Opportunity</option>
+                <option value="Active Customer" {{isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Active Customer' ? 'selected' : ''}}>Active Customer</option>
+                <option value="Non Active Customer" {{isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Non Active Customer' ? 'selected' : ''}}>Non Active Customer</option>
+            </select>
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <div class="input-group mb-3">  
+                <button class="btn btn-primary" type="submit" id="leadSearchBtn">Search!</button>
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <div class="input-group mb-3">  
+                <a href="/lead" class="btn btn-primary">Reset</a>
+            </div>
+        </div>
+    </div>
+</form>
+
 <div class="row">
     <div class="col-xl-12">
         <div class="card">
@@ -45,7 +87,7 @@
                                 <th scope="col" class="sort" data-sort="status">{{__('Email')}}</th>
                                 <th scope="col" class="sort" data-sort="status">{{__('Website')}}</th>
                                 <th scope="col" class="sort" data-sort="status">{{__('Industry Vertical')}}</th>
-                                <th scope="col" class="sort" data-sort="status">{{__('Assign user')}}</th>
+                                <th scope="col" class="sort" data-sort="status">{{__('Lead Owner')}}</th>
                                 @if(Gate::check('Show Lead') || Gate::check('Edit Lead') || Gate::check('Delete Lead'))
                                 <th scope="col" class="text-start
                                 ">{{__('Action')}}</th>
@@ -70,7 +112,7 @@
                                 </td>
 
                                 <td>
-                                    <span class="budget">{{ ucfirst(!empty($lead->company_mobile) ? $lead->company_mobile:'--')}}</span>
+                                    <span class="budget">{{ !empty($lead->company_mobile) ? $lead->company_mobile:'--' }}</span>
                                 </td>
 
                                 <td>
@@ -131,3 +173,5 @@
 </div>
 
 @endsection
+
+

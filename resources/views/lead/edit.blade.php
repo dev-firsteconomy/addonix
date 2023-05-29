@@ -51,19 +51,18 @@
     <!-- [ sample-page ] start -->
     <div class="col-sm-12">
         <div class="row">
-            <div class="col-xl-3">
+            
+            <!-- <div class="col-xl-3">
                 <div class="card sticky-top" style="top:30px">
                     <div class="list-group list-group-flush" id="useradd-sidenav">
                         <a href="#useradd-1" class="list-group-item list-group-item-action border-0">{{ __('Overview') }} <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
-                        <!-- <a href="#useradd-2" class="list-group-item list-group-item-action border-0">{{__('Stream')}} <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
-                        <a href="#useradd-3" class="list-group-item list-group-item-action border-0">{{__('Tasks')}} <div class="float-end"><i class="ti ti-chevron-right"></i></div></a> -->
+                        <a href="#useradd-2" class="list-group-item list-group-item-action border-0">{{__('Stream')}} <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
+                        <a href="#useradd-3" class="list-group-item list-group-item-action border-0">{{__('Tasks')}} <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
                     </div>
                 </div>
-               
-
-            </div>
+            </div> -->
            
-            <div class="col-xl-9">
+            <div class="col-xl-12">
                 @if (Session::has('message'))
                 <div id="success-message" class="alert alert-success" role="alert" >
                     {{ Session::get('message') }}
