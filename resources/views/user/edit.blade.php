@@ -52,7 +52,7 @@
         <!-- [ sample-page ] start -->
         <div class="col-sm-12">
             <div class="row">
-                <div class="col-xl-3">
+                <!-- <div class="col-xl-3">
                     <div class="card sticky-top" style="top:30px">
                         <div class="list-group list-group-flush" id="useradd-sidenav">
                             <a href="#useradd-1"
@@ -71,8 +71,8 @@
                             @endif
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-9">
+                </div> -->
+                <div class="col-xl-12">
                     <div id="useradd-1" class="card">
                         {{ Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'PUT']) }}
                         <div class="card-header">

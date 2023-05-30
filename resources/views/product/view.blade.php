@@ -7,16 +7,16 @@
                     <dd class="col-md-7"><span class="text-md">{{ $product->name }}</span></dd>
 
 
-                    <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Status')}}</span></dt>
+                    <!-- <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Status')}}</span></dt>
                     <dd class="col-md-7">
                         @if($product->status == 0)
                             <span class="badge bg-success p-2 px-3 rounded">{{ __(\App\Models\Product::$status[$product->status]) }}</span>
                         @elseif($product->status == 1)
                             <span class="badge bg-danger p-2 px-3 rounded">{{ __(\App\Models\Product::$status[$product->status]) }}</span>
                         @endif
-                    </dd>
+                    </dd> -->
 
-                    <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Category')}}</span></dt>
+                    <!-- <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Category')}}</span></dt>
                     <dd class="col-md-7"><span class="text-md">{{ !empty($product->categorys)?$product->categorys->name:'-'}}</span></dd>
 
                     <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Brand')}}</span></dt>
@@ -59,7 +59,7 @@
                     <dd class="col-md-7"><span class="text-md">{{ $product->description }}</span></dd>
 
                     <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Assigned User')}}</span></dt>
-                    <dd class="col-md-7"><span class="text-md">{{ !empty($product->assign_user)?$product->assign_user->name:'-'}}</span></dd>
+                    <dd class="col-md-7"><span class="text-md">{{ !empty($product->assign_user)?$product->assign_user->name:'-'}}</span></dd> -->
 
                     <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Created')}}</span></dt>
                     <dd class="col-md-7"><span class="text-md">{{\Auth::user()->dateFormat($product->created_at)}}</span></dd>

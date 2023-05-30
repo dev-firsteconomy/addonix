@@ -118,4 +118,9 @@ class Lead extends Model
         return $this->hasMany('App\Models\IndustryProduct','lead_id','id');
     }
 
+    public function lead_interaction()
+    {
+        return $this->hasMany('App\Models\lead_interaction','lead_id','id');
+    }
+
 }

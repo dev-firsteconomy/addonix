@@ -3,6 +3,9 @@
 
         <div class="">
             <dl class="row">
+                <dt class="col-md-4"><span class="h6 text-md mb-0"><?php echo e(__('source')); ?></span></dt>
+                <dd class="col-md-8"><span class="text-md"><?php echo e($lead->source); ?></span></dd>
+
                 <dt class="col-md-4"><span class="h6 text-md mb-0"><?php echo e(__('Company Name')); ?></span></dt>
                 <dd class="col-md-8"><span class="text-md"><?php echo e($lead->company_name); ?></span></dd>
 
@@ -145,8 +148,8 @@
                     <h5>Activities History Scroling</h5>
                 </div>
 
-                <dt class="col-md-4"><span class="h6 text-md mb-0"><?php echo e(__('Activities')); ?></span></dt>
-                <dd class="col-md-8"><span class="text-md"><?php echo e($lead->activities); ?></span></dd>
+                <dt class="col-md-4"><span class="h6 text-md mb-0"><?php echo e(__('source')); ?></span></dt>
+                <dd class="col-md-8"><span class="text-md"><?php echo e($lead->source); ?></span></dd>
 
 
             </dl>

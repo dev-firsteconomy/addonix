@@ -12,7 +12,7 @@
             {!!Form::select('status', $status, null,array('class' => 'form-control','required'=>'required')) !!}
         </div>
     </div>
-    <div class="col-6">
+    <!-- <div class="col-6">
         <div class="form-group">
             {{Form::label('category',__('Category'),['class'=>'form-label']) }}
             {!!Form::select('category', $category, null,array('class' => 'form-control','required'=>'required')) !!}
@@ -38,7 +38,7 @@
 
             {{-- {!!Form::select('tax[]', $tax, null,array('class' => 'form-control select2','id'=>'choices-multiple1','multiple')) !!} --}}
         </div>
-    </div>
+    </div> 
     <div class="col-6">
         <div class="form-group">
             {{Form::label('part_number',__('Part Number'),['class'=>'form-label']) }}
@@ -76,6 +76,7 @@
             {!! Form::text('sku',null,array('class' => 'form-control','required'=>'required')) !!}
         </div>
     </div>
+    -->
     <div class="modal-footer">
         <button type="button" class="btn  btn-light"
             data-bs-dismiss="modal">Close</button>

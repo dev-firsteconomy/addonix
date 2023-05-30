@@ -13,10 +13,9 @@
 <li class="breadcrumb-item">{{__('Lead')}}</li>
 @endsection
 @section('action-btn')
-<a href="{{ route('lead.grid') }}" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip"
-    title="{{ __('Kanban View') }}">
+<!-- <a href="{{ route('lead.grid') }}" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip" title="{{ __('Kanban View') }}">
     <i class="ti ti-layout-kanban"></i>
-</a>
+</a> -->
 
 @can('Create Lead')
 <a href="#" data-url="{{ route('lead.create',['lead',0]) }}" data-size="lg" data-ajax-popup="true"
@@ -81,9 +80,9 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="sort" data-sort="name">{{__('Company Name')}}</th>
-                                <th scope="col" class="sort" data-sort="completion">{{__('Type')}}</th>
+                                <th scope="col" class="sort" data-sort="completion">{{__('Lead Type')}}</th>
                                 <!-- <th scope="col" class="sort" data-sort="budget">{{__('Company Address')}}</th> -->
-                                <th scope="col" class="sort" data-sort="status">{{__('Contact No.')}}</th>
+                                <th scope="col" class="sort" data-sort="status">{{__('Company Contact No.')}}</th>
                                 <th scope="col" class="sort" data-sort="status">{{__('Email')}}</th>
                                 <th scope="col" class="sort" data-sort="status">{{__('Website')}}</th>
                                 <th scope="col" class="sort" data-sort="status">{{__('Industry Vertical')}}</th>
@@ -133,6 +132,16 @@
 
                                 @if(Gate::check('Show Lead') || Gate::check('Edit Lead') || Gate::check('Delete Lead'))
                                     <td class="text-end">
+                                        <div class="action-btn bg-dark ms-2">
+                                            <a href="#" data-size="lg" data-url="{{ route('addInteration',$lead->id) }}" data-bs-toggle="tooltip" title="{{__('interation')}}" data-ajax-popup="true" data-title="{{__('add Interation')}}" class="mx-3 btn btn-sm d-inline-flex align-items-center text-white ">
+                                                <i class="ti ti-edit"></i>
+                                            </a>
+                                        </div>
+                                        <div class="action-btn bg-dark ms-2">
+                                            <a href="#" data-size="lg" data-url="{{ route('changeStatus',$lead->id) }}" data-bs-toggle="tooltip" title="{{__('Change Status')}}" data-ajax-popup="true" data-title="{{__('change status')}}" class="mx-3 btn btn-sm d-inline-flex align-items-center text-white ">
+                                                <i class="ti ti-edit"></i>
+                                            </a>
+                                        </div>
                                         @can('Show Lead')
                                         <div class="action-btn bg-warning ms-2">
                                             <a href="#" data-size="lg" data-url="{{ route('lead.show',$lead->id) }}" data-bs-toggle="tooltip" title="{{__('Details')}}" data-ajax-popup="true" data-title="{{__('Lead Details')}}" class="mx-3 btn btn-sm d-inline-flex align-items-center text-white ">

@@ -327,6 +327,9 @@ Route::group(['middleware' => ['verified']], function () {
             Route::post('lead/{id}/convert', [LeadController::class, 'convertToAccount'])->name('lead.convert.to.account');
             
             Route::get('leadSearch', [LeadController::class, 'leadSearch'])->name('lead.leadSearch');
+            Route::get('addInteration/{id}', [LeadController::class, 'addInteration'])->name('addInteration');
+            Route::get('changeStatus/{id}', [LeadController::class, 'changeStatus'])->name('changeStatus');
+            Route::get('submitInteraction', [LeadController::class, 'submitInteraction'])->name('submitInteraction');            
         }
     );
     Route::group(

@@ -97,10 +97,10 @@
                                         <?php
                                         $typeOptions = [
                                             ''=>'Select Lead Type',
-                                            1 => 'Lead',
-                                            2 => 'Opportunity',
-                                            3 => 'Active Customer',
-                                            4 => 'Non Active Customer',
+                                            'Lead' => 'Lead',
+                                            'Opportunity' => 'Opportunity',
+                                            'Active Customer' => 'Active Customer',
+                                            'Non Active Customer' => 'Non Active Customer',
                                         ];
                                         ?>
 
@@ -165,8 +165,8 @@
                                         <?php
                                         $industryOptions = [
                                             ''=>'Select industry Type',
-                                            1 => 'industry 1',
-                                            2 => 'industry 2',
+                                            'industry 1' => 'industry 1',
+                                            'industry 2' => 'industry 2',
                                         ];
                                         ?>
                                         {{ Form::select('industry_vertical', $industryOptions, $lead->industry_vertical, ['class' => 'form-control', 'required' => 'required']) }}
@@ -185,13 +185,10 @@
                                     <div class="form-group">
                                         {{Form::label('user',__(' Assigned User'),['class'=>'form-label']) }}
 
-                                        <?php
-                                        $userOptions = [
-                                            ''=>'Select User Type',
-                                            1 => 'user 1',
-                                            2 => 'user 2',
-                                        ];
-                                        ?>
+                                        @php 
+                                        $userOptions = App\Models\User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
+                                                    $userOptions->prepend('--', '');
+                                        @endphp
 
                                         {!! Form::select('assign_user_id',$userOptions, $lead->assign_user_id,array('class' => 'form-control')) !!}
                                         @error('assign_user_id')
@@ -298,29 +295,31 @@
 
                 <div class="col-12">
                     <hr class="mt-2 mb-2">
-                    <h5>Activities History Scroling</h5>
+                    <h5>interation</h5>
                 </div>
 
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{Form::label('activity ',__(' Activities'),['class'=>'form-label']) }}
+                <div class="col-4">
+                    <div class="form-group">
+                        {{Form::label('interaction_date',__('Interaction Date'),['class'=>'form-label']) }}
+                        {{Form::date('interaction_date',null,array('class'=>'form-control','required'=>'required'))}}
+                    </div>
+                </div>
 
-                                        <?php
-                                        $activitiesOptions = [
-                                            ''=>'Select Activity Type',
-                                            1 => 'activity  1',
-                                            2 => 'activity 2',
-                                        ];
-                                        ?>
+                <div class="col-4">
+                    <div class="form-group">
+                        {{Form::label('interaction_activity_type',__('Interaction Activity Type'),['class'=>'form-label']) }}
+                        {{Form::select('interaction_activity_type',[''=>'Select Activities Type','Call'=>'Call','Meeting'=>'Meeting','Opportunity'=>'Opportunity','Demo'=>'Demo',
+                            'Quotation'=>'Quotation','MOM'=>'MOM','PI'=>'PI'],null,array('class'=>'form-control','required'=>'required'))}}
+                    </div>
+                </div>
 
-                                        {!! Form::select('activities',$activitiesOptions, $lead->activities,array('class' => 'form-control')) !!}
-                                        @error('activities')
-                                        <span class="invalid-activities" role="alert">
-                                    <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
-                                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        {{Form::label('interaction_feedback',__('Interaction Feedback'),['class'=>'form-label']) }}
+                        {{Form::text('interaction_feedback',null,array('class'=>'form-control','placeholder'=>__('Enter Feedback'),'required'=>'required'))}}
+                    </div>
+                </div>
+
 
                                 
                                 <div class="text-end">

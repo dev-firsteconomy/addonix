@@ -27,7 +27,8 @@ class ProductController extends Controller
         {
             if(\Auth::user()->type == 'owner')
             {
-            $products = Product::where('created_by', \Auth::user()->creatorId())->get();
+            // $products = Product::where('created_by', \Auth::user()->creatorId())->get();
+            $products = Product::get();
             $defualtView         = new UserDefualtView();
             $defualtView->route  = \Request::route()->getName();
             $defualtView->module = 'product';
@@ -88,56 +89,57 @@ class ProductController extends Controller
     {
         if(\Auth::user()->can('Create Product'))
         {
-            $validator = \Validator::make(
-                $request->all(), [
-                                   'name' => 'required|max:120',
-                                   'price' => 'required|numeric',
-                                   'sku' => 'required',
-                                   'tax' => 'required',
-                               ]
-            );
-            if($validator->fails())
-            {
-                $messages = $validator->getMessageBag();
+            // $validator = \Validator::make(
+            //     $request->all(), [
+            //                        'name' => 'required|max:120',
+            //                        'price' => 'required|numeric',
+            //                        'sku' => 'required',
+            //                        'tax' => 'required',
+            //                    ]
+            // );
+            // if($validator->fails())
+            // {
+            //     $messages = $validator->getMessageBag();
 
-                return redirect()->back()->with('error', $messages->first());
-            }
-            if(count($request->tax) > 1 && in_array(0, $request->tax))
-            {
-                return redirect()->back()->with('error', 'Please select valid tax');
-            }
+            //     return redirect()->back()->with('error', $messages->first());
+            // }
+            // if(count($request->tax) > 1 && in_array(0, $request->tax))
+            // {
+            //     return redirect()->back()->with('error', 'Please select valid tax');
+            // }
 
             $product                = new Product();
-            $product['user_id']     = $request->user;
+            $product['user_id']     =\Auth::user()->id;
             $product['name']        = $request->name;
             $product['status']      = $request->status;
-            $product['category']    = $request->category;
-            $product['brand']       = $request->brand;
-            $product['price']       = $request->price;
-            $product['tax']         = implode(',', $request->tax);
-            $product['part_number'] = $request->part_number;
-            $product['weight']      = $request->weight;
-            $product['URL']         = $request->URL;
-            $product['sku']            = $request->sku;
-            $product['description'] = $request->description;
-            $product['created_by']  = \Auth::user()->creatorId();
             $product->save();
 
-            Stream::create(
-                [
-                    'user_id' => \Auth::user()->id,
-                    'created_by' => \Auth::user()->creatorId(),
-                    'log_type' => 'created',
-                    'remark' => json_encode(
-                        [
-                            'owner_name' => \Auth::user()->username,
-                            'title' => 'product',
-                            'stream_comment' => '',
-                            'user_name' => $product->name,
-                        ]
-                    ),
-                ]
-            );
+            // $product['category']    = $request->category;
+            // $product['brand']       = $request->brand;
+            // $product['price']       = $request->price;
+            // $product['tax']         = implode(',', $request->tax);
+            // $product['part_number'] = $request->part_number;
+            // $product['weight']      = $request->weight;
+            // $product['URL']         = $request->URL;
+            // $product['sku']            = $request->sku;
+            // $product['description'] = $request->description;
+            // $product['created_by']  = \Auth::user()->creatorId();
+
+            // Stream::create(
+            //     [
+            //         'user_id' => \Auth::user()->id,
+            //         'created_by' => \Auth::user()->creatorId(),
+            //         'log_type' => 'created',
+            //         'remark' => json_encode(
+            //             [
+            //                 'owner_name' => \Auth::user()->username,
+            //                 'title' => 'product',
+            //                 'stream_comment' => '',
+            //                 'user_name' => $product->name,
+            //             ]
+            //         ),
+            //     ]
+            // );
 
             return redirect()->back()->with('success', __('Product Successfully Created.'));
         }
@@ -210,57 +212,61 @@ class ProductController extends Controller
     {
         if(\Auth::user()->can('Edit Product'))
         {
-            $validator = \Validator::make(
-                $request->all(), [
-                                   'name' => 'required|max:120',
-                                   'price' => 'required|numeric',
-                                   'sku'=>'required',
-                               ]
-            );
-            if($validator->fails())
-            {
-                $messages = $validator->getMessageBag();
+            // $validator = \Validator::make(
+            //     $request->all(), [
+            //                        'name' => 'required|max:120',
+            //                        'price' => 'required|numeric',
+            //                        'sku'=>'required',
+            //                    ]
+            // );
+            // if($validator->fails())
+            // {
+            //     $messages = $validator->getMessageBag();
 
-                return redirect()->back()->with('error', $messages->first());
-            }
-            if(count($request->tax) > 1 && in_array(0, $request->tax))
-            {
-                return redirect()->back()->with('error', 'Please select valid tax');
-            }
+            //     return redirect()->back()->with('error', $messages->first());
+            // }
+            // if(count($request->tax) > 1 && in_array(0, $request->tax))
+            // {
+            //     return redirect()->back()->with('error', 'Please select valid tax');
+            // }
 
-            $product['user_id']     = $request->user;
+            $product['user_id']     =\Auth::user()->id;
             $product['name']        = $request->name;
             $product['status']      = $request->status;
-            $product['category']    = $request->category;
-            $product['brand']       = $request->brand;
-            $product['price']       = $request->price;
-            $product['tax']         = implode(',', $request->tax);
-            $product['part_number'] = $request->part_number;
-            $product['weight']      = $request->weight;
-            $product['URL']         = $request->URL;
-            $product['sku']            = $request->sku;
-            $product['description'] = $request->description;
 
-            $product['created_by']  = \Auth::user()->creatorId();
+            // $product['user_id']     = $request->user;
+            // $product['name']        = $request->name;
+            // $product['status']      = $request->status;
+            // $product['category']    = $request->category;
+            // $product['brand']       = $request->brand;
+            // $product['price']       = $request->price;
+            // $product['tax']         = implode(',', $request->tax);
+            // $product['part_number'] = $request->part_number;
+            // $product['weight']      = $request->weight;
+            // $product['URL']         = $request->URL;
+            // $product['sku']            = $request->sku;
+            // $product['description'] = $request->description;
+            // $product['created_by']  = \Auth::user()->creatorId();
+
             $product->update();
 
-            Stream::create(
-                [
-                    'user_id' => \Auth::user()->id,
-                    'created_by' => \Auth::user()->creatorId(),
-                    'log_type' => 'updated',
-                    'remark' => json_encode(
-                        [
-                            'owner_name' => \Auth::user()->username,
-                            'title' => 'product',
-                            'stream_comment' => '',
-                            'user_name' => $product->name,
-                        ]
-                    ),
-                ]
-            );
+            // Stream::create(
+            //     [
+            //         'user_id' => \Auth::user()->id,
+            //         'created_by' => \Auth::user()->creatorId(),
+            //         'log_type' => 'updated',
+            //         'remark' => json_encode(
+            //             [
+            //                 'owner_name' => \Auth::user()->username,
+            //                 'title' => 'product',
+            //                 'stream_comment' => '',
+            //                 'user_name' => $product->name,
+            //             ]
+            //         ),
+            //     ]
+            // );
 
-            return redirect()->back()->with('success', __('Product ' . $product->name . ' Successfully Updated.'));
+            return redirect()->back()->with('message', __('Product ' . $product->name . ' Successfully Updated.'));
         }
         else
         {

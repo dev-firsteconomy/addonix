@@ -37,12 +37,12 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                     </li>
                 @endcan -->
 
-                <!-- @can('Manage User')
+                @can('Manage User')
                     <li class="dash-item {{ \Request::route()->getName() == 'user' || \Request::route()->getName() == 'user.edit' ? ' active' : '' }}">
                         <a class="dash-link" href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('user')) ? route(\Auth::user()->getDefualtViewRouteByModule('user')) : route('user.index') }}">
                             <span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext">{{ __('User') }}</span></a>
                     </li>
-                @endcan -->
+                @endcan
 
                  <!-- @if(\Auth::user()->type == 'owner')
                 <li class="dash-item {{ \Request::route()->getName() == 'userlog' ? 'active' : ''}}">
@@ -110,14 +110,14 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                         </a>
                     </li>
                 @endcan -->
-                <!-- @can('Manage Product')
+                @can('Manage Product')
                     <li class="dash-item {{ \Request::route()->getName() == 'product' || \Request::route()->getName() == 'product.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('product')) ? route(\Auth::user()->getDefualtViewRouteByModule('product')) : route('product.index') }}"
                             class="dash-link">
                             <span class="dash-micon"><i class="ti ti-brand-producthunt"></i></span><span class="dash-mtext">{{ __('Products') }}</span>
                         </a>
                     </li>
-                @endcan -->
+                @endcan
                 <!-- @can('Manage Quote')
                     <li class="dash-item {{ \Request::route()->getName() == 'quote' || \Request::route()->getName() == 'quote.show' || \Request::route()->getName() == 'quote.edit' ? ' active' : '' }}">
                         <a href="{{ route('quote.index') }}" class="dash-link">
@@ -325,8 +325,7 @@ $emailTemplate     = App\Models\EmailTemplate::first();
 
                             @if (Gate::check('Manage DocumentType') || Gate::check('Manage DocumentFolder'))
                                 <li class="dash-item dash-hasmenu">
-                                    <a href="#!" class="dash-link">{{ __('Document') }}<span
-                                            class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
+                                    <a href="#!" class="dash-link">{{ __('Document') }}<span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
                                     <ul class="dash-submenu">
                                         @can('Manage DocumentFolder')
                                             <li class="dash-item">

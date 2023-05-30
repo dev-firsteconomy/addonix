@@ -36,12 +36,12 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                     </li>
                 <?php endif; ?> -->
 
-                <!-- <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage User')): ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage User')): ?>
                     <li class="dash-item <?php echo e(\Request::route()->getName() == 'user' || \Request::route()->getName() == 'user.edit' ? ' active' : ''); ?>">
                         <a class="dash-link" href="<?php echo e(!empty(\Auth::user()->getDefualtViewRouteByModule('user')) ? route(\Auth::user()->getDefualtViewRouteByModule('user')) : route('user.index')); ?>">
                             <span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext"><?php echo e(__('User')); ?></span></a>
                     </li>
-                <?php endif; ?> -->
+                <?php endif; ?>
 
                  <!-- <?php if(\Auth::user()->type == 'owner'): ?>
                 <li class="dash-item <?php echo e(\Request::route()->getName() == 'userlog' ? 'active' : ''); ?>">
@@ -109,14 +109,14 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                         </a>
                     </li>
                 <?php endif; ?> -->
-                <!-- <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Product')): ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Product')): ?>
                     <li class="dash-item <?php echo e(\Request::route()->getName() == 'product' || \Request::route()->getName() == 'product.edit' ? ' active' : ''); ?>">
                         <a href="<?php echo e(!empty(\Auth::user()->getDefualtViewRouteByModule('product')) ? route(\Auth::user()->getDefualtViewRouteByModule('product')) : route('product.index')); ?>"
                             class="dash-link">
                             <span class="dash-micon"><i class="ti ti-brand-producthunt"></i></span><span class="dash-mtext"><?php echo e(__('Products')); ?></span>
                         </a>
                     </li>
-                <?php endif; ?> -->
+                <?php endif; ?>
                 <!-- <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Quote')): ?>
                     <li class="dash-item <?php echo e(\Request::route()->getName() == 'quote' || \Request::route()->getName() == 'quote.show' || \Request::route()->getName() == 'quote.edit' ? ' active' : ''); ?>">
                         <a href="<?php echo e(route('quote.index')); ?>" class="dash-link">
@@ -312,8 +312,7 @@ $emailTemplate     = App\Models\EmailTemplate::first();
 
                             <?php if(Gate::check('Manage DocumentType') || Gate::check('Manage DocumentFolder')): ?>
                                 <li class="dash-item dash-hasmenu">
-                                    <a href="#!" class="dash-link"><?php echo e(__('Document')); ?><span
-                                            class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
+                                    <a href="#!" class="dash-link"><?php echo e(__('Document')); ?><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
                                     <ul class="dash-submenu">
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage DocumentFolder')): ?>
                                             <li class="dash-item">

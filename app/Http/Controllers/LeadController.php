@@ -14,8 +14,10 @@ use App\Models\Stream;
 use App\Models\Task;
 use App\Models\Utility;
 use App\Models\User;
+use App\Models\Product;
 use App\Models\UserDefualtView;
 use App\Models\IndustryPerson;
+use App\Models\lead_interaction;
 use App\Models\IndustryProduct;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -66,8 +68,8 @@ class LeadController extends Controller
         
         if (\Auth::user()->can('Create Lead')) 
         {
-            $user       = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $user->prepend('--', 0);
+            $user       = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
+            $user->prepend('--', '');
             $leadsource = LeadSource::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $campaign   = Campaign::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $campaign->prepend('--', 0);
@@ -78,12 +80,14 @@ class LeadController extends Controller
             $industryVertical   = AccountIndustry::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $industryVertical->prepend('Select Industry Vertical', 0);
             $account    = Account::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $account->prepend('--', 0);
+            $account->prepend('--', '');
+            $products    = Product::get()->pluck('name', 'name');
+            $products->prepend('--', '');
             $activities   = AccountIndustry::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $activities->prepend('Select Type', 0);
             $status     = Lead::$status;
 
-            return view('lead.create', compact('status', 'leadsource', 'user', 'account', 'type', 'industry', 'activities','industryVertical', 'campaign', 'type', 'id'));
+            return view('lead.create', compact('status', 'leadsource','products', 'user', 'account', 'type', 'industry', 'activities','industryVertical', 'campaign', 'type', 'id'));
         } else {
             return redirect()->back()->with('error', 'permission Denied');
         }
@@ -98,7 +102,7 @@ class LeadController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all(),Auth::user()->id);
+        // dd($request->all());
         if(Auth::user()->can('Create Lead'))
         {
             // dd($request->all());
@@ -112,7 +116,7 @@ class LeadController extends Controller
             $lead['website']           = $request->website;
             $lead['industry_vertical'] = $request->industry_vertical;
             $lead['assign_user_id']    = $request->assign_user_id;
-            $lead['activities']        = $request->activities;
+            $lead['source']            = $request->source;
             $lead->save();   
             
             foreach($request->name as $k=>$item)
@@ -129,22 +133,37 @@ class LeadController extends Controller
                 }
             }
 
-            foreach($request->product_name as $k=>$item)
-            {
+            // foreach($request->product_name as $k=>$item)
+            // {
                 if(!empty($request->product_name))
                 {
                     IndustryProduct::create([
                         'lead_id'=> $lead->id,
-                        'product_name'=>$item,
-                        'serial_number'=>$request->serial_number[$k],
-                        'sub_start_date'=>$request->sub_start_date[$k],
-                        'sub_end_date'=>$request->sub_end_date[$k],
-                        'price'=>$request->price[$k],
-                        'sale_date'=>$request->sale_date[$k],
-                        'created_by'=>$request->created_by[$k],
+                        'product_name'=>$request->product_name,
+                        // 'serial_number'=>$request->serial_number[$k],
+                        // 'sub_start_date'=>$request->sub_start_date[$k],
+                        // 'sub_end_date'=>$request->sub_end_date[$k],
+                        // 'price'=>$request->price[$k],
+                        // 'sale_date'=>$request->sale_date[$k],
+                        // 'created_by'=>$request->created_by[$k],
                     ]);
                 }
-            }
+            // }
+
+            // foreach($request->interaction_date as $k=>$item)
+            // {
+                if(!empty($request->interaction_date))
+                {
+                    lead_interaction::create([
+                        'lead_id'=> $lead->id,
+                        'interaction_date'=>$request->interaction_date,
+                        'interaction_activity_type'=>$request->interaction_activity_type,
+                        'interaction_feedback'=>$request->interaction_feedback,
+                    ]);  
+                }
+            // }
+
+            
 
             return redirect()->back()->with('success', __('Lead Successfully Created.'));
         } 
@@ -156,6 +175,28 @@ class LeadController extends Controller
        
     }
 
+    public function addInteration(Request $request)
+    {
+        // dd($lead);
+        $lead=Lead::where('id',$request->id)->first();
+        if (\Auth::user()->can('Show Lead')) {
+            return view('lead.addInteration', compact('lead'));
+        } else {
+            return redirect()->back()->with('error', 'permission Denied');
+        }
+    }
+    
+    public function submitInteration(Request $request)
+    {
+        dd($request);
+        $lead=Lead::where('id',$request->id)->first();
+        if (\Auth::user()->can('Show Lead')) {
+            return view('lead.addInteration', compact('lead'));
+        } else {
+            return redirect()->back()->with('error', 'permission Denied');
+        }
+    }
+    
     /**
      * Display the specified resource.
      *
@@ -243,7 +284,7 @@ class LeadController extends Controller
             $update['website']                 = $request->website;
             $update['industry_vertical']       = $request->industry_vertical;
             $update['assign_user_id']          = $request->assign_user_id;
-            $update['activities']              = $request->activities;
+            $update['source']              = $request->source;
 
             Lead::where('id',$lead->id)->update($update);
             

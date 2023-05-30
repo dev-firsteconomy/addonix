@@ -15,10 +15,9 @@
 <li class="breadcrumb-item"><?php echo e(__('Lead')); ?></li>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('action-btn'); ?>
-<a href="<?php echo e(route('lead.grid')); ?>" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip"
-    title="<?php echo e(__('Kanban View')); ?>">
+<!-- <a href="<?php echo e(route('lead.grid')); ?>" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip" title="<?php echo e(__('Kanban View')); ?>">
     <i class="ti ti-layout-kanban"></i>
-</a>
+</a> -->
 
 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create Lead')): ?>
 <a href="#" data-url="<?php echo e(route('lead.create',['lead',0])); ?>" data-size="lg" data-ajax-popup="true"
@@ -83,9 +82,9 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="sort" data-sort="name"><?php echo e(__('Company Name')); ?></th>
-                                <th scope="col" class="sort" data-sort="completion"><?php echo e(__('Type')); ?></th>
+                                <th scope="col" class="sort" data-sort="completion"><?php echo e(__('Lead Type')); ?></th>
                                 <!-- <th scope="col" class="sort" data-sort="budget"><?php echo e(__('Company Address')); ?></th> -->
-                                <th scope="col" class="sort" data-sort="status"><?php echo e(__('Contact No.')); ?></th>
+                                <th scope="col" class="sort" data-sort="status"><?php echo e(__('Company Contact No.')); ?></th>
                                 <th scope="col" class="sort" data-sort="status"><?php echo e(__('Email')); ?></th>
                                 <th scope="col" class="sort" data-sort="status"><?php echo e(__('Website')); ?></th>
                                 <th scope="col" class="sort" data-sort="status"><?php echo e(__('Industry Vertical')); ?></th>
@@ -136,6 +135,16 @@
 
                                 <?php if(Gate::check('Show Lead') || Gate::check('Edit Lead') || Gate::check('Delete Lead')): ?>
                                     <td class="text-end">
+                                        <div class="action-btn bg-dark ms-2">
+                                            <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" data-bs-toggle="tooltip" title="<?php echo e(__('interation')); ?>" data-ajax-popup="true" data-title="<?php echo e(__('add Interation')); ?>" class="mx-3 btn btn-sm d-inline-flex align-items-center text-white ">
+                                                <i class="ti ti-edit"></i>
+                                            </a>
+                                        </div>
+                                        <div class="action-btn bg-dark ms-2">
+                                            <a href="#" data-size="lg" data-url="<?php echo e(route('changeStatus',$lead->id)); ?>" data-bs-toggle="tooltip" title="<?php echo e(__('Change Status')); ?>" data-ajax-popup="true" data-title="<?php echo e(__('change status')); ?>" class="mx-3 btn btn-sm d-inline-flex align-items-center text-white ">
+                                                <i class="ti ti-edit"></i>
+                                            </a>
+                                        </div>
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Show Lead')): ?>
                                         <div class="action-btn bg-warning ms-2">
                                             <a href="#" data-size="lg" data-url="<?php echo e(route('lead.show',$lead->id)); ?>" data-bs-toggle="tooltip" title="<?php echo e(__('Details')); ?>" data-ajax-popup="true" data-title="<?php echo e(__('Lead Details')); ?>" class="mx-3 btn btn-sm d-inline-flex align-items-center text-white ">

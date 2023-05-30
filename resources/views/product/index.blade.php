@@ -10,7 +10,7 @@
     <li class="breadcrumb-item">{{ __('Product') }}</li>
 @endsection
 @section('action-btn')
-<div class="action-btn ms-2">
+<!-- <div class="action-btn ms-2">
     <a href="{{ route('product.grid') }}" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip"
         title="{{ __('Grid View') }}">
         <i class="ti ti-layout-grid text-white"></i>
@@ -30,7 +30,7 @@
             title=" {{ __('Import') }}">
             <i class="ti ti-file-import"></i>
         </a>
-    </div>
+    </div> -->
 
     @can('Create Product')
         <div class="action-btn ms-2">
@@ -53,15 +53,15 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col" class="sort" data-sort="name">{{ __('Name') }}</th>
-                                        <th scope="col" class="sort" data-sort="Brand">{{ __('Brand') }}</th>
-                                        <th scope="col" class="sort" data-sort="Status">{{ __('Status') }}</th>
-                                        <th scope="col" class="sort" data-sort="Price">{{ __('Price') }}</th>
-                                        <th scope="col" class="sort" data-sort="assign User">
+                                        <!-- <th scope="col" class="sort" data-sort="Brand">{{ __('Brand') }}</th> -->
+                                        <!-- <th scope="col" class="sort" data-sort="Status">{{ __('Status') }}</th> -->
+                                        <!-- <th scope="col" class="sort" data-sort="Price">{{ __('Price') }}</th> -->
+                                        <!-- <th scope="col" class="sort" data-sort="assign User">
                                             {{ __('assign User') }}</th>
-                                        <th scope="col" class="sort" data-sort="barcode">{{ __('BarCode') }}</th>
+                                        <th scope="col" class="sort" data-sort="barcode">{{ __('BarCode') }}</th>-->
                                         @if (Gate::check('Show Product') || Gate::check('Edit Product') || Gate::check('Delete Product'))
                                             <th scope="col" class="text-end">{{ __('Action') }}</th>
-                                        @endif
+                                        @endif 
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -75,30 +75,11 @@
                                                     {{ ucfirst($product->name) }}
                                                 </a>
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <span class="budget">{{ ucfirst(!empty($product->brands->name) ? $product->brands->name : '-') }}
                                                 </span>
-                                            </td>
-                                            <td>
-                                                @if ($product->status == 0)
-                                                    <span
-                                                        class="badge bg-success p-2 px-3 rounded" style="width: 88px;">{{ __(\App\Models\Product::$status[$product->status]) }}</span>
-                                                @elseif($product->status == 1)
-                                                    <span
-                                                        class="badge bg-danger p-2 px-3 rounded" style="width: 88px;">{{ __(\App\Models\Product::$status[$product->status]) }}</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="budget">{{ \Auth::user()->priceFormat($product->price) }}</span>
-                                            </td>
-                                            <td>
-                                                <span class="col-sm-12"><span
-                                                        class="text-sm">{{ ucfirst(!empty($product->assign_user) ? $product->assign_user->name : '-') }}</span></span>
-                                            </td>
-                                            <td class="barcode">
-                                                {!! DNS1D::getBarcodeHTML("$product->sku", 'C128', 1.4, 22) !!}
-                                            </td>
+                                            </td> -->
+                                            
                                             @if (Gate::check('Show Product') || Gate::check('Edit Product') || Gate::check('Delete Product'))
                                                 <td class="text-end">
                                                     @can('Show Product')

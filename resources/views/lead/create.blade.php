@@ -1,5 +1,13 @@
 {{Form::open(array('url'=>'lead','method'=>'post','enctype'=>'multipart/form-data'))}}
 <div class="row">
+
+    <div class="col-12">
+        <div class="form-group">
+            {{Form::label('Source',__('Source'),['class'=>'form-label']) }}
+            {{Form::select('source',[''=>'Select source','Referral'=>'Referral','Digital'=>'Digital','Offline'=>'Offline','Other'=>'Other'],null,array('class'=>'form-control','required'=>'required'))}}
+        </div>
+    </div>
+
     <div class="col-6">
         <div class="form-group">
             {{Form::label('name',__('Company Name'),['class'=>'form-label']) }}
@@ -9,7 +17,16 @@
     <div class="col-6">
         <div class="form-group">
             {{Form::label('type',__('Type'),['class'=>'form-label']) }}
-            {{Form::select('lead_type_id',[''=>'Select Type','lead'=>'Lead','Opportunity'=>'Opportunity','Active Customer'=>'Active Customer','Non Active Customer'=>'Non Active Customer'],null,array('class'=>'form-control','required'=>'required'))}}
+            {{ Form::select('lead_type_id', [
+                    '' => 'Select Type',
+                    'lead' => 'Lead',
+                    'Opportunity' => 'Opportunity',
+                    'Active Customer' => 'Active Customer',
+                    'Non Active Customer' => 'Non Active Customer',
+                    'dead' => 'dead'
+                ], 'lead', ['class' => 'form-control', 'required' => 'required', 'disabled' => 'disabled']) }}
+
+            <!-- {{Form::select('lead_type_id',[''=>'Select Type','lead'=>'Lead','Opportunity'=>'Opportunity','Active Customer'=>'Active Customer','Non Active Customer'=>'Non Active Customer','dead'=>'dead'],null,array('class'=>'form-control','required'=>'required'))}} -->
             <!-- {!! Form::select('type', $type, null,array('class' => 'form-control','required'=>'required')) !!} -->
         </div>
     </div>
@@ -49,15 +66,15 @@
     </div>
     <div class="col-6">
         <div class="form-group">
-            {{Form::label('Assign User',__('Assign User'),['class'=>'form-label']) }}
-            {{Form::select('assign_user_id',[''=>'Select User Type','User 1'=>'user 1','user 2'=>'User 2'],null,array('class'=>'form-control','required'=>'required'))}}
-            <!-- {!! Form::select('user', $user, null,array('class' => 'form-control','required' => 'required')) !!} -->
+            {{Form::label('Assign User',__('Lead Owner'),['class'=>'form-label']) }}
+            <!-- {{Form::select('assign_user_id',[''=>'Select User Type','User 1'=>'user 1','user 2'=>'User 2'],null,array('class'=>'form-control','required'=>'required'))}} -->
+            {!! Form::select('assign_user_id', $user, null,array('class' => 'form-control','required' => 'required')) !!}
         </div>
     </div>
 
     <div class="col-12">
         <div class="form-heading">
-            <h3 style="font-weight: 600;font-size: 18px;">Persons</h3>
+            <h3 style="font-weight: 600;font-size: 18px;">Point Of Contact</h3>
         </div>
     </div>
     <div class="col-12 table-responsive">
@@ -114,7 +131,7 @@
                     <th>
                         <p class="mb-0">Product Name</p>
                     </th>
-                    <th>
+                    <!-- <th>
                         <p class="mb-0">Serial Number</p>
                     </th>
                     <th>
@@ -131,21 +148,24 @@
                     </th>
                     <th>
                         <p class="mb-0">Created by</p>
-                    </th>
+                    </th> -->
                 </tr>
             </thead>
             <tbody>
                 <tr class="repeater mt-repeater">
                     <th scope="col">1</th>
-                    <td><input name="product_name[]" class="form-control" type="text" /></td>
-                    <td><input name="serial_number[]" class="form-control" type="text" /></td>
+                    <td>
+                        {!! Form::select('product_name', $products, null,array('class' => 'form-control','required' => 'required')) !!}
+                        <!-- <input name="product_name[]" class="form-control" type="text" /> -->
+                    </td>
+                    <!-- <td><input name="serial_number[]" class="form-control" type="text" /></td>
                     <td><input name="sub_start_date[]" class="form-control" type="date" /></td>
                     <td><input name="sub_end_date[]" class="form-control" type="date" /></td>
                     <td><input name="price[]" class="form-control" type="text" value="1000" style="width:120px" /></td>
                     <td><input name="sale_date[]" class="form-control" type="date" /></td>
-                    <td><input name="created_by[]" class="form-control" type="text" /></td>
+                    <td><input name="created_by[]" class="form-control" type="text" /></td> -->
                 </tr>
-                <tr class="repeater mt-repeater">
+                <!-- <tr class="repeater mt-repeater">
                     <th scope="col">2</th>
                     <td><input name="product_name[]" class="form-control" type="text" /></td>
                     <td><input name="serial_number[]" class="form-control" type="text" /></td>
@@ -154,7 +174,7 @@
                     <td><input name="price[]" class="form-control" type="text" value="1000" style="width:120px" /></td>
                     <td><input name="sale_date[]" class="form-control" type="date" /></td>
                     <td><input name="created_by[]" class="form-control" type="text" /></td>
-                </tr>
+                </tr> -->
 
             </tbody>
         </table>
@@ -165,14 +185,29 @@
 
     <div class="col-12 mt-4">
         <div class="form-heading">
-            <h3 style="font-weight: 600;font-size: 18px;">Activities History Scroling</h3>
+            <h3 style="font-weight: 600;font-size: 18px;">Interaction Activity</h3>
         </div>
     </div>
-    <div class="col-6">
+    
+    <div class="col-4">
         <div class="form-group">
-            {{Form::label('activities',__('Activities'),['class'=>'form-label']) }}
-            {{Form::select('activities',[''=>'Select Activities Type','1'=>'activities 1','2'=>'activities 2'],null,array('class'=>'form-control','required'=>'required'))}}
-            <!-- {!! Form::select('activities', $activities, null,array('class' => 'form-control','required'=>'required')) !!} -->
+            {{Form::label('interaction_date',__('Interaction Date'),['class'=>'form-label']) }}
+            {{Form::date('interaction_date',null,array('class'=>'form-control','required'=>'required'))}}
+        </div>
+    </div>
+
+    <div class="col-4">
+        <div class="form-group">
+            {{Form::label('interaction_activity_type',__('Interaction Activity Type'),['class'=>'form-label']) }}
+            {{Form::select('interaction_activity_type',[''=>'Select Activities Type','Call'=>'Call','Meeting'=>'Meeting','Opportunity'=>'Opportunity','Demo'=>'Demo',
+                'Quotation'=>'Quotation','MOM'=>'MOM','PI'=>'PI'],null,array('class'=>'form-control','required'=>'required'))}}
+        </div>
+    </div>
+
+    <div class="col-4">
+        <div class="form-group">
+            {{Form::label('interaction_feedback',__('Interaction Feedback'),['class'=>'form-label']) }}
+            {{Form::text('interaction_feedback',null,array('class'=>'form-control','placeholder'=>__('Enter Feedback'),'required'=>'required'))}}
         </div>
     </div>
 

@@ -45,14 +45,19 @@
     <!-- [ sample-page ] start -->
     <div class="col-sm-12">
         <div class="row">
-            <div class="col-xl-3">
+            <!-- <div class="col-xl-3">
                 <div class="card sticky-top" style="top:30px">
                     <div class="list-group list-group-flush" id="useradd-sidenav">
                         <a href="#useradd-1" class="list-group-item list-group-item-action">{{ __('Overview') }} <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-9">
+            </div> -->
+            <div class="col-xl-12">
+                @if (Session::has('message'))
+                <div id="success-message" class="alert alert-success" role="alert" >
+                    {{ Session::get('message') }}
+                </div>
+                @endif
                 <div id="useradd-1" class="card">
                     {{Form::model($product,array('route' => array('product.update', $product->id), 'method' => 'PUT')) }}
                     <div class="card-header">
@@ -74,7 +79,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <!-- <div class="col-6">
                                     <div class="form-group">
                                         {{Form::label('status',__('Status'),['class'=>'form-label']) }}
                                         {!!Form::select('status', $status, null,array('class' => 'form-control','required'=>'required')) !!}
@@ -199,7 +204,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="text-end">
                                     {{Form::submit(__('Update'),array('class'=>'btn-submit btn btn-primary'))}}
                                 </div>
@@ -229,4 +234,9 @@
         offset: 300
     })
 </script>
+    <script>
+        setTimeout(function() {
+            document.getElementById('success-message').style.display = 'none';
+        }, 3000); // Hide the message after 5 seconds (adjust the timeout value as needed)
+    </script>
 @endpush
