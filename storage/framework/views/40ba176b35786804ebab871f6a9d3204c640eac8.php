@@ -6,14 +6,14 @@
         <div class="form-group">
             <?php echo e(Form::label('Source',__('Source'),['class'=>'form-label'])); ?>
 
-            <?php echo e(Form::select('source',[''=>'Select source','Referral'=>'Referral','Digital'=>'Digital','Offline'=>'Offline','Other'=>'Other'],null,array('class'=>'form-control','required'=>'required'))); ?>
+            <?php echo e(Form::select('source',[''=>'Select source','Referral'=>'Referral','Digital'=>'Digital','Offline'=>'Offline','Other'=>'Other'],null,array('class'=>'form-control'))); ?>
 
         </div>
     </div>
 
     <div class="col-6">
         <div class="form-group">
-            <?php echo e(Form::label('name',__('Company Name'),['class'=>'form-label'])); ?>
+            <?php echo e(Form::label('company_name',__('Company Name'),['class'=>'form-label'])); ?>
 
             <?php echo e(Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Company Name'),'required'=>'required'))); ?>
 
@@ -21,43 +21,33 @@
     </div>
     <div class="col-6">
         <div class="form-group">
-            <?php echo e(Form::label('type',__('Type'),['class'=>'form-label'])); ?>
+            <?php echo e(Form::label('parent_company_name',__('Parent Comapny Name'),['class'=>'form-label'])); ?>
 
-            <?php echo e(Form::select('lead_type_id', [
-                    '' => 'Select Type',
-                    'lead' => 'Lead',
-                    'Opportunity' => 'Opportunity',
-                    'Active Customer' => 'Active Customer',
-                    'Non Active Customer' => 'Non Active Customer',
-                    'dead' => 'dead'
-                ], 'lead', ['class' => 'form-control', 'required' => 'required', 'disabled' => 'disabled'])); ?>
-
-
-            <!-- <?php echo e(Form::select('lead_type_id',[''=>'Select Type','lead'=>'Lead','Opportunity'=>'Opportunity','Active Customer'=>'Active Customer','Non Active Customer'=>'Non Active Customer','dead'=>'dead'],null,array('class'=>'form-control','required'=>'required'))); ?> -->
-            <!-- <?php echo Form::select('type', $type, null,array('class' => 'form-control','required'=>'required')); ?> -->
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('company address',__('Company Address'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::textarea('company_address',null,array('class'=>'form-control','placeholder'=>__('Company Address'),'required'=>'required','rows'=>'1','cols'=>'10'))); ?>
+            <?php echo e(Form::text('parent_company_name',null,array('class'=>'form-control','placeholder'=>__('Parent Company Name')))); ?>
 
         </div>
     </div>
     <div class="col-6">
         <div class="form-group">
-            <?php echo e(Form::label('company mobile',__('Contact No.'),['class'=>'form-label'])); ?>
+            <?php echo e(Form::label('lead_address',__('Company Address'),['class'=>'form-label'])); ?>
 
-            <?php echo e(Form::text('company_mobile',null,array('class'=>'form-control','placeholder'=>__('Enter Phone'),'required'=>'required'))); ?>
+            <?php echo e(Form::textarea('lead_address',null,array('class'=>'form-control','placeholder'=>__('Company Address'),'rows'=>'1','cols'=>'10'))); ?>
 
         </div>
     </div>
     <div class="col-6">
         <div class="form-group">
-            <?php echo e(Form::label('company email',__('Email'),['class'=>'form-label'])); ?>
+            <?php echo e(Form::label('phone',__('Contact No.'),['class'=>'form-label'])); ?>
 
-            <?php echo e(Form::text('company_email',null,array('class'=>'form-control','placeholder'=>__('Enter Email'),'required'=>'required'))); ?>
+            <?php echo e(Form::text('phone',null,array('class'=>'form-control','placeholder'=>__('Enter Phone'),'required'=>'required'))); ?>
+
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <?php echo e(Form::label('email',__('Email'),['class'=>'form-label'])); ?>
+
+            <?php echo e(Form::text('email',null,array('class'=>'form-control','placeholder'=>__('Enter Email'),'required'=>'required'))); ?>
 
         </div>
     </div>
@@ -65,28 +55,114 @@
         <div class="form-group">
             <?php echo e(Form::label('website',__('Website'),['class'=>'form-label'])); ?>
 
-            <?php echo e(Form::text('website',null,array('class'=>'form-control','placeholder'=>__('Enter Website'),'required'=>'required'))); ?>
+            <?php echo e(Form::text('website',null,array('class'=>'form-control','placeholder'=>__('Enter Website')))); ?>
 
         </div>
     </div>
     <div class="col-6">
         <div class="form-group">
-            <?php echo e(Form::label('Industry Vertical',__('Industry Vertical'),['class'=>'form-label'])); ?>
+            <?php echo e(Form::label('existing_customer',__('Existing Customer'),['class'=>'form-label'])); ?>
+
+            <?php echo e(Form::select('existing_customer', [
+                    '' => 'Select Option',
+                    'Yes' => 'Yes',
+                    'No' => 'No'
+                ], 'existing_customer', ['class' => 'form-control'])); ?>
+
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <?php echo e(Form::label('type',__('Type'),['class'=>'form-label'])); ?>
+
+            <?php echo e(Form::select('type', [
+                    '' => 'Select Type',
+                    'Lead' => 'Lead',
+                    'Opportunity' => 'Opportunity',
+                    'Active Customer' => 'Active Customer',
+                    'Non Active Customer' => 'Non Active Customer',
+                    'Dead' => 'Dead'
+                ], 'lead', ['class' => 'form-control', 'disabled' => 'disabled'])); ?>
+
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <?php echo e(Form::label('cbi_identified',__('CBI’s identified'),['class'=>'form-label'])); ?>
+
+            <?php echo e(Form::text('cbi_identified',null,array('class'=>'form-control','placeholder'=>__('Enter CBI’s identified')))); ?>
+
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <?php echo e(Form::label('met_or_spoke',__('Met Or Spoke to Person'),['class'=>'form-label'])); ?>
+
+            <?php echo e(Form::select('met_or_spoke', [
+                    '' => 'Select Option',
+                    'MEET IN PERSON' => 'MEET IN PERSON',
+                    'CALL' => 'CALL'
+                ], 'met_or_spoke', ['class' => 'form-control'])); ?>
+
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <?php echo e(Form::label('is_mnc',__('If an MNC'),['class'=>'form-label'])); ?>
+
+            <?php echo e(Form::select('is_mnc', [
+                    '' => 'Select Option',
+                    'Yes' => 'Yes',
+                    'No' => 'No'
+                ], 'is_mnc', ['class' => 'form-control'])); ?>
+
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <?php echo e(Form::label('industry_vertical',__('Industry Vertical'),['class'=>'form-label'])); ?>
 
             <?php echo e(Form::select('industry_vertical',[''=>'Select Industry Vertical','Machining'=>'Machining',
                 'Manufacturing'=>'Manufacturing','Aerospace'=>'Aerospace','Transportation & Automotive'=>'Transportation & Automotive',
                 'Oil & Gas'=>'Oil & Gas','Safety'=>'Safety','Construction'=>'Construction' , 'Utilities'=>'Utilities','Government and Military Entities'=>'Government and Military Entities'
-                ],null,array('class'=>'form-control','required'=>'required'))); ?>
+                ],null,array('class'=>'form-control'))); ?>
 
-            <!-- <?php echo Form::select('industryVertical', $industryVertical, null,array('class' =>'form-control','required'=>'required')); ?> -->
         </div>
     </div>
     <div class="col-6">
         <div class="form-group">
-            <?php echo e(Form::label('Assign User',__('Lead Owner'),['class'=>'form-label'])); ?>
+            <?php echo e(Form::label('sales_stage',__('Sales Stage'),['class'=>'form-label'])); ?>
 
-            <!-- <?php echo e(Form::select('assign_user_id',[''=>'Select User Type','User 1'=>'user 1','user 2'=>'User 2'],null,array('class'=>'form-control','required'=>'required'))); ?> -->
-            <?php echo Form::select('assign_user_id', $user, null,array('class' => 'form-control','required' => 'required')); ?>
+            <?php echo e(Form::select('sales_stage', [
+                    '' => 'Select Option',
+                    'W' => 'W',
+                    'NW' => 'NW',
+                    'A+' => 'A+',
+                    'A' => 'A',
+                    'B' => 'B',
+                ], 'sales_stage', ['class' => 'form-control'])); ?>
+
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+                <?php echo e(Form::label('create_date',__('Creation Date'),['class'=>'form-label'])); ?>
+
+                <input type="date" name="create_date" class="form-control" value="<?php echo isset($_REQUEST['create_date']) ? $_REQUEST['create_date'] : ''; ?>" >
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+                <?php echo e(Form::label('estimated_close_date',__('Estimated Closed Date'),['class'=>'form-label'])); ?>
+
+                <input type="date" name="estimated_close_date" class="form-control" value="<?php echo isset($_REQUEST['estimated_close_date']) ? $_REQUEST['estimated_close_date'] : ''; ?>" >
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <?php echo e(Form::label('assign_user_id',__('Lead Owner'),['class'=>'form-label'])); ?>
+
+            <?php echo Form::select('assign_user_id', $user, null,array('class' => 'form-control')); ?>
 
         </div>
     </div>
@@ -96,48 +172,43 @@
             <h3 style="font-weight: 600;font-size: 18px;">Point Of Contact</h3>
         </div>
     </div>
-    <div class="col-12 table-responsive">
-        <table id="data" class="table data-table data-table-horizontal data-table-highlight">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th>
-                        <p class="mb-0">Name</p>
-                    </th>
-                    <th>
-                        <p class="mb-0">Designation</p>
-                    </th>
-                    <th>
-                        <p class="mb-0">Contact Number</p>
-                    </th>
-                    <th>
-                        <p class="mb-0">Email Id</p>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="repeater mt-repeater">
-                    <th scope="col">1</th>
-                    <td><input name="name[]" class="form-control" type="text" /></td>
-                    <td><input name="designation[]" class="form-control" type="text" /></td>
-                    <td><input name="contact_number[]" class="form-control" type="tel" /></td>
-                    <td><input name="email_id[]" class="form-control" type="email" /></td>
-                </tr>
-                <tr class="repeater mt-repeater">
-                    <th scope="col">2</th>
-                    <td><input name="name[]" class="form-control" type="text" /></td>
-                    <td><input name="designation[]" class="form-control" type="text" /></td>
-                    <td><input name="contact_number[]" class="form-control" type="tel" /></td>
-                    <td><input name="email_id[]" class="form-control" type="email" /></td>
-                </tr>
-            </tbody>
-        </table>
-        <!-- <div class="pull-right">
-        <button class="" type="button" id="add-field">Add Field</button>
-        </div> -->
+    <div id="poc-repeater-container">
+        <div class="col-12 table-responsive">
+            <table id="data" class="table data-table data-table-horizontal data-table-highlight">
+                <thead>
+                    <tr>
+                        <th>
+                            <p class="mb-0">Name</p>
+                        </th>
+                        <th>
+                            <p class="mb-0">Designation</p>
+                        </th>
+                        <th>
+                            <p class="mb-0">Contact Number</p>
+                        </th>
+                        <th>
+                            <p class="mb-0">Email Id</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="poc-repeater mt-repeater">
+                        <td><input name="poc_name[]" class="form-control poc_inputs" type="text" required /></td>
+                        <td><input name="poc_designation[]" class="form-control poc_inputs" type="text" required /></td>
+                        <td><input name="poc_contact_number[]" class="form-control poc_inputs" type="tel" maxLength ="10" required /></td>
+                        <td><input name="poc_email_id[]" class="form-control poc_inputs" type="email" required /></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pull-right text-center">
+                <button class="btn btn-primary" type="button" id="poc-add-field"><i class="ti ti-plus"></i></button>
+                <button class="btn btn-danger" type="button" id="poc-remove-field"><i class="ti ti-minus"></i></button>
+            </div>
+        </div>
     </div>
 
-    <!-- <div class="col-12 mt-4">
+    <div class="col-12 mt-4">
         <div class="form-heading">
             <h3 style="font-weight: 600;font-size: 18px;">Product</h3>
         </div>
@@ -146,209 +217,65 @@
         <table id="data" class="table data-table data-table-horizontal data-table-highlight">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th>
                         <p class="mb-0">Product Name</p>
                     </th>
-                    <!-- <th>
-                        <p class="mb-0">Serial Number</p>
-                    </th>
-                    <th>
-                        <p class="mb-0">Subscriptiion start date</p>
-                    </th>
-                    <th>
-                        <p class="mb-0">Subscriptiion End date</p>
-                    </th>
-                    <th>
-                        <p class="mb-0">Price</p>
-                    </th>
-                    <th>
-                        <p class="mb-0">Sale Date</p>
-                    </th>
-                    <th>
-                        <p class="mb-0">Created by</p>
-                    </th> -->
                 </tr>
             </thead>
             <tbody>
                 <tr class="repeater mt-repeater">
-                    <th scope="col">1</th>
                     <td>
-                        <?php echo Form::select('product_name', $products, null,array('class' => 'form-control','required' => 'required')); ?>
+                        <?php echo e(Form::select('product_name[]', $products,null, array('class' => 'form-control select2','id'=>'choices-multiple2','multiple'=>''))); ?>
 
-                        <!-- <input name="product_name[]" class="form-control" type="text" /> -->
                     </td>
-                    <!-- <td><input name="serial_number[]" class="form-control" type="text" /></td>
-                    <td><input name="sub_start_date[]" class="form-control" type="date" /></td>
-                    <td><input name="sub_end_date[]" class="form-control" type="date" /></td>
-                    <td><input name="price[]" class="form-control" type="text" value="1000" style="width:120px" /></td>
-                    <td><input name="sale_date[]" class="form-control" type="date" /></td>
-                    <td><input name="created_by[]" class="form-control" type="text" /></td> -->
                 </tr>
-                <!-- <tr class="repeater mt-repeater">
-                    <th scope="col">2</th>
-                    <td><input name="product_name[]" class="form-control" type="text" /></td>
-                    <td><input name="serial_number[]" class="form-control" type="text" /></td>
-                    <td><input name="sub_start_date[]" class="form-control" type="date" /></td>
-                    <td><input name="sub_end_date[]" class="form-control" type="date" /></td>
-                    <td><input name="price[]" class="form-control" type="text" value="1000" style="width:120px" /></td>
-                    <td><input name="sale_date[]" class="form-control" type="date" /></td>
-                    <td><input name="created_by[]" class="form-control" type="text" /></td>
-                </tr> -->
-
             </tbody>
         </table>
-        <!-- <div class="pull-right">
-            <input type="button" value="Add" class="top-buffer" onclick="addRow('data')" />
-        </div> -->
     </div>
 
     <div class="col-12 mt-4">
         <div class="form-heading">
             <h3 style="font-weight: 600;font-size: 18px;">Interaction Activity</h3>
         </div>
-    </div> -->
-    
-    <!-- <div class="col-4">
-        <div class="form-group">
-            <?php echo e(Form::label('interaction_date',__('Interaction Date'),['class'=>'form-label'])); ?>
+    </div>
 
-            <?php echo e(Form::date('interaction_date',null,array('class'=>'form-control','required'=>'required'))); ?>
+    <div id="interaction-repeater-container">
+        <table class="table">
+            <tbody>
+                <tr class="interaction-repeater mt-repeater">
+                    <td>
+                        <div class="form-group">
+                            <?php echo e(Form::label('interaction_date', __('Interaction Date'), ['class' => 'form-label'])); ?>
 
+                            <?php echo e(Form::date('interaction_date[]', null, ['class' => 'form-control interaction_inputs'])); ?>
+
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <?php echo e(Form::label('interaction_activity_type', __('Interaction Activity Type'), ['class' => 'form-label'])); ?>
+
+                            <?php echo e(Form::select('interaction_activity_type[]', ['' => 'Select Activities Type', 'Call' => 'Call', 'Meeting' => 'Meeting', 'Opportunity' => 'Opportunity', 'Demo' => 'Demo', 'Quotation' => 'Quotation', 'MOM' => 'MOM', 'PI' => 'PI'], null, ['class' => 'form-control interaction_inputs'])); ?>
+
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <?php echo e(Form::label('interaction_feedback', __('Interaction Feedback'), ['class' => 'form-label'])); ?>
+
+                            <?php echo e(Form::text('interaction_feedback[]', null, ['class' => 'form-control interaction_inputs', 'placeholder' => __('Enter Feedback')])); ?>
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pull-right text-center">
+            <button class="btn btn-primary" type="button" id="interaction-add-field"><i class="ti ti-plus"></i></button>
+            <button class="btn btn-danger" type="button" id="interaction-remove-field"><i class="ti ti-minus"></i></button>
         </div>
     </div>
 
-    <div class="col-4">
-        <div class="form-group">
-            <?php echo e(Form::label('interaction_activity_type',__('Interaction Activity Type'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::select('interaction_activity_type',[''=>'Select Activities Type','Call'=>'Call','Meeting'=>'Meeting','Opportunity'=>'Opportunity','Demo'=>'Demo',
-                'Quotation'=>'Quotation','MOM'=>'MOM','PI'=>'PI'],null,array('class'=>'form-control','required'=>'required'))); ?>
-
-        </div>
-    </div>
-
-    <div class="col-4">
-        <div class="form-group">
-            <?php echo e(Form::label('interaction_feedback',__('Interaction Feedback'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::text('interaction_feedback',null,array('class'=>'form-control','placeholder'=>__('Enter Feedback'),'required'=>'required'))); ?>
-
-        </div>
-    </div> -->
-
-    <!-- <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('account',__('Account'),['class'=>'form-label'])); ?>
-
-            <?php echo Form::select('account', $account, null,array('class' => 'form-control')); ?>
-
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('title',__('Title'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::text('title',null,array('class'=>'form-control','placeholder'=>__('Enter Title'),'required'=>'required'))); ?>
-
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('lead_address',__('Address'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::text('lead_address',null,array('class'=>'form-control','placeholder'=>__('Address'),'required'=>'required'))); ?>
-
-        </div>
-    </div>
-    <div class="col-3">
-        <div class="form-group">
-            <?php echo e(Form::label('lead_city',__('City'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::text('lead_city',null,array('class'=>'form-control','placeholder'=>__('City'),'required'=>'required'))); ?>
-
-        </div>
-    </div>
-    <div class="col-3">
-        <div class="form-group">
-            <?php echo e(Form::label('lead_state',__('State'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::text('lead_state',null,array('class'=>'form-control','placeholder'=>__('State'),'required'=>'required'))); ?>
-
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('lead_postalcode',__('Postal Code'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::text('lead_postalcode',null,array('class'=>'form-control','placeholder'=>__('Postal Code'),'required'=>'required'))); ?>
-
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('lead_country',__('Country'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::text('lead_country',null,array('class'=>'form-control','placeholder'=>__('Country'),'required'=>'required'))); ?>
-
-        </div>
-    </div>
-    <div class="col-12">
-        <hr class="mt-2 mb-2">
-        <h6><?php echo e(__('Details')); ?></h6>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('status',__('Status'),['class'=>'form-label'])); ?>
-
-            <?php echo Form::select('status',$status, null,array('class' => 'form-control','required'=>'required')); ?>
-
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('source',__('Source'),['class'=>'form-label'])); ?>
-
-            <?php echo Form::select('source', $leadsource, null,array('class' => 'form-control','required'=>'required')); ?>
-
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('opportunity_amount',__('Opportunity Amount'),['class'=>'form-label'])); ?>
-
-            <?php echo Form::number('opportunity_amount', null,array('class' => 'form-control','required'=>'required')); ?>
-
-        </div>
-    </div>
-    <?php if($type == 'campaign'): ?>
-        <div class="col-6">
-            <div class="form-group">
-                <?php echo e(Form::label('campaign',__('Campaign'),['class'=>'form-label'])); ?>
-
-                <?php echo Form::select('campaign', $campaign, $id,array('class' => 'form-control')); ?>
-
-            </div>
-        </div>
-    <?php else: ?>
-        <div class="col-6">
-            <div class="form-group">
-                <?php echo e(Form::label('campaign',__('Campaign'),['class'=>'form-label'])); ?>
-
-                <?php echo Form::select('campaign', $campaign, null,array('class' => 'form-control')); ?>
-
-            </div>
-        </div>
-    <?php endif; ?>
-    
-    <div class="col-12">
-        <div class="form-group">
-            <?php echo e(Form::label('Description',__('Description'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::textarea('description',null,array('class'=>'form-control','rows'=>2,'placeholder'=>__('Enter Description')))); ?>
-
-        </div>
-    </div> -->
 
 </div>
 <div class="modal-footer">
@@ -361,18 +288,60 @@
 
 
 
-<!-- 
+
 <script>
-    $(document).ready(function() {
-        // Add field button click event
-        $('#add-field').click(function() {
-            var repeaterRow = $('.repeater').clone(); // Clone the repeater row
-            repeaterRow.removeClass('repeater mt-repeater'); // Remove the repeater classes
+    document.getElementById('poc-add-field').addEventListener('click', function() {
+        const container = document.getElementById('poc-repeater-container');
+        const lastRow = container.querySelector('.poc-repeater:last-of-type');
+        const newRow = lastRow.cloneNode(true);
+        const inputs = newRow.querySelectorAll('.poc_inputs');
 
-            // Clear the input values in the cloned row
-            repeaterRow.find('input[type="text"]').val('');
-
-            $('#repeater-container').append(repeaterRow); // Append the cloned row to the container
+        // Clear input field values in the new row
+        inputs.forEach(input => {
+            input.value = '';
         });
+
+        container.querySelector('tbody').appendChild(newRow);
     });
-</script> --><?php /**PATH C:\xampp\htdocs\projects\addonix\resources\views/lead/create.blade.php ENDPATH**/ ?>
+
+    // Remove row
+    var removeButton = document.getElementById('poc-remove-field');
+    var repeaterContainer = document.getElementById('poc-repeater-container');
+    removeButton.addEventListener('click', function() {
+        var repeaterRows = repeaterContainer.querySelectorAll('.poc-repeater');
+        if (repeaterRows.length > 1) {
+            var lastRow = repeaterRows[repeaterRows.length - 1];
+            lastRow.parentNode.removeChild(lastRow);
+        }
+    });
+
+    document.getElementById('interaction-add-field').addEventListener('click', function() {
+        const container1 = document.getElementById('interaction-repeater-container');
+        const lastRow1 = container1.querySelector('.interaction-repeater:last-of-type');
+        const newRow1 = lastRow1.cloneNode(true);
+        const inputs1 = newRow1.querySelectorAll('.interaction_inputs');
+
+        // Clear input field values in the new row
+        inputs1.forEach(input => {
+            input.value = '';
+        });
+
+        container1.querySelector('tbody').appendChild(newRow1);
+    });
+
+    // Remove row
+    var removeButton1 = document.getElementById('interaction-remove-field');
+    var repeaterContainer1 = document.getElementById('interaction-repeater-container');
+    removeButton1.addEventListener('click', function() {
+        var repeaterRows1 = repeaterContainer1.querySelectorAll('.interaction-repeater');
+        if (repeaterRows1.length > 1) {
+            var lastRow1 = repeaterRows1[repeaterRows1.length - 1];
+            lastRow1.parentNode.removeChild(lastRow1);
+        }
+    });
+</script>
+
+
+
+
+<?php /**PATH C:\xampp\htdocs\projects\addonix\resources\views/lead/create.blade.php ENDPATH**/ ?>

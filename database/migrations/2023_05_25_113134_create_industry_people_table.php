@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('lead_id');
             $table->string('name');
-            $table->integer('designation');
+            $table->string('designation');
             $table->bigInteger('contact_number');
             $table->string('email_id');
             $table->timestamps();

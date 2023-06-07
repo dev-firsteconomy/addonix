@@ -4,6 +4,13 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('title'); ?>
+
+<style>
+
+.datatable .dropdown-toggle::after {
+    display: none;
+}
+</style>
 <div class="page-header-title">
     <?php echo e(__('Lead')); ?>
 
@@ -53,7 +60,7 @@
             <span class="input-group-text">Filter status Wise:</span>
             <select class="form-select" aria-label="Default select example" name="leadType">
                 <option value="">Select...</option>
-                <option value="lead" <?php echo e(isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'lead' ? 'selected' : ''); ?>>lead</option>
+                <option value="Lead" <?php echo e(isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Lead' ? 'selected' : ''); ?>>Lead</option>
                 <option value="Opportunity" <?php echo e(isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Opportunity' ? 'selected' : ''); ?> >Opportunity</option>
                 <option value="Active Customer" <?php echo e(isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Active Customer' ? 'selected' : ''); ?>>Active Customer</option>
                 <option value="Non Active Customer" <?php echo e(isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Non Active Customer' ? 'selected' : ''); ?>>Non Active Customer</option>
@@ -110,15 +117,15 @@
                                 </td>
 
                                 <td>
-                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->lead_type_id) ? $lead->lead_type_id:'--')); ?></span>
+                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->type) ? $lead->type:'--')); ?></span>
                                 </td>
 
                                 <td>
-                                    <span class="budget"><?php echo e(!empty($lead->company_mobile) ? $lead->company_mobile:'--'); ?></span>
+                                    <span class="budget"><?php echo e(!empty($lead->phone) ? $lead->phone:'--'); ?></span>
                                 </td>
 
                                 <td>
-                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->company_email) ? $lead->company_email:'--')); ?></span>
+                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->email) ? $lead->email:'--')); ?></span>
                                 </td>
 
                                 <td>
@@ -171,6 +178,18 @@
                                             
                                         <?php endif; ?>
                                     </td>
+
+                                    <!-- <td>
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">...</a>
+                                            <div class="dropdown-menu py-0">
+                                                <a href="<?php echo e(route('lead.edit',$lead->id)); ?>" class="dropdown-item">Edit</a>
+                                                <a href="#" class="dropdown-item">View</a>
+                                                <a href="#" class="dropdown-item">Delete</a>
+                                                <a href="#" class="dropdown-item">Send Approval Email</a>
+                                            </div>
+                                        </div>
+                                    </td> -->
                                 <?php endif; ?>
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

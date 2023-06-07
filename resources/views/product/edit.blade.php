@@ -79,7 +79,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <!-- <div class="col-6">
+                                <div class="col-6">
                                     <div class="form-group">
                                         {{Form::label('status',__('Status'),['class'=>'form-label']) }}
                                         {!!Form::select('status', $status, null,array('class' => 'form-control','required'=>'required')) !!}
@@ -90,7 +90,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <!-- <div class="col-6">
                                     <div class="form-group">
                                         {{Form::label('category',__('Category'),['class'=>'form-label']) }}
                                         {!!Form::select('category', $category, null,array('class' => 'form-control','required'=>'required')) !!}

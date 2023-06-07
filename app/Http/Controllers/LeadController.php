@@ -24,6 +24,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class LeadController extends Controller
 {
@@ -69,7 +70,7 @@ class LeadController extends Controller
         if (\Auth::user()->can('Create Lead')) 
         {
             $user       = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
-            $user->prepend('--', '');
+            $user->prepend('Select Owner', '');
             $leadsource = LeadSource::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $campaign   = Campaign::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $campaign->prepend('--', 0);
@@ -81,8 +82,8 @@ class LeadController extends Controller
             $industryVertical->prepend('Select Industry Vertical', 0);
             $account    = Account::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $account->prepend('--', '');
-            $products    = Product::get()->pluck('name', 'name');
-            $products->prepend('--', '');
+            $products    = Product::get()->pluck('name', 'id');
+            // $products->prepend('Select Product', '');
             $activities   = AccountIndustry::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $activities->prepend('Select Type', 0);
             $status     = Lead::$status;
@@ -102,74 +103,104 @@ class LeadController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        if(Auth::user()->can('Create Lead'))
-        {
-            // dd($request->all());
-            $lead                      = new Lead();
-            $lead['user_id']           = Auth::user()->id;
-            $lead['company_name']      = $request->company_name;
-            $lead['lead_type_id']      = $request->lead_type_id;
-            $lead['company_address']   = $request->company_address;
-            $lead['company_mobile']    = $request->company_mobile;
-            $lead['company_email']     = $request->company_email;
-            $lead['website']           = $request->website;
-            $lead['industry_vertical'] = $request->industry_vertical;
-            $lead['assign_user_id']    = $request->assign_user_id;
-            $lead['source']            = $request->source;
-            $lead->save();   
-            
-            foreach($request->name as $k=>$item)
+        DB::beginTransaction();
+        try{
+            if(Auth::user()->can('Create Lead'))
             {
-                if(!empty($request->name))
-                {
-                    IndustryPerson::create([
-                        'lead_id'=> $lead->id,
-                        'name'=>$item,
-                        'designation'=>$request->designation[$k],
-                        'contact_number'=>$request->contact_number[$k],
-                        'email_id'=>$request->email_id[$k]
-                    ]);  
+                $validator = \Validator::make($request->all(),
+                    [
+                        'company_name' => 'required|unique:leads|max:120',
+                        'email' => 'required|email|unique:leads',
+                        'phone' => 'required|integer|max:9999999999|unique:leads',
+                        'poc_name.*' => 'required|string',
+                        'poc_email.*' => 'required|email',
+                        'poc_contact_number.*' => 'required|integer|max:9999999999',
+                    ]
+                );
+
+                if ($validator->fails()) {
+                    $messages = $validator->getMessageBag();
+                    return redirect()->back()->with('error', $messages->first());
                 }
+                // dd($request->all(),'122');
+
+                $lead                      = new Lead();
+                $lead['source']            = $request->source;
+                $lead['company_name']      = $request->company_name;
+                $lead['parent_company_name']      = $request->parent_company_name;
+                $lead['lead_address']   = $request->lead_address;
+                $lead['phone']    = $request->phone;
+                $lead['email']     = $request->email;
+                $lead['website']           = $request->website;
+                $lead['existing_customer']      = $request->existing_customer;
+                $lead['type'] = $request->type ? $request->type : 'Lead';
+                $lead['cbi_identified']    = $request->cbi_identified;
+                $lead['met_or_spoke']    = $request->met_or_spoke;
+                $lead['is_mnc']    = $request->is_mnc;
+                $lead['industry_vertical']    = $request->industry_vertical;
+                $lead['sales_stage']    = $request->sales_stage;
+                $lead['create_date']    = $request->create_date;
+                $lead['estimated_close_date']    = $request->estimated_close_date;
+                $lead['created_by']           = Auth::user()->id;
+                $lead->save();   
+                
+                if(!empty($request->poc_name)){
+                    foreach($request->poc_name as $k=>$item)
+                    {
+                        if(!empty($request->poc_name))
+                        {
+                            IndustryPerson::create([
+                                'lead_id'=> $lead->id,
+                                'name'=>$request->poc_name[$k],
+                                'designation'=>$request->poc_designation[$k],
+                                'contact_number'=>$request->poc_contact_number[$k],
+                                'email_id'=>$request->poc_email_id[$k]
+                            ]);  
+                        }
+                    }
+                }
+    
+                if(isset($request->product_name)){
+                    foreach($request->product_name as $k=>$product_id)
+                    {
+                        if(!empty($request->product_name))
+                        {
+                            IndustryProduct::create([
+                                'lead_id'=> $lead->id,
+                                'product_id'=>$product_id,
+                            ]);
+                        }
+                    }
+                }
+    
+                if(isset($request->interaction_date) && isset($request->interaction_activity_type) && isset($request->interaction_feedback)){
+                    foreach($request->interaction_date as $k=>$item)
+                    {
+                        if(!empty($request->interaction_date) && !empty($request->interaction_activity_type) && !empty($request->interaction_feedback))
+                        {
+                            lead_interaction::create([
+                                'lead_id'=> $lead->id,
+                                'interaction_date'=>$request->interaction_date[$k],
+                                'interaction_activity_type'=>$request->interaction_activity_type[$k],
+                                'interaction_feedback'=>$request->interaction_feedback[$k],
+                            ]);  
+                        }
+                    }
+                }
+    
+                DB::commit();
+                    
+                return redirect()->back()->with('success', __('Lead Successfully Created.'));
+            } 
+            else 
+            {
+                return redirect()->back()->with('error', 'permission Denied');
             }
 
-            // foreach($request->product_name as $k=>$item)
-            // {
-                if(!empty($request->product_name))
-                {
-                    IndustryProduct::create([
-                        'lead_id'=> $lead->id,
-                        'product_name'=>$request->product_name,
-                        // 'serial_number'=>$request->serial_number[$k],
-                        // 'sub_start_date'=>$request->sub_start_date[$k],
-                        // 'sub_end_date'=>$request->sub_end_date[$k],
-                        // 'price'=>$request->price[$k],
-                        // 'sale_date'=>$request->sale_date[$k],
-                        // 'created_by'=>$request->created_by[$k],
-                    ]);
-                }
-            // }
-
-            // foreach($request->interaction_date as $k=>$item)
-            // {
-                if(!empty($request->interaction_date))
-                {
-                    lead_interaction::create([
-                        'lead_id'=> $lead->id,
-                        'interaction_date'=>$request->interaction_date,
-                        'interaction_activity_type'=>$request->interaction_activity_type,
-                        'interaction_feedback'=>$request->interaction_feedback,
-                    ]);  
-                }
-            // }
-
-            
-
-            return redirect()->back()->with('success', __('Lead Successfully Created.'));
-        } 
-        else 
-        {
-            return redirect()->back()->with('error', 'permission Denied');
+        }catch(\Exception $e){
+            // dd('error',$e);
+            DB::rollback();
+            return redirect()->back()->with('error', 'Something Went Wrong');
         }
 
        
@@ -208,6 +239,9 @@ class LeadController extends Controller
     {
         // dd($lead);
         if (\Auth::user()->can('Show Lead')) {
+
+            $leadProducts=IndustryProduct::where('id',$lead->id)->get();
+            dd($leadProducts);
             return view('lead.view', compact('lead'));
         } else {
             return redirect()->back()->with('error', 'permission Denied');
@@ -226,10 +260,14 @@ class LeadController extends Controller
         
         if (Auth::user()->can('Edit Lead')) 
         {
+            $user = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
+            $user->prepend('Select Owner', '');
             $lead = Lead::first();
             $previous = Lead::where('id', '<', $lead->id)->max('id');
             $next = Lead::where('id', '>', $lead->id)->min('id');
-            return view('lead.edit', compact('lead','previous','next'));
+            $products    = Product::get()->pluck('name', 'id');
+            $selectedProducts = IndustryProduct::where('lead_id',$lead->id)->get()->pluck('product_id');
+            return view('lead.edit', compact('lead','previous','next','products','selectedProducts','user'));
         } 
         else 
         {
@@ -273,64 +311,135 @@ class LeadController extends Controller
      */
     public function update(Request $request, Lead $lead)
     {
-        if (\Auth::user()->can('Edit Lead')) 
-        {           
-            $update['user_id']                 = Auth::user()->id;
-            $update['company_name']            = $request->company_name;
-            $update['lead_type_id']            = $request->lead_type_id;
-            $update['company_address']         = $request->company_address;
-            $update['company_mobile']          = $request->company_mobile;
-            $update['company_email']           = $request->company_email;
-            $update['website']                 = $request->website;
-            $update['industry_vertical']       = $request->industry_vertical;
-            $update['assign_user_id']          = $request->assign_user_id;
-            $update['source']              = $request->source;
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Edit Lead')) 
+            {           
+                // dd($request->all(),"1asdf");
+                $validator = \Validator::make($request->all(),
+                    [
+                        'company_name' => 'required|max:120|unique:leads,company_name,'.$lead->id,
+                        'email' => 'required|email|unique:leads,email,'.$lead->id,
+                        'phone' => 'required|integer|max:9999999999|unique:leads,phone,'.$lead->id,
+                        'poc_name.*' => 'required|string',
+                        'designation.*' => 'required',
+                        'poc_email.*' => 'required|email',
+                        'poc_contact_number.*' => 'required|integer|max:9999999999',
+                    ]
+                );
 
-            Lead::where('id',$lead->id)->update($update);
-            
+                if ($validator->fails()) {
+                    $messages = $validator->getMessageBag();
+                    return redirect()->back()->with('error', $messages->first());
+                }
 
-            foreach ($request->name as $k => $item) 
-            {
-                if (!empty($item)) 
-                {
-                    $existingRecord = IndustryPerson::where('name', $item)->where('lead_id',$lead->id)->first();
-                    if($existingRecord)
-                    {                        
-                        $existingRecord->update([
-                            'lead_id' => $lead->id,
-                            'name' => $item,
-                            'designation' => $request->designation[$k],
-                            'contact_number' => $request->contact_number[$k],
-                            'email_id' => $request->email_id[$k]
-                        ]);
+                $update['source']            = $request->source;
+                $update['company_name']      = $request->company_name;
+                $update['parent_company_name']      = $request->parent_company_name;
+                $update['lead_address']   = $request->lead_address;
+                $update['phone']    = $request->phone;
+                $update['email']     = $request->email;
+                $update['website']           = $request->website;
+                $update['existing_customer']      = $request->existing_customer;
+                $update['type'] = $request->type ? $request->type : 'Lead';
+                $update['cbi_identified']    = $request->cbi_identified;
+                $update['met_or_spoke']    = $request->met_or_spoke;
+                $update['is_mnc']    = $request->is_mnc;
+                $update['industry_vertical']    = $request->industry_vertical;
+                $update['sales_stage']    = $request->sales_stage;
+                $update['create_date']    = $request->create_date;
+                $update['estimated_close_date']    = $request->estimated_close_date;
+                $update['created_by']           = Auth::user()->id;
+    
+                $leadUpdated =  Lead::where('id',$lead->id)->update($update);
+
+                // old person Details 
+                $oldIds = IndustryPerson::where('lead_id',$lead->id)->pluck('id')->toArray();
+                $newIds = $request->poc_id;
+                $removedIds = array_diff($oldIds,$newIds);
+                // old person Details 
+
+                // delete removeed person first
+                if(!empty($removedIds && $removedIds > 0)){
+                    foreach($removedIds as $rid){
+                        $industryPersonData = IndustryPerson::find($rid);
+                        $industryPersonData->delete();
                     }
                 }
-            }
-
-            foreach($request->product_name as $k=>$item)
-            {
-                if(!empty($request->product_name))
-                {
-                    $productExistingRecord = IndustryProduct::where('product_name', $item)->where('lead_id',$lead->id)->first();
-                    if($existingRecord)
-                    {  
-                        $productExistingRecord->update([
-                            'lead_id'=> $lead->id,
-                            'product_name'=>$item,
-                            'serial_number'=>$request->serial_number[$k],
-                            'sub_start_date'=>$request->sub_start_date[$k],
-                            'sub_end_date'=>$request->sub_end_date[$k],
-                            'price'=>$request->price[$k],
-                            'sale_date'=>$request->sale_date[$k],
-                            'created_by'=>$request->created_by[$k],
-                        ]);
+                // delete removeed person first
+                if(!empty($request->poc_name)){
+                    foreach ($request->poc_name as $k => $item) 
+                    {
+                        // check in orderDetails db by id
+                        $personAlreadyExist = IndustryPerson::find($request->poc_id[$k]);
+                        // check in orderDetails db by id 
+                        if($personAlreadyExist)
+                        {                        
+                            $personAlreadyExist->update([
+                                'name' => $request->poc_name[$k],
+                                'designation' => $request->poc_designation[$k],
+                                'contact_number' => $request->poc_contact_number[$k],
+                                'email_id' => $request->poc_email_id[$k]
+                            ]);
+                        }else{
+                            IndustryPerson::create([
+                                'lead_id'=> $lead->id,
+                                'name'=>$request->poc_name[$k],
+                                'designation'=>$request->poc_designation[$k],
+                                'contact_number'=>$request->poc_contact_number[$k],
+                                'email_id'=>$request->poc_email_id[$k]
+                            ]);  
+                        }
+                        
                     }
                 }
-            }
 
-            return redirect()->back()->with('message', __('Lead Successfully Updated.'));
-        } else {
-            return redirect()->back()->with('error', 'permission Denied');
+                // old product Details 
+                $p_oldIds = IndustryProduct::where('lead_id',$lead->id)->pluck('id')->toArray();
+                $p_newIds = $request->poc_id;
+                $p_removedIds = array_diff($p_oldIds,$p_newIds);
+                // old product Details 
+ 
+                 // delete removeed person first
+                 if(!empty($p_removedIds && $p_removedIds > 0)){
+                     foreach($p_removedIds as $rid){
+                         $IndustryProductData = IndustryProduct::find($rid);
+                         $IndustryProductData->delete();
+                     }
+                 }
+                 // delete removeed person first
+    
+                if(isset($request->product_name)){
+                    foreach($request->product_name as $k=>$productId)
+                    {
+                        if(!empty($request->product_name))
+                        {
+                            $productExistingRecord = IndustryProduct::where('product_id', $productId)->where('lead_id',$lead->id)->first();
+                            if($productExistingRecord)
+                            {  
+                                $productExistingRecord->update([
+                                    'product_id'=>$productId,
+                                ]);
+                            }else{
+                                IndustryProduct::create([
+                                    'lead_id'=> $lead->id,
+                                    'product_id'=>$productId,
+                                ]);
+                            }
+                        }
+                    }
+                }
+    
+                DB::commit();
+
+                return redirect()->back()->with('message', __('Lead Successfully Updated.'));
+            } else {
+                return redirect()->back()->with('error', 'permission Denied');
+            }
+        }catch(\Exception $e){
+            // dd('error',$e);
+            DB::rollback();
+            return redirect()->back()->with('error', 'Something Went Wrong');
         }
     }
 
@@ -473,18 +582,18 @@ class LeadController extends Controller
         $currentDate = Carbon::now()->format('Y-m-d');
         $oldestDate = Lead::orderBy('created_at', 'ASC')->value('created_at');
 
-        $fromDate = !empty($request->fromDate) ? $request->fromDate : $oldestDate;
-        $toDate = !empty($request->toDate) ? $request->toDate : $currentDate;
+        $fromDate = !empty($request->fromDate) ? $request->fromDate : null;
+        $toDate = !empty($request->toDate) ? $request->toDate : null;
         $leadType = !empty($request->leadType) ? $request->leadType : null;
 
         $leads = Lead::query();
 
         if ($leadType) {
-            $leads->where('lead_type_id', $leadType);
+            $leads->where('type', $leadType);
         }
 
         if (isset($fromDate) && isset($toDate))
-        {
+        {   
             $leads->whereBetween('created_at', [$fromDate, $toDate]);
         }
 

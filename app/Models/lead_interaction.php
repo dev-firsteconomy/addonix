@@ -10,6 +10,13 @@ class lead_interaction extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected     $fillable = [
+        'lead_id',
+        'interaction_date',
+        'interaction_activity_type',
+        'interaction_feedback'
+    ];
     
     public function lead()
     {

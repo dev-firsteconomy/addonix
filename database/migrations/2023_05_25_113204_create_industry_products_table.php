@@ -16,13 +16,7 @@ return new class extends Migration
         Schema::create('industry_products', function (Blueprint $table) {
             $table->id();
             $table->integer('lead_id');
-            $table->string('product_name');
-            $table->integer('serial_number');
-            $table->date('sub_start_date');
-            $table->date('sub_end_date');
-            $table->string('price');
-            $table->date('sale_date');
-            $table->string('created_by');
+            $table->integer('product_id');
             $table->timestamps();
             $table->softDeletes();
         });

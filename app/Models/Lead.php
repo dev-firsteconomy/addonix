@@ -7,26 +7,44 @@ use Illuminate\Database\Eloquent\Model;
 class Lead extends Model
 {
     protected $fillable = [
-        'user_id',
-        'name',
-        'email',
+        // 'user_id',
+        // 'name',
+        // 'email',
+        // 'phone',
+        // 'website',
+        // 'billing_address',
+        // 'billing_city',
+        // 'billing_state',
+        // 'billing_country',
+        // 'billing_postalcode',
+        // 'shipping_address',
+        // 'shipping_city',
+        // 'shipping_state',
+        // 'shipping_country',
+        // 'shipping_postalcode',
+        // 'type',
+        // 'industry',
+        // 'is_converted',
+        // 'created_by',
+        // 'description',
+        'source',
+        'company_name',
+        'parent_company_name',
+        'lead_address',
         'phone',
+        'email',
         'website',
-        'billing_address',
-        'billing_city',
-        'billing_state',
-        'billing_country',
-        'billing_postalcode',
-        'shipping_address',
-        'shipping_city',
-        'shipping_state',
-        'shipping_country',
-        'shipping_postalcode',
+        'existing_customer',
         'type',
-        'industry',
-        'is_converted',
+        'cbi_identified',
+        'met_or_spoke',
+        'is_mnc',
+        'industry_vertical',
+        'sales_stage',
+        'create_date',
+        'estimated_close_date',
+        'assign_user_id',
         'created_by',
-        'description',
     ];
 
     protected $appends = [
@@ -113,6 +131,7 @@ class Lead extends Model
     {
         return $this->hasMany('App\Models\IndustryPerson','lead_id','id');
     }
+    
     public function industryProduct()
     {
         return $this->hasMany('App\Models\IndustryProduct','lead_id','id');

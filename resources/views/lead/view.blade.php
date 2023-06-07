@@ -90,24 +90,6 @@
                                 <th>
                                     <p class="mb-0">Product Name</p>
                                 </th>
-                                <th>
-                                    <p class="mb-0">Serial Number</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Subscriptiion start date</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Subscriptiion End date</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Price</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Sale Date</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Created by</p>
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -116,12 +98,6 @@
                             <tr class="repeater mt-repeater">
                                 <th scope="col">{{ $i }}</th>
                                 <td><input name="product_name[]" class="form-control" type="text" value="{{ $product->product_name }}" readonly /></td>
-                                <td><input name="serial_number[]" class="form-control" type="text" value="{{ $product->serial_number }}" readonly /></td>
-                                <td><input name="sub_start_date[]" class="form-control" type="date" value="{{ $product->sub_start_date }}"  readonly /></td>
-                                <td><input name="sub_end_date[]" class="form-control" type="date" value="{{ $product->sub_end_date }}"  readonly /></td>
-                                <td><input name="price[]" class="form-control" type="text" value="1000" style="width:120px" value="{{ $product->price }}" readonly /></td>
-                                <td><input name="sale_date[]" class="form-control" type="date" value="{{ $product->sale_date }}"  readonly /></td>
-                                <td><input name="created_by[]" class="form-control" type="text" value="{{ $product->created_by }}"  readonly /></td>
                             </tr>
                             @php $i++; @endphp
                             @endforeach
