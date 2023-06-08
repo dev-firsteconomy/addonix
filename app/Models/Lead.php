@@ -142,4 +142,9 @@ class Lead extends Model
         return $this->hasMany('App\Models\lead_interaction','lead_id','id');
     }
 
+    public function leadQuotation()
+    {
+        return $this->hasMany('App\Models\LeadQuotation','lead_id','id');
+    }
+
 }

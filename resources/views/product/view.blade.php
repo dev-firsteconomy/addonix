@@ -5,6 +5,8 @@
                 <dl class="row">
                     <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Name')}}</span></dt>
                     <dd class="col-md-7"><span class="text-md">{{ $product->name }}</span></dd>
+                    <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Price')}}</span></dt>
+                    <dd class="col-md-7"><span class="text-md">{{ $product->price }}</span></dd>
 
 
                     <!-- <dt class="col-md-5"><span class="h6 text-md mb-0">{{__('Status')}}</span></dt>

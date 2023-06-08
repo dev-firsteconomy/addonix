@@ -55,7 +55,7 @@
                                         <th scope="col" class="sort" data-sort="name">{{ __('Name') }}</th>
                                         <!-- <th scope="col" class="sort" data-sort="Brand">{{ __('Brand') }}</th> -->
                                         <!-- <th scope="col" class="sort" data-sort="Status">{{ __('Status') }}</th> -->
-                                        <!-- <th scope="col" class="sort" data-sort="Price">{{ __('Price') }}</th> -->
+                                        <th scope="col" class="sort" data-sort="Price">{{ __('Price') }}</th>
                                         <!-- <th scope="col" class="sort" data-sort="assign User">
                                             {{ __('assign User') }}</th>
                                         <th scope="col" class="sort" data-sort="barcode">{{ __('BarCode') }}</th>-->
@@ -75,10 +75,9 @@
                                                     {{ ucfirst($product->name) }}
                                                 </a>
                                             </td>
-                                            <!-- <td>
-                                                <span class="budget">{{ ucfirst(!empty($product->brands->name) ? $product->brands->name : '-') }}
-                                                </span>
-                                            </td> -->
+                                            <td>
+                                                {{ $product->price ? $product->price : '-' }}
+                                            </td>
                                             
                                             @if (Gate::check('Show Product') || Gate::check('Edit Product') || Gate::check('Delete Product'))
                                                 <td class="text-end">

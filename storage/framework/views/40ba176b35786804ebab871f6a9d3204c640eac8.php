@@ -1,3 +1,15 @@
+<?php if(Session::has('success')): ?>
+<div id="success-message" class="alert alert-success" role="alert" >
+    <?php echo e(Session::get('message')); ?>
+
+</div>
+<?php endif; ?>
+<?php if(Session::has('error')): ?>
+<div id="error-message" class="alert alert-error" role="alert" >
+    <?php echo e(Session::get('message')); ?>
+
+</div>
+<?php endif; ?>
 <?php echo e(Form::open(array('url'=>'lead','method'=>'post','enctype'=>'multipart/form-data'))); ?>
 
 <div class="row">
@@ -288,7 +300,12 @@
 
 
 
-
+<script>
+    setTimeout(function() {
+        document.getElementById('success-message').style.display = 'none';
+        document.getElementById('error-message').style.display = 'none';
+    }, 3000); // Hide the message after 5 seconds (adjust the timeout value as needed)
+</script>
 <script>
     document.getElementById('poc-add-field').addEventListener('click', function() {
         const container = document.getElementById('poc-repeater-container');

@@ -10,6 +10,7 @@ use App\Models\Contact;
 use App\Models\Document;
 use App\Models\Lead;
 use App\Models\LeadSource;
+use App\Models\LeadQuotation;
 use App\Models\Stream;
 use App\Models\Task;
 use App\Models\Utility;
@@ -25,6 +26,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Mail\ApprovalMail;
+use App\Mail\SendQuotationMail;
+use Illuminate\Support\Facades\Mail;
 
 class LeadController extends Controller
 {
@@ -39,7 +43,7 @@ class LeadController extends Controller
             {
                 if(\Auth::user()->type == 'owner'){
                 // $leads = Lead::where('created_by', \Auth::user()->creatorId())->get();
-                $leads = Lead::get();
+                $leads = Lead::where('type', 'Lead')->get();
                 $defualtView         = new UserDefualtView();
                 $defualtView->route  = \Request::route()->getName();
                 $defualtView->module = 'lead';
@@ -47,7 +51,7 @@ class LeadController extends Controller
                 User::userDefualtView($defualtView);
                 }
                 else{
-                    $leads = Lead::where('user_id', \Auth::user()->id)->get();
+                $leads = Lead::where('user_id', \Auth::user()->id)->where('type', 'Lead')->get();
                 $defualtView         = new UserDefualtView();
                 $defualtView->route  = \Request::route()->getName();
                 $defualtView->module = 'lead';
@@ -206,9 +210,29 @@ class LeadController extends Controller
        
     }
 
+    public function sendApprovalEmail(Request $request)
+    {
+        try{
+            $lead = Lead::find($request->lead_id);
+            $leadProducts=IndustryProduct::where('lead_id',$lead->id)->get();
+            $leadPoc=IndustryPerson::where('lead_id',$lead->id)->get();
+            $lead_interaction=lead_interaction::where('lead_id',$lead->id)->get();
+
+            $mail =  Mail::to('hasnain@firsteconomy.com')->send(new ApprovalMail($lead,$leadProducts,$leadPoc,$lead_interaction));
+            
+            $lead->mail_sent = 1;
+            $lead->save();
+            
+            return redirect('lead')->with('success', 'Mail Sent Successfully.');
+
+        }catch(\Exception $e){
+            // dd('error',$e);
+            return redirect()->back()->with('error', 'Something Went Wrong');
+        }
+    }
+
     public function addInteration(Request $request)
     {
-        // dd($lead);
         $lead=Lead::where('id',$request->id)->first();
         if (\Auth::user()->can('Show Lead')) {
             return view('lead.addInteration', compact('lead'));
@@ -217,14 +241,82 @@ class LeadController extends Controller
         }
     }
     
-    public function submitInteration(Request $request)
+    public function submitInteraction(Request $request)
     {
-        dd($request);
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Show Lead')) {
+                lead_interaction::create([
+                    'lead_id'=> (int)$request->lead_id,
+                    'interaction_date'=>$request->interaction_date,
+                    'interaction_activity_type'=>$request->interaction_activity_type,
+                    'interaction_feedback'=>$request->interaction_feedback,
+                ]); 
+                DB::commit();
+                return redirect('lead')->with('success', __('Interaction Added Successfully.'));
+            } else {
+                return redirect('lead')->with('error', 'Permission Denied');
+            }
+        }catch(\Exception $e){
+            // dd('error',$e);
+            DB::rollback();
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }   
+    }
+
+    public function addQuotation(Request $request)
+    {
         $lead=Lead::where('id',$request->id)->first();
+        $products= Product::pluck('name','id');
+        $products->prepend('Select Product', '');
         if (\Auth::user()->can('Show Lead')) {
-            return view('lead.addInteration', compact('lead'));
+            return view('lead.addQuotation', compact('lead','products'));
         } else {
             return redirect()->back()->with('error', 'permission Denied');
+        }
+    }
+    
+    public function sendQuotation(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Create Lead')) {
+                LeadQuotation::create([
+                    'lead_id'=> (int)$request->lead_id,
+                    'product_id'=>$request->product_id,
+                    'price'=>$request->price,
+                    'discount'=>$request->discount,
+                    'final_amount'=>$request->final_amount,
+                ]); 
+
+                $lead = Lead::where('id',$request->lead_id)->first();
+                $ccEmails = IndustryPerson::where('lead_id',$request->lead_id)->pluck('email_id')->toArray();
+                $lead_quotations = LeadQuotation::where('lead_id',$request->lead_id)->get();
+
+                $mail =  Mail::to(@$lead->email)->cc($ccEmails)->send(new SendQuotationMail($lead,$lead_quotations));
+
+                DB::commit();
+
+                return redirect('lead')->with('success', __('Quotation Sent Successfully.'));
+            } else {
+                return redirect('lead')->with('error', 'Permission Denied');
+            }
+        }catch(\Exception $e){
+            dd('error',$e);
+            DB::rollback();
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }   
+    }
+
+    public function getProductPrice(Request $request)
+    {
+        $productId = $request->input('productId');
+        $product = Product::find($productId);
+
+        if ($product) {
+            return response()->json(['price' => $product->price]);
+        } else {
+            return response()->json(['price' => null]);
         }
     }
     
@@ -240,9 +332,10 @@ class LeadController extends Controller
         // dd($lead);
         if (\Auth::user()->can('Show Lead')) {
 
-            $leadProducts=IndustryProduct::where('id',$lead->id)->get();
-            dd($leadProducts);
-            return view('lead.view', compact('lead'));
+            $leadProducts=IndustryProduct::where('lead_id',$lead->id)->get();
+            $leadPoc=IndustryPerson::where('lead_id',$lead->id)->get();
+            $lead_interaction=lead_interaction::where('lead_id',$lead->id)->get();
+            return view('lead.view', compact('lead','leadProducts','leadPoc','lead_interaction'));
         } else {
             return redirect()->back()->with('error', 'permission Denied');
         }
@@ -595,6 +688,22 @@ class LeadController extends Controller
         if (isset($fromDate) && isset($toDate))
         {   
             $leads->whereBetween('created_at', [$fromDate, $toDate]);
+        }
+
+        $leads = $leads->orderBy('id', 'DESC')->get();
+
+        return view('lead.index', compact('leads'));
+       
+    }
+
+    public function leadTab(Request $request)
+    {
+        $leadType = !empty($request->leadType) ? $request->leadType : 'Lead';
+
+        $leads = Lead::query();
+
+        if ($leadType) {
+            $leads->where('type', $leadType);
         }
 
         $leads = $leads->orderBy('id', 'DESC')->get();

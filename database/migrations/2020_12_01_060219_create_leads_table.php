@@ -32,8 +32,9 @@ class CreateLeadsTable extends Migration
             $table->date('create_date')->nullable();
             $table->date('estimated_close_date')->nullable();
             $table->integer('assign_user_id')->nullable();
-            $table->integer('is_approved')->default(0);
-            $table->integer('mail_sent')->default(0);
+            $table->boolean('is_approved')->default(0);
+            $table->boolean('mail_sent')->default(0);
+            $table->boolean('quotation_sent')->default(0);
             $table->string('status', 20)->default('Lead');
             $table->integer('created_by');
             $table->timestamps();
@@ -48,8 +49,6 @@ class CreateLeadsTable extends Migration
             $table->string('is_converted')->default(0);
             $table->string('title')->nullable();
             $table->string('description')->nullable();
-
-
         });
     }
 

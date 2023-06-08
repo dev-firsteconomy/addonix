@@ -6,7 +6,7 @@
             <h3 style="font-weight: 600;font-size: 18px;">Interaction Activity</h3>
         </div>
     </div>
-    
+    {{Form::hidden('lead_id',$lead->id,array('class'=>'form-control','required'=>'required'))}}
     <div class="col-4">
         <div class="form-group">
             {{Form::label('interaction_date',__('Interaction Date'),['class'=>'form-label']) }}

@@ -248,7 +248,6 @@
 {{Form::close()}}
 
 
-
 <script>
     document.getElementById('poc-add-field').addEventListener('click', function() {
         const container = document.getElementById('poc-repeater-container');

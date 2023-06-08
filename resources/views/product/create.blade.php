@@ -24,14 +24,14 @@
             {!!Form::select('brand', $brand, null,array('class' => 'form-control','required'=>'required')) !!}
 
         </div>
-    </div>
-    <div class="col-6">
+    </div> -->
+     <div class="col-6">
         <div class="form-group">
             {{Form::label('price',__('Price'),['class'=>'form-label']) }}
             {{Form::text('price',null,array('class'=>'form-control','placeholder'=>__('Enter Price'),'required'=>'required'))}}
         </div>
     </div>
-    <div class="col-6">
+    <!--<div class="col-6">
         <div class="form-group">
             {{ Form::label('tax', __('Tax'),['class'=>'form-label']) }}
             {!!Form::select('tax[]', $tax, null,array('class' => 'form-control select2','id'=>'choices-multiple','multiple')) !!}

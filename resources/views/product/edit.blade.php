@@ -111,7 +111,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-6">
                                     <div class="form-group">
                                         {{Form::label('price',__('Price'),['class'=>'form-label']) }}
@@ -123,7 +123,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <!--<div class="col-6">
                                     <div class="form-group">
                                         {{Form::label('tax',__('Tax'),['class'=>'form-label']) }}
                                         {!!Form::select('tax[]', $tax, explode(',',$product->tax),array('class' => 'form-control select2','id'=>'choices-multiple','multiple')) !!}

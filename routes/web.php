@@ -327,9 +327,14 @@ Route::group(['middleware' => ['verified']], function () {
             Route::post('lead/{id}/convert', [LeadController::class, 'convertToAccount'])->name('lead.convert.to.account');
             
             Route::get('leadSearch', [LeadController::class, 'leadSearch'])->name('lead.leadSearch');
+            Route::get('leadTab', [LeadController::class, 'leadTab'])->name('lead.leadTab');
+            Route::get('get-product-price', [LeadController::class, 'getProductPrice'])->name('get-product-price');
             Route::get('addInteration/{id}', [LeadController::class, 'addInteration'])->name('addInteration');
+            Route::get('addQuotation/{id}', [LeadController::class, 'addQuotation'])->name('addQuotation');
             Route::get('changeStatus/{id}', [LeadController::class, 'changeStatus'])->name('changeStatus');
-            Route::get('submitInteraction', [LeadController::class, 'submitInteraction'])->name('submitInteraction');            
+            Route::post('submitInteraction', [LeadController::class, 'submitInteraction'])->name('submitInteraction'); 
+            Route::post('sendQuotation', [LeadController::class, 'sendQuotation'])->name('sendQuotation'); 
+            Route::post('send-approval-mail', [LeadController::class, 'sendApprovalEmail'])->name('leadApprovalMail');           
         }
     );
     Route::group(

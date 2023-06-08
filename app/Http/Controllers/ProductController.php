@@ -89,6 +89,7 @@ class ProductController extends Controller
     {
         if(\Auth::user()->can('Create Product'))
         {
+            // dd($request->all());
             // $validator = \Validator::make(
             //     $request->all(), [
             //                        'name' => 'required|max:120',
@@ -112,6 +113,7 @@ class ProductController extends Controller
             $product['user_id']     =\Auth::user()->id;
             $product['name']        = $request->name;
             $product['status']      = $request->status;
+            $product['price']      = $request->price;
             $product->save();
 
             // $product['category']    = $request->category;
@@ -212,6 +214,7 @@ class ProductController extends Controller
     {
         if(\Auth::user()->can('Edit Product'))
         {
+            // dd($request->all());
             // $validator = \Validator::make(
             //     $request->all(), [
             //                        'name' => 'required|max:120',
@@ -233,6 +236,7 @@ class ProductController extends Controller
             $product['user_id']     =\Auth::user()->id;
             $product['name']        = $request->name;
             $product['status']      = $request->status;
+            $product['price']      = $request->price;
 
             // $product['user_id']     = $request->user;
             // $product['name']        = $request->name;
