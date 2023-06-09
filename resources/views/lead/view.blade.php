@@ -2,7 +2,7 @@
     <div class="col-lg-12">
 
         <div class="">
-            <dl class="row">
+            <dl class="row table-data">
                 <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('source')}}</span></dt>
                 <dd class="col-md-8"><span class="text-md">{{ $lead->source }}</span></dd>
 
@@ -53,7 +53,9 @@
 
                 <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Assign User')}}</span></dt>
                 <dd class="col-md-8"><span class="text-md">{{ @$lead->assign_user_id }}</span></dd>
-
+            </dl>
+            
+            <dl class="row viewData">
                 <div class="col-12">
                     <hr class="mt-2 mb-2">
                     <h5>Point of Contacts</h5>
@@ -82,11 +84,17 @@
                             @php $i =1; @endphp
                             @foreach ($lead->industryPerson as $person)
                             <tr class="repeater mt-repeater">
-                                <th scope="col">{{ $i}}</th>
+                                <!-- <th scope="col">{{ $i}}</th>
                                 <td><input name="name[]" class="form-control" type="text" value="{{ $person->name }}" readonly/></td>
                                 <td><input name="designation[]" class="form-control" type="text" value="{{ $person->designation }}"  readonly/></td>
                                 <td><input name="contact_number[]" class="form-control" type="tel"  value="{{ $person->contact_number }}" readonly/></td>
-                                <td><input name="email_id[]" class="form-control" type="email" value="{{ $person->email_id }}"  readonly/></td>
+                                <td><input name="email_id[]" class="form-control" type="email" value="{{ $person->email_id }}"  readonly/></td> -->
+
+                                <th scope="col">{{ $i}}</th>
+                                <td class="text-capitalize">{{ $person->name }}</td>
+                                <td class="text-capitalize">{{ $person->designation }}</td>
+                                <td>{{ $person->contact_number }}</td>
+                                <td>{{ $person->email_id }}</td>
                             </tr>
                             @php $i++; @endphp
                             @endforeach
@@ -169,9 +177,9 @@
                             @foreach ($lead->lead_interaction as $interaction)
                             <tr class="repeater mt-repeater">
                                 <th scope="col">{{ $i }}</th>
-                                <td><input class="form-control" type="text" value="{{ @$interaction->interaction_date }}" readonly /></td>
-                                <td><input class="form-control" type="text" value="{{ @$interaction->interaction_activity_type }}" readonly /></td>
-                                <td><input class="form-control" type="text" value="{{ @$interaction->interaction_feedback }}" readonly /></td>
+                                <td>{{ @$interaction->interaction_date }}</td>
+                                <td>{{ @$interaction->interaction_activity_type }}</td>
+                                <td>{{ @$interaction->interaction_feedback }}</td>
                             </tr>
                             @php $i++; @endphp
                             @endforeach
@@ -208,10 +216,10 @@
                             @foreach ($lead->leadQuotation as $quotation)
                             <tr class="repeater mt-repeater">
                                 <th scope="col">{{ $i }}</th>
-                                <td><input class="form-control" type="text" value="{{ @$quotation->product->name }}" readonly /></td>
-                                <td><input class="form-control" type="text" value="{{ @$quotation->price }}" readonly /></td>
-                                <td><input class="form-control" type="text" value="{{ @$quotation->discount }}" readonly /></td>
-                                <td><input class="form-control" type="text" value="{{ @$quotation->final_amount }}" readonly /></td>
+                                <td>{{ @$quotation->product->name }}</td>
+                                <td>{{ @$quotation->price }}</td>
+                                <td>{{ @$quotation->discount }}</td>
+                                <td>{{ @$quotation->final_amount }}</td>
                             </tr>
                             @php $i++; @endphp
                             @endforeach

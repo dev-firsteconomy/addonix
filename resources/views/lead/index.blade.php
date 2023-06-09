@@ -4,9 +4,9 @@
 @endsection
 @section('title')
 
-<!-- <style>
+<style>
 
-.datatable .dropdown-toggle::after {
+/* .datatable .dropdown-toggle::after {
     display: none;
 }
 
@@ -34,9 +34,41 @@
     background: #2bdc52;
     color: #fff;
     border-color: #2bdc52;
+} */
+
+.datatable .dropdown-toggle::after {
+    display: none;
 }
 
-</style> -->
+.table-data {
+    margin: 0px 0px 10px;;
+    border-collapse: collapse;
+}
+.table-data >* {
+    border: 1px solid #ced4da;
+    padding: 6px 15px;
+    border-collapse: collapse;
+}
+
+.table-data dd {
+    margin-bottom: 0;
+}
+
+.table-data dt {
+    text-transform: capitalize;
+}
+
+.table-data dt span.h6 {
+    font-size: 14px !important;
+}
+
+.viewData input {
+    border: 0;
+}
+
+</style> 
+
+
 <div class="page-header-title">
     {{__('Lead')}}
 </div>
@@ -199,14 +231,11 @@
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">...</a>
                                             <div class="dropdown-menu py-0">
                                                 @can('Edit Lead')
-                                                    <a href="{{ route('lead.edit',$lead->id) }}" class="dropdown-item" data-bs-toggle="tooltip" title='Edit Lead Details'>Edit</a>
+                                                    <a href="{{ route('lead.edit',$lead->id) }}" class="dropdown-item">Edit</a>
                                                 @endcan
                                                 @can('Show Lead')
-                                                    <a href="#" data-size="lg" data-url="{{ route('lead.show',$lead->id) }}" data-ajax-popup="true" data-title="{{__('Lead Details')}}" class="dropdown-item" data-bs-toggle="tooltip" title='View Lead Details'>View</a>
+                                                    <a href="#" data-size="lg" data-url="{{ route('lead.show',$lead->id) }}" data-ajax-popup="true" data-title="{{__('Lead Details')}}" class="dropdown-item">View</a>
                                                 @endcan
-                                                {!! Form::open(['method' => 'DELETE', 'route' => ['lead.destroy', $lead->id]]) !!}
-                                                    <button type="submit" class="dropdown-item">Delete</button>
-                                                {!! Form::close() !!}
                                                 @if(!empty($lead->industryProduct) && !empty($lead->lead_interaction) && $lead->mail_sent == 0)
                                                 <form method="POST" action="{{ route('leadApprovalMail') }}">
                                                     @csrf
@@ -214,8 +243,11 @@
                                                     <button type="submit" class="dropdown-item">Send Approval Email</button>
                                                 </form>
                                                 @endif
-                                                <a href="#" data-size="lg" data-url="{{ route('addInteration',$lead->id) }}" class="dropdown-item" data-bs-toggle="tooltip" title='Add New Interaction' data-ajax-popup="true" data-title="{{__('Add Interation')}}">Add Interaction</a>
-                                                <a href="#" data-size="lg" data-url="{{ route('addQuotation',$lead->id) }}" class="dropdown-item" data-bs-toggle="tooltip" title='Send Quotation' data-ajax-popup="true" data-title="{{__('Send Quotation')}}">Send Quotation</a>
+                                                <a href="#" data-size="lg" data-url="{{ route('addInteration',$lead->id) }}" class="dropdown-item">Add Interaction</a>
+                                                <a href="#" data-size="lg" data-url="{{ route('addQuotation',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Send Quotation')}}">Send Quotation</a>
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['lead.destroy', $lead->id]]) !!}
+                                                    <button type="submit" class="dropdown-item">Delete</button>
+                                                {!! Form::close() !!}
                                             </div>
                                         </div>
                                     </td>

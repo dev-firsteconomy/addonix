@@ -5,9 +5,9 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('title'); ?>
 
-<!-- <style>
+<style>
 
-.datatable .dropdown-toggle::after {
+/* .datatable .dropdown-toggle::after {
     display: none;
 }
 
@@ -35,9 +35,41 @@
     background: #2bdc52;
     color: #fff;
     border-color: #2bdc52;
+} */
+
+.datatable .dropdown-toggle::after {
+    display: none;
 }
 
-</style> -->
+.table-data {
+    margin: 0px 0px 10px;;
+    border-collapse: collapse;
+}
+.table-data >* {
+    border: 1px solid #ced4da;
+    padding: 6px 15px;
+    border-collapse: collapse;
+}
+
+.table-data dd {
+    margin-bottom: 0;
+}
+
+.table-data dt {
+    text-transform: capitalize;
+}
+
+.table-data dt span.h6 {
+    font-size: 14px !important;
+}
+
+.viewData input {
+    border: 0;
+}
+
+</style> 
+
+
 <div class="page-header-title">
     <?php echo e(__('Lead')); ?>
 
@@ -204,16 +236,11 @@
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">...</a>
                                             <div class="dropdown-menu py-0">
                                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Edit Lead')): ?>
-                                                    <a href="<?php echo e(route('lead.edit',$lead->id)); ?>" class="dropdown-item" data-bs-toggle="tooltip" title='Edit Lead Details'>Edit</a>
+                                                    <a href="<?php echo e(route('lead.edit',$lead->id)); ?>" class="dropdown-item">Edit</a>
                                                 <?php endif; ?>
                                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Show Lead')): ?>
-                                                    <a href="#" data-size="lg" data-url="<?php echo e(route('lead.show',$lead->id)); ?>" data-ajax-popup="true" data-title="<?php echo e(__('Lead Details')); ?>" class="dropdown-item" data-bs-toggle="tooltip" title='View Lead Details'>View</a>
+                                                    <a href="#" data-size="lg" data-url="<?php echo e(route('lead.show',$lead->id)); ?>" data-ajax-popup="true" data-title="<?php echo e(__('Lead Details')); ?>" class="dropdown-item">View</a>
                                                 <?php endif; ?>
-                                                <?php echo Form::open(['method' => 'DELETE', 'route' => ['lead.destroy', $lead->id]]); ?>
-
-                                                    <button type="submit" class="dropdown-item">Delete</button>
-                                                <?php echo Form::close(); ?>
-
                                                 <?php if(!empty($lead->industryProduct) && !empty($lead->lead_interaction) && $lead->mail_sent == 0): ?>
                                                 <form method="POST" action="<?php echo e(route('leadApprovalMail')); ?>">
                                                     <?php echo csrf_field(); ?>
@@ -221,8 +248,13 @@
                                                     <button type="submit" class="dropdown-item">Send Approval Email</button>
                                                 </form>
                                                 <?php endif; ?>
-                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" class="dropdown-item" data-bs-toggle="tooltip" title='Add New Interaction' data-ajax-popup="true" data-title="<?php echo e(__('Add Interation')); ?>">Add Interaction</a>
-                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-bs-toggle="tooltip" title='Send Quotation' data-ajax-popup="true" data-title="<?php echo e(__('Send Quotation')); ?>">Send Quotation</a>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" class="dropdown-item">Add Interaction</a>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Send Quotation')); ?>">Send Quotation</a>
+                                                <?php echo Form::open(['method' => 'DELETE', 'route' => ['lead.destroy', $lead->id]]); ?>
+
+                                                    <button type="submit" class="dropdown-item">Delete</button>
+                                                <?php echo Form::close(); ?>
+
                                             </div>
                                         </div>
                                     </td>
