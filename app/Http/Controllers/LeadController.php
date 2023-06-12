@@ -180,7 +180,7 @@ class LeadController extends Controller
                 if(isset($request->interaction_date) && isset($request->interaction_activity_type) && isset($request->interaction_feedback)){
                     foreach($request->interaction_date as $k=>$item)
                     {
-                        if(!empty($request->interaction_date) && !empty($request->interaction_activity_type) && !empty($request->interaction_feedback))
+                        if(!empty($request->interaction_date[$k]) && !empty($request->interaction_activity_type[$k]) && !empty($request->interaction_feedback[$k]))
                         {
                             lead_interaction::create([
                                 'lead_id'=> $lead->id,
@@ -226,7 +226,6 @@ class LeadController extends Controller
             return redirect('lead')->with('success', 'Mail Sent Successfully.');
 
         }catch(\Exception $e){
-            // dd('error',$e);
             return redirect()->back()->with('error', 'Something Went Wrong');
         }
     }
@@ -320,6 +319,16 @@ class LeadController extends Controller
         }
     }
     
+    public function search(Request $request)
+    {
+        $query = $request->get('term','');
+        dd($query,1236);
+            
+        $companies = Lead::where('company_name','LIKE','%'.$query.'%')->get();
+            
+        return response()->json($companies);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -355,11 +364,11 @@ class LeadController extends Controller
         {
             $user = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
             $user->prepend('Select Owner', '');
-            $lead = Lead::first();
             $previous = Lead::where('id', '<', $lead->id)->max('id');
             $next = Lead::where('id', '>', $lead->id)->min('id');
             $products    = Product::get()->pluck('name', 'id');
             $selectedProducts = IndustryProduct::where('lead_id',$lead->id)->get()->pluck('product_id');
+
             return view('lead.edit', compact('lead','previous','next','products','selectedProducts','user'));
         } 
         else 
@@ -525,7 +534,7 @@ class LeadController extends Controller
     
                 DB::commit();
 
-                return redirect()->back()->with('message', __('Lead Successfully Updated.'));
+                return redirect('lead')->with('success', __('Lead Successfully Updated.'));
             } else {
                 return redirect()->back()->with('error', 'permission Denied');
             }

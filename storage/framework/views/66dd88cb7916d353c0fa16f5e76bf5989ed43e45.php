@@ -116,7 +116,7 @@
         </div>
         <div class="col-lg-4">
             <div class="input-group mb-3">
-            <span class="input-group-text">Filter status Wise:</span>
+            <span class="input-group-text">Type:</span>
             <select class="form-select" aria-label="Default select example" name="leadType">
                 <option value="">Select...</option>
                 <option value="Lead" <?php echo e(isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Lead' ? 'selected' : ''); ?>>Lead</option>
@@ -138,18 +138,6 @@
         </div>
     </div>
 </form>
-<?php if(Session::has('success')): ?>
-<div id="success-message" class="alert alert-success" role="alert" >
-    <?php echo e(Session::get('message')); ?>
-
-</div>
-<?php endif; ?>
-<?php if(Session::has('error')): ?>
-<div id="error-message" class="alert alert-error" role="alert" >
-    <?php echo e(Session::get('message')); ?>
-
-</div>
-<?php endif; ?>
 <!-- radioForm -->
 <!-- <div class="radioFormWrapper d-flex gap-2">
     <form action="LeadTab" class="radioForm active" method="get">
@@ -172,6 +160,18 @@
 <!-- radioForm -->
 <div class="row">
     <div class="col-xl-12">
+    <?php if(Session::has('success')): ?>
+    <div id="success-message" class="alert alert-success" role="alert" >
+        <?php echo e(Session::get('success')); ?>
+
+    </div>
+    <?php endif; ?>
+    <?php if(Session::has('error')): ?>
+    <div id="error-message" class="alert alert-error" role="alert" >
+        <?php echo e(Session::get('error')); ?>
+
+    </div>
+    <?php endif; ?>
         <div class="card">
             <div class="card-body table-border-style">
                 <div class="table-responsive">
@@ -179,10 +179,9 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="sort" data-sort="name"><?php echo e(__('Company Name')); ?></th>
-                                <th scope="col" class="sort" data-sort="completion"><?php echo e(__('Lead Type')); ?></th>
-                                <!-- <th scope="col" class="sort" data-sort="budget"><?php echo e(__('Company Address')); ?></th> -->
                                 <th scope="col" class="sort" data-sort="status"><?php echo e(__('Company Contact No.')); ?></th>
                                 <th scope="col" class="sort" data-sort="status"><?php echo e(__('Email')); ?></th>
+                                <th scope="col" class="sort" data-sort="completion"><?php echo e(__('Lead Type')); ?></th>
                                 <th scope="col" class="sort" data-sort="status"><?php echo e(__('Website')); ?></th>
                                 <th scope="col" class="sort" data-sort="status"><?php echo e(__('Industry Vertical')); ?></th>
                                 <th scope="col" class="sort" data-sort="status"><?php echo e(__('Lead Owner')); ?></th>
@@ -194,7 +193,7 @@
                         </thead>
       
                         <tbody>
-                            <?php $__currentLoopData = $leads; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lead): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $leads; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $lead): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <!-- <td>
                                     <a href="#" data-size="md" data-url="<?php echo e(route('lead.show',$lead->id)); ?>" data-ajax-popup="true" data-title="<?php echo e(__('Lead Details')); ?>" class="action-item text-primary">
@@ -203,31 +202,31 @@
                                     </a>
                                 </td> -->
                                 <td>
-                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->company_name) ? $lead->company_name:'--')); ?></span>
+                                    <span class="budget"><?php echo e(ucfirst(@$lead->company_name)); ?></span>
                                 </td>
 
                                 <td>
-                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->type) ? $lead->type:'--')); ?></span>
+                                    <span class="budget"><?php echo e(@$lead->phone); ?></span>
                                 </td>
 
                                 <td>
-                                    <span class="budget"><?php echo e(!empty($lead->phone) ? $lead->phone:'--'); ?></span>
+                                    <span class="budget"><?php echo e(ucfirst(@$lead->email)); ?></span>
                                 </td>
 
                                 <td>
-                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->email) ? $lead->email:'--')); ?></span>
+                                    <span class="budget"><?php echo e(ucfirst(@$lead->type)); ?></span>
                                 </td>
 
                                 <td>
-                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->website) ? $lead->website:'--')); ?></span>
+                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->website) ? $lead->website:'-')); ?></span>
                                 </td>
 
                                 <td>
-                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->industry_vertical) ? $lead->industry_vertical:'--')); ?></span>
+                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->industry_vertical) ? $lead->industry_vertical:'-')); ?></span>
                                 </td>
 
                                 <td>
-                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->assign_user_id) ? $lead->assign_user_id:'--')); ?></span>
+                                    <span class="budget"><?php echo e(ucfirst(!empty($lead->assign_user_id) ? $lead->assign_user_id:'-')); ?></span>
                                 </td>
 
                                 <?php if(Gate::check('Show Lead') || Gate::check('Edit Lead') || Gate::check('Delete Lead')): ?>
@@ -241,15 +240,17 @@
                                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Show Lead')): ?>
                                                     <a href="#" data-size="lg" data-url="<?php echo e(route('lead.show',$lead->id)); ?>" data-ajax-popup="true" data-title="<?php echo e(__('Lead Details')); ?>" class="dropdown-item">View</a>
                                                 <?php endif; ?>
-                                                <?php if(!empty($lead->industryProduct) && !empty($lead->lead_interaction) && $lead->mail_sent == 0): ?>
+                                                <?php if($lead->type == 'Lead' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 0): ?>
                                                 <form method="POST" action="<?php echo e(route('leadApprovalMail')); ?>">
                                                     <?php echo csrf_field(); ?>
                                                     <input type="hidden" name="lead_id" value="<?php echo e($lead->id); ?>">
                                                     <button type="submit" class="dropdown-item">Send Approval Email</button>
                                                 </form>
                                                 <?php endif; ?>
-                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" class="dropdown-item">Add Interaction</a>
-                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Send Quotation')); ?>">Send Quotation</a>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" data-ajax-popup="true" class="dropdown-item">Add Interaction</a>
+                                                <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
+                                                    <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Send Quotation')); ?>">Send Quotation</a>
+                                                <?php endif; ?>
                                                 <?php echo Form::open(['method' => 'DELETE', 'route' => ['lead.destroy', $lead->id]]); ?>
 
                                                     <button type="submit" class="dropdown-item">Delete</button>
@@ -334,6 +335,28 @@
                 $('#final-amount').val('');
             }
         });
+
+        //Company AutoComplete
+        // $(function () {
+        //     $("#company_name").autocomplete({
+        //         source: function (request, response) {
+        //             $.ajax({
+        //                 url: "/getCompanies", // Replace with the URL of your endpoint
+        //                 data: { term: request.term },
+        //                 dataType: "json",
+        //                 success: function (data) {
+        //                     var resp = $.map(data, function(obj) {
+        //                         return obj.name;
+        //                     }); 
+
+        //                     response(resp);
+        //                 }
+        //             });
+        //         },
+        //         minLength: 2, 
+        //     });
+        // });
+        //Company AutoComplete
     });
 </script>
 

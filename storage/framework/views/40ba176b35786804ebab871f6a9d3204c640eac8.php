@@ -1,15 +1,3 @@
-<?php if(Session::has('success')): ?>
-<div id="success-message" class="alert alert-success" role="alert" >
-    <?php echo e(Session::get('message')); ?>
-
-</div>
-<?php endif; ?>
-<?php if(Session::has('error')): ?>
-<div id="error-message" class="alert alert-error" role="alert" >
-    <?php echo e(Session::get('message')); ?>
-
-</div>
-<?php endif; ?>
 <?php echo e(Form::open(array('url'=>'lead','method'=>'post','enctype'=>'multipart/form-data'))); ?>
 
 <div class="row">
@@ -27,13 +15,13 @@
         <div class="form-group">
             <?php echo e(Form::label('company_name',__('Company Name'),['class'=>'form-label'])); ?>
 
-            <?php echo e(Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Company Name'),'required'=>'required'))); ?>
+            <?php echo e(Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Company Name'),'required'=>'required','id'=>'company_name'))); ?>
 
         </div>
     </div>
     <div class="col-6">
         <div class="form-group">
-            <?php echo e(Form::label('parent_company_name',__('Parent Comapny Name'),['class'=>'form-label'])); ?>
+            <?php echo e(Form::label('parent_company_name',__('Parent Company Name'),['class'=>'form-label'])); ?>
 
             <?php echo e(Form::text('parent_company_name',null,array('class'=>'form-control','placeholder'=>__('Parent Company Name')))); ?>
 
@@ -51,7 +39,7 @@
         <div class="form-group">
             <?php echo e(Form::label('phone',__('Contact No.'),['class'=>'form-label'])); ?>
 
-            <?php echo e(Form::text('phone',null,array('class'=>'form-control','placeholder'=>__('Enter Phone'),'required'=>'required'))); ?>
+            <?php echo e(Form::text('phone',null,array('class'=>'form-control','placeholder'=>__('Enter Phone'),'required'=>'required', 'maxLength'=>'10'))); ?>
 
         </div>
     </div>
@@ -88,7 +76,6 @@
             <?php echo e(Form::label('type',__('Type'),['class'=>'form-label'])); ?>
 
             <?php echo e(Form::select('type', [
-                    '' => 'Select Type',
                     'Lead' => 'Lead',
                     'Opportunity' => 'Opportunity',
                     'Active Customer' => 'Active Customer',
@@ -225,7 +212,7 @@
             <h3 style="font-weight: 600;font-size: 18px;">Product</h3>
         </div>
     </div>
-    <div class="col-12 table-responsive">
+    <div class="col-12">
         <table id="data" class="table data-table data-table-horizontal data-table-highlight">
             <thead>
                 <tr>
@@ -300,12 +287,6 @@
 
 
 
-<script>
-    setTimeout(function() {
-        document.getElementById('success-message').style.display = 'none';
-        document.getElementById('error-message').style.display = 'none';
-    }, 3000); // Hide the message after 5 seconds (adjust the timeout value as needed)
-</script>
 <script>
     document.getElementById('poc-add-field').addEventListener('click', function() {
         const container = document.getElementById('poc-repeater-container');

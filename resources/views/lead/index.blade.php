@@ -114,7 +114,7 @@
         </div>
         <div class="col-lg-4">
             <div class="input-group mb-3">
-            <span class="input-group-text">Filter status Wise:</span>
+            <span class="input-group-text">Type:</span>
             <select class="form-select" aria-label="Default select example" name="leadType">
                 <option value="">Select...</option>
                 <option value="Lead" {{isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Lead' ? 'selected' : ''}}>Lead</option>
@@ -136,16 +136,6 @@
         </div>
     </div>
 </form>
-@if (Session::has('success'))
-<div id="success-message" class="alert alert-success" role="alert" >
-    {{ Session::get('message') }}
-</div>
-@endif
-@if (Session::has('error'))
-<div id="error-message" class="alert alert-error" role="alert" >
-    {{ Session::get('message') }}
-</div>
-@endif
 <!-- radioForm -->
 <!-- <div class="radioFormWrapper d-flex gap-2">
     <form action="LeadTab" class="radioForm active" method="get">
@@ -168,6 +158,16 @@
 <!-- radioForm -->
 <div class="row">
     <div class="col-xl-12">
+    @if (Session::has('success'))
+    <div id="success-message" class="alert alert-success" role="alert" >
+        {{ Session::get('success') }}
+    </div>
+    @endif
+    @if (Session::has('error'))
+    <div id="error-message" class="alert alert-error" role="alert" >
+        {{ Session::get('error') }}
+    </div>
+    @endif
         <div class="card">
             <div class="card-body table-border-style">
                 <div class="table-responsive">
@@ -175,10 +175,9 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="sort" data-sort="name">{{__('Company Name')}}</th>
-                                <th scope="col" class="sort" data-sort="completion">{{__('Lead Type')}}</th>
-                                <!-- <th scope="col" class="sort" data-sort="budget">{{__('Company Address')}}</th> -->
                                 <th scope="col" class="sort" data-sort="status">{{__('Company Contact No.')}}</th>
                                 <th scope="col" class="sort" data-sort="status">{{__('Email')}}</th>
+                                <th scope="col" class="sort" data-sort="completion">{{__('Lead Type')}}</th>
                                 <th scope="col" class="sort" data-sort="status">{{__('Website')}}</th>
                                 <th scope="col" class="sort" data-sort="status">{{__('Industry Vertical')}}</th>
                                 <th scope="col" class="sort" data-sort="status">{{__('Lead Owner')}}</th>
@@ -198,31 +197,31 @@
                                     </a>
                                 </td> -->
                                 <td>
-                                    <span class="budget">{{ ucfirst(!empty($lead->company_name) ? $lead->company_name:'--')}}</span>
+                                    <span class="budget">{{ ucfirst(@$lead->company_name)}}</span>
                                 </td>
 
                                 <td>
-                                    <span class="budget">{{ ucfirst(!empty($lead->type) ? $lead->type:'--')}}</span>
+                                    <span class="budget">{{ @$lead->phone }}</span>
                                 </td>
 
                                 <td>
-                                    <span class="budget">{{ !empty($lead->phone) ? $lead->phone:'--' }}</span>
+                                    <span class="budget">{{ ucfirst(@$lead->email)}}</span>
                                 </td>
 
                                 <td>
-                                    <span class="budget">{{ ucfirst(!empty($lead->email) ? $lead->email:'--')}}</span>
+                                    <span class="budget">{{ ucfirst(@$lead->type)}}</span>
                                 </td>
 
                                 <td>
-                                    <span class="budget">{{ ucfirst(!empty($lead->website) ? $lead->website:'--')}}</span>
+                                    <span class="budget">{{ ucfirst(!empty($lead->website) ? $lead->website:'-')}}</span>
                                 </td>
 
                                 <td>
-                                    <span class="budget">{{ ucfirst(!empty($lead->industry_vertical) ? $lead->industry_vertical:'--')}}</span>
+                                    <span class="budget">{{ ucfirst(!empty($lead->industry_vertical) ? $lead->industry_vertical:'-')}}</span>
                                 </td>
 
                                 <td>
-                                    <span class="budget">{{ ucfirst(!empty($lead->assign_user_id) ? $lead->assign_user_id:'--')}}</span>
+                                    <span class="budget">{{ ucfirst(!empty($lead->assign_user_id) ? $lead->assign_user_id:'-')}}</span>
                                 </td>
 
                                 @if(Gate::check('Show Lead') || Gate::check('Edit Lead') || Gate::check('Delete Lead'))
@@ -236,15 +235,17 @@
                                                 @can('Show Lead')
                                                     <a href="#" data-size="lg" data-url="{{ route('lead.show',$lead->id) }}" data-ajax-popup="true" data-title="{{__('Lead Details')}}" class="dropdown-item">View</a>
                                                 @endcan
-                                                @if(!empty($lead->industryProduct) && !empty($lead->lead_interaction) && $lead->mail_sent == 0)
+                                                @if($lead->type == 'Lead' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 0)
                                                 <form method="POST" action="{{ route('leadApprovalMail') }}">
                                                     @csrf
                                                     <input type="hidden" name="lead_id" value="{{$lead->id}}">
                                                     <button type="submit" class="dropdown-item">Send Approval Email</button>
                                                 </form>
                                                 @endif
-                                                <a href="#" data-size="lg" data-url="{{ route('addInteration',$lead->id) }}" class="dropdown-item">Add Interaction</a>
-                                                <a href="#" data-size="lg" data-url="{{ route('addQuotation',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Send Quotation')}}">Send Quotation</a>
+                                                <a href="#" data-size="lg" data-url="{{ route('addInteration',$lead->id) }}" data-ajax-popup="true" class="dropdown-item">Add Interaction</a>
+                                                @if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1)
+                                                    <a href="#" data-size="lg" data-url="{{ route('addQuotation',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Send Quotation')}}">Send Quotation</a>
+                                                @endif
                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['lead.destroy', $lead->id]]) !!}
                                                     <button type="submit" class="dropdown-item">Delete</button>
                                                 {!! Form::close() !!}

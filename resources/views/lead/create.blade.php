@@ -11,12 +11,12 @@
     <div class="col-6">
         <div class="form-group">
             {{Form::label('company_name',__('Company Name'),['class'=>'form-label']) }}
-            {{Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Company Name'),'required'=>'required'))}}
+            {{Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Company Name'),'required'=>'required','id'=>'company_name'))}}
         </div>
     </div>
     <div class="col-6">
         <div class="form-group">
-            {{Form::label('parent_company_name',__('Parent Comapny Name'),['class'=>'form-label']) }}
+            {{Form::label('parent_company_name',__('Parent Company Name'),['class'=>'form-label']) }}
             {{Form::text('parent_company_name',null,array('class'=>'form-control','placeholder'=>__('Parent Company Name')))}}
         </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="col-6">
         <div class="form-group">
             {{Form::label('phone',__('Contact No.'),['class'=>'form-label']) }}
-            {{Form::text('phone',null,array('class'=>'form-control','placeholder'=>__('Enter Phone'),'required'=>'required'))}}
+            {{Form::text('phone',null,array('class'=>'form-control','placeholder'=>__('Enter Phone'),'required'=>'required', 'maxLength'=>'10'))}}
         </div>
     </div>
     <div class="col-6">
@@ -58,7 +58,6 @@
         <div class="form-group">
             {{Form::label('type',__('Type'),['class'=>'form-label']) }}
             {{ Form::select('type', [
-                    '' => 'Select Type',
                     'Lead' => 'Lead',
                     'Opportunity' => 'Opportunity',
                     'Active Customer' => 'Active Customer',
@@ -182,7 +181,7 @@
             <h3 style="font-weight: 600;font-size: 18px;">Product</h3>
         </div>
     </div>
-    <div class="col-12 table-responsive">
+    <div class="col-12">
         <table id="data" class="table data-table data-table-horizontal data-table-highlight">
             <thead>
                 <tr>

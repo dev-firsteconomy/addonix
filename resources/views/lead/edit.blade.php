@@ -10,32 +10,11 @@
 @section('action-btn')
     
     <div class="btn-group" role="group">
-        @if(!empty($previous))
         <div class="action-btn  ms-2">
-            <a href="{{ route('lead.edit',$previous) }}" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip" title="{{__('Previous')}}">
-                <i class="ti ti-chevron-left"></i>
+            <a href="{{ route('lead.index') }}" class="btn btn-sm btn-primary btn-icon m-1">
+                Back
             </a>
         </div>
-        @else
-        <div class="action-btn  ms-2">
-            <a href="#" class="btn btn-sm btn-primary btn-icon m-1 disabled" data-bs-toggle="tooltip" title="{{__('Previous')}}">
-                <i class="ti ti-chevron-left"></i>
-            </a>
-        </div>
-        @endif
-        @if(!empty($next))
-        <div class="action-btn  ms-2">
-            <a href="{{ route('lead.edit',$next) }}" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip" title="{{__('Next')}}">
-                <i class="ti ti-chevron-right"></i>
-            </a>
-        </div>
-        @else
-        <div class="action-btn  ms-2">
-            <a href="#" class="btn btn-sm btn-primary btn-icon m-1 disabled" data-bs-toggle="tooltip" title="{{__('Next')}}">
-                <i class="ti ti-chevron-right"></i>
-            </a>
-        </div>
-        @endif
     </div>
 
 @endsection
@@ -92,7 +71,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         {{Form::label('company_name',__('Company Name'),['class'=>'form-label']) }}
-                                        {{Form::text('company_name',$lead->company_name,array('class'=>'form-control','placeholder'=>__('Enter Company Name'),'required'=>'required'))}}
+                                        {{Form::text('company_name',$lead->company_name,array('class'=>'form-control','placeholder'=>__('Enter Company Name'),'required'=>'required','id'=>'company_name'))}}
                                         @error('company_name')
                                         <span class="invalid-company_name" role="alert">
                                             <strong class="text-danger">{{ $message }}</strong>
@@ -369,7 +348,7 @@
                     <h5>Product</h5>
                 </div>
 
-                <div class="col-12 table-responsive">
+                <div class="col-12">
                     <table id="data" class="table data-table data-table-horizontal data-table-highlight">
                         <thead>
                             <tr>
@@ -389,7 +368,7 @@
                 </div>
 
                                 
-                                <div class="text-end">
+                                <div class="text-center mt-2">
                                     {{Form::submit(__('Update'),array('class'=>'btn-submit btn btn-primary'))}}
                                 </div>
 
