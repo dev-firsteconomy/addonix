@@ -95,31 +95,35 @@ class Lead extends Model
 
     public function getStatusNameAttribute()
     {
-        $status = Lead::$status[$this->status];
+        // $status = Lead::$status[$this->status];
 
-        return $this->attributes['status_name'] = $status;
+        // return $this->attributes['status_name'] = $status;
+        return null;
     }
 
     public function getAccountNameAttribute()
     {
-        $account = Lead::find($this->account);
+        // $account = Lead::find($this->account);
 
 
-        return $this->attributes['account_name'] = !empty($account) ? $account->name : '';
+        // return $this->attributes['account_name'] = !empty($account) ? $account->name : '';
+        return null;
     }
 
     public function getCampaignNameAttribute()
     {
-        $campaign = Lead::find($this->campaign);
+        // $campaign = Lead::find($this->campaign);
 
-        return $this->attributes['campaign_name'] = !empty($campaign) ? $campaign->name : '';
+        // return $this->attributes['campaign_name'] = !empty($campaign) ? $campaign->name : '';
+        return null;
     }
 
     public function getSourceNameAttribute()
     {
-        $lead_source = Lead::find($this->source);
+        // $lead_source = Lead::find($this->source);
 
-        return $this->attributes['source_name'] = !empty($lead_source) ? $lead_source->name : '';
+        // return $this->attributes['source_name'] = !empty($lead_source) ? $lead_source->name : '';
+        return null;
     }
 
     public function stages()

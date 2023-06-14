@@ -6,11 +6,7 @@
 
 <style>
 
-/* .datatable .dropdown-toggle::after {
-    display: none;
-}
-
-.radioForm input {
+.radioForm button {
     padding: 6px 10px;
     display: inline-block;
     border: 1px solid grey;
@@ -30,11 +26,11 @@
     display: none;
 }
 
-.radioForm.active  input {
+.radioForm.active  button {
     background: #2bdc52;
     color: #fff;
     border-color: #2bdc52;
-} */
+}
 
 .datatable .dropdown-toggle::after {
     display: none;
@@ -100,19 +96,20 @@
 
 <form action="leadSearch" method="get">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-5">
             <div class="input-group mb-3">
             <span class="input-group-text">From Date:</span>
             <input type="date" name="fromDate" class="form-control">
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-5">
             <div class="input-group mb-3">
             <span class="input-group-text">To Date:</span>
             <input type="date" name="toDate" class="form-control">
             </div>
         </div>
-        <div class="col-lg-4">
+        <input type="hidden" value="Lead" id="leadType" name="leadType">
+        <!-- <div class="col-lg-4">
             <div class="input-group mb-3">
             <span class="input-group-text">Type:</span>
             <select class="form-select" aria-label="Default select example" name="leadType">
@@ -123,7 +120,7 @@
                 <option value="Non Active Customer" {{isset($_REQUEST['leadType']) && $_REQUEST['leadType'] == 'Non Active Customer' ? 'selected' : ''}}>Non Active Customer</option>
             </select>
             </div>
-        </div>
+        </div> -->
         <div class="col-lg-1">
             <div class="input-group mb-3">  
                 <button class="btn btn-primary" type="submit" id="leadSearchBtn">Search!</button>
@@ -137,24 +134,20 @@
     </div>
 </form>
 <!-- radioForm -->
-<!-- <div class="radioFormWrapper d-flex gap-2">
-    <form action="LeadTab" class="radioForm active" method="get">
-        <input type="text" id="lead" name="type" value="Lead" readonly checked />
-        <label for="lead">Leads</label>
+<div class="radioFormWrapper d-flex gap-4 mb-3">
+    <form action="leadTab" class="radioForm" method="get">
+        <button class="tabBtn" type="submit" id="lead" name="type" value="Lead">Leads</button>
     </form>
-    <form action="LeadTab" class="radioForm" method="get">
-        <input type="text" id="opportunity" name="type" value="Opportunity" readonly />
-        <label for="opportunity">Opportunities</label>
+    <form action="leadTab" class="radioForm" method="get">
+        <button class="tabBtn" type="submit" id="opportunity" name="type" value="Opportunity">Opportunity</button>
     </form>
-    <form action="LeadTab" class="radioForm" method="get">
-        <input type="text" id="active_customer" name="type" value="Active Customer" readonly />
-        <label for="active_customer">Active Customers</label>
+    <form action="leadTab" class="radioForm" method="get">
+        <button class="tabBtn" type="submit" id="active_customer" name="type" value="Active Customer">Active Customer</button>
     </form>
-    <form action="LeadTab" class="radioForm" method="get">
-        <input type="text" id="non_active_customer" name="type" value="Non Active Customer" readonly />
-        <label for="non_active_customer">Dead Leads</label>
+    <form action="leadTab" class="radioForm" method="get">
+        <button class="tabBtn" type="submit" id="non_active_customer" name="type" value="Non Active Customer">Non Active Customer</button>
     </form>
-</div> -->
+</div>
 <!-- radioForm -->
 <div class="row">
     <div class="col-xl-12">
@@ -267,32 +260,57 @@
 
 @push('script-page')
 <script>
+    $(document).ready(function() {
+
+        const currentUrl = window.location.href;
+
+        // Check if the URL contains 'leadTab?type'
+        if (currentUrl.includes('leadTab?type') || currentUrl.includes('leadSearch?')) {
+            // Check if we have a stored value for "lastClickedButton"
+            var lastClickedButton = localStorage.getItem('lastClickedButton') ? localStorage.getItem('lastClickedButton') : 'lead' ;
+            var lastClickedType = localStorage.getItem('lastClickedType') ? localStorage.getItem('lastClickedType') : 'lead' ;
+            
+            if (lastClickedButton) {
+                // If we do, add 'active' class to the button
+                $('#' + lastClickedButton).parent().addClass('active');
+            }
+
+            if(lastClickedType){
+                $('#leadType').val(lastClickedType);
+            }
+        }else{
+            $('#lead').parent().addClass('active'); 
+        }
+
+
+        $(".tabBtn").click(function() {
+            // When a button is clicked, remove 'active' class from all buttons
+            $('.tabBtn').removeClass('active');
+            
+            // Add 'active' class to clicked button
+            $(this).addClass('active');
+
+            // Store the id of the clicked button
+            localStorage.setItem('lastClickedButton', this.id);
+            localStorage.setItem('lastClickedType', this.value);
+
+            $('#leadType').val(this.value);
+
+            // ... continue with your existing click handler code ...
+        });
+
+        
+        // $(".radioForm").click(function(){
+        //     $(this).addClass('active')
+        //     $(this).siblings().removeClass('active')
+        // })
+    });
+
+
     setTimeout(function() {
         document.getElementById('success-message').style.display = 'none';
         document.getElementById('error-message').style.display = 'none';
     }, 3000);
-
-
-    // $(".radioForm").click(function(){
-    //     $(this).addClass('active')
-    //     $(this).siblings().removeClass('active')
-    // })
-
-    // $('#lead').click(function(){
-    //     $('#leadType').val('Lead');
-    // })
-
-    // $('#opportunity').click(function(){
-    //     $('#leadType').val('Opportunity');
-    // })
-
-    // $('#active_customer').click(function(){
-    //     $('#leadType').val('Active Customer');
-    // })
-
-    // $('#non_active_customer').click(function(){
-    //     $('#leadType').val('Non Active Customer');
-    // })
 
     $(document).ready(function() {
         $(document).on('change','#product-select',function() {

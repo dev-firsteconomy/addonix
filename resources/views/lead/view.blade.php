@@ -153,7 +153,7 @@
 
                 <div class="col-12">
                     <hr class="mt-2 mb-2">
-                    <h5>Interactions Done List</h5>
+                    <h5>Interaction History</h5>
                 </div>
 
                 <div class="col-12 table-responsive">
@@ -189,7 +189,7 @@
 
                 <div class="col-12">
                     <hr class="mt-2 mb-2">
-                    <h5>Quotation Sent List</h5>
+                    <h5>Quotation History</h5>
                 </div>
 
                 <div class="col-12 table-responsive">

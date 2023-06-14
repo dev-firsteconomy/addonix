@@ -438,7 +438,28 @@
 
         // Call toggleRemoveButtons initially to disable the remove button if there's only one repeater row initially
         toggleRemoveButtons();
+
+        //AUTOCOMPLETE
+        $(document).ready(function() {
+            // $(document).on('keyup', '#company_name', function() {
+                $('#company_name').autocomplete({
+                    source: function(request, response) {
+                        $.ajax({
+                            url: "/companies/search",
+                            type: "GET",
+                            dataType:"json",
+                            data: {
+                                term: $('#company_name').val()
+                            },
+                            success: function(data) {
+                                response(data);
+                            }
+                        });
+                    },
+                    minLength: 2
+                });
+            // });
+        });
+        //AUTOCOMPLETE
     </script>
-
-
 @endpush

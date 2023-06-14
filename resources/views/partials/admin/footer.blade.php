@@ -12,6 +12,7 @@
 <script src="{{ asset('js/letter.avatar.js') }}"></script>
 <!-- <script type="text/javascript" src="{{ asset('js/jquery.min.js')}}"></script> -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <script src="{{ asset('assets/js/plugins/bootstrap-switch-button.min.js') }}"></script>
 <script src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>

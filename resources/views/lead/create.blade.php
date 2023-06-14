@@ -11,7 +11,7 @@
     <div class="col-6">
         <div class="form-group">
             {{Form::label('company_name',__('Company Name'),['class'=>'form-label']) }}
-            {{Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Company Name'),'required'=>'required','id'=>'company_name'))}}
+            {{Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Company Name'),'required'=>'required'))}}
         </div>
     </div>
     <div class="col-6">

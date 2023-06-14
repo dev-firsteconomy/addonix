@@ -49,7 +49,8 @@
     <link rel="icon" href="<?php echo e($logo . '/' . (isset($company_favicon) && !empty($company_favicon) ? $company_favicon : 'favicon.png')); ?>"
         type="image/png" sizes="16x16">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-
+    
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugins/animate.min.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugins/main.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('assets/fonts/tabler-icons.min.css')); ?>">
@@ -97,6 +98,6 @@
     
     <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />
     <?php echo $__env->yieldPushContent('css-page'); ?>
-
+    
 </head>
 <?php /**PATH C:\xampp\htdocs\projects\addonix\resources\views/partials/admin/head.blade.php ENDPATH**/ ?>

@@ -319,12 +319,12 @@ class LeadController extends Controller
         }
     }
     
-    public function search(Request $request)
+    public function companySearch(Request $request)
     {
-        $query = $request->get('term','');
-        dd($query,1236);
-            
-        $companies = Lead::where('company_name','LIKE','%'.$query.'%')->get();
+        $query = $request->get('term');
+
+        $companies = Lead::where('company_name','LIKE','%'.$query.'%')->pluck('company_name');
+
             
         return response()->json($companies);
     }
@@ -359,7 +359,7 @@ class LeadController extends Controller
      */
     public function edit(Lead $lead)
     {
-        
+
         if (Auth::user()->can('Edit Lead')) 
         {
             $user = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
@@ -368,7 +368,7 @@ class LeadController extends Controller
             $next = Lead::where('id', '>', $lead->id)->min('id');
             $products    = Product::get()->pluck('name', 'id');
             $selectedProducts = IndustryProduct::where('lead_id',$lead->id)->get()->pluck('product_id');
-
+        
             return view('lead.edit', compact('lead','previous','next','products','selectedProducts','user'));
         } 
         else 
@@ -707,7 +707,7 @@ class LeadController extends Controller
 
     public function leadTab(Request $request)
     {
-        $leadType = !empty($request->leadType) ? $request->leadType : 'Lead';
+        $leadType = !empty($request->type) ? $request->type : 'Lead';
 
         $leads = Lead::query();
 

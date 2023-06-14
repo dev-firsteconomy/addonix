@@ -15,7 +15,7 @@
         <div class="form-group">
             <?php echo e(Form::label('company_name',__('Company Name'),['class'=>'form-label'])); ?>
 
-            <?php echo e(Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Company Name'),'required'=>'required','id'=>'company_name'))); ?>
+            <?php echo e(Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Company Name'),'required'=>'required'))); ?>
 
         </div>
     </div>

@@ -48,7 +48,8 @@
     <link rel="icon" href="{{ $logo . '/' . (isset($company_favicon) && !empty($company_favicon) ? $company_favicon : 'favicon.png') }}"
         type="image/png" sizes="16x16">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/animate.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/main.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
@@ -96,5 +97,5 @@
     {{-- styles --}}
     <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />
     @stack('css-page')
-
+    
 </head>
