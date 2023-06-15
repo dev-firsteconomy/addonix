@@ -15,6 +15,18 @@
         </div>
     </div>
     <div class="col-3">
+        {{Form::label('quantity',__('Quantity'),['class'=>'form-label']) }}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button type="button" class="btn btn-outline-secondary" id="decreaseButton">-</button>
+            </div>
+            <input type="text" class="form-control" id="quantityInput" value="1" name="quantity">
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" id="increaseButton">+</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
         <div class="form-group">
             {{Form::label('price',__('Price'),['class'=>'form-label']) }}
             {{Form::text('price',null,array('class'=>'form-control','required'=>'required', 'id' => 'price-input', 'readonly'=>'readonly'))}}
@@ -36,7 +48,7 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn  btn-light" data-bs-dismiss="modal">Close</button>
-    {{Form::submit(__('Save'),array('class'=>'btn btn-primary '))}}
+    {{Form::submit(__('Download'),array('class'=>'btn btn-primary '))}}
 </div>
 </div>
 {{Form::close()}}

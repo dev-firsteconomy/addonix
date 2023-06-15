@@ -70,7 +70,7 @@ class LeadController extends Controller
      */
     public function create($type, $id,Request $request)
     {
-        
+
         if (\Auth::user()->can('Create Lead')) 
         {
             $user       = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
@@ -283,16 +283,28 @@ class LeadController extends Controller
                 LeadQuotation::create([
                     'lead_id'=> (int)$request->lead_id,
                     'product_id'=>$request->product_id,
+                    // 'quantity'=>$request->quantity,
                     'price'=>$request->price,
                     'discount'=>$request->discount,
                     'final_amount'=>$request->final_amount,
                 ]); 
 
-                $lead = Lead::where('id',$request->lead_id)->first();
-                $ccEmails = IndustryPerson::where('lead_id',$request->lead_id)->pluck('email_id')->toArray();
-                $lead_quotations = LeadQuotation::where('lead_id',$request->lead_id)->get();
+                $quotationData['quantity'] = $request->quantity;
+                $quotationData['discount'] = $request->discount;
+                $quotationData['final_amount'] = $request->final_amount;
 
-                $mail =  Mail::to(@$lead->email)->cc($ccEmails)->send(new SendQuotationMail($lead,$lead_quotations));
+                $lead = Lead::where('id',$request->lead_id)->first();
+                $product = Product::where('id',$request->product_id)->first();
+                // $ccEmails = IndustryPerson::where('lead_id',$request->lead_id)->pluck('email_id')->toArray();
+                // $lead_quotations = LeadQuotation::where('lead_id',$request->lead_id)->get();
+
+                $pdf = \PDF::loadView('lead.download_quotation',compact('lead','quotationData','product'));
+                return $pdf->download($lead->company_name."-".date('Y-m-d H:i:s').".pdf");
+
+                // return view('lead.download_quotation',compact('lead','quotationData','product'));
+
+
+                // $mail =  Mail::to(@$lead->email)->cc($ccEmails)->send(new SendQuotationMail($lead,$lead_quotations));
 
                 DB::commit();
 
@@ -305,6 +317,18 @@ class LeadController extends Controller
             DB::rollback();
             return redirect('lead')->with('error', 'Something Went Wrong');
         }   
+    }
+
+    public function addPerforma(Request $request)
+    {
+        $lead=Lead::where('id',$request->id)->first();
+        $products= Product::pluck('name','id');
+        $products->prepend('Select Product', '');
+        if (\Auth::user()->can('Show Lead')) {
+            return view('lead.addPerforma', compact('lead','products'));
+        } else {
+            return redirect()->back()->with('error', 'permission Denied');
+        }
     }
 
     public function getProductPrice(Request $request)

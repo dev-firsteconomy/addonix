@@ -14,6 +14,7 @@ class LeadQuotation extends Model
     protected     $fillable = [
         'lead_id',
         'product_id',
+        // 'quantity',
         'price',
         'discount',
         'final_amount'

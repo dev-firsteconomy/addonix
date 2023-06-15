@@ -332,6 +332,7 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('get-product-price', [LeadController::class, 'getProductPrice'])->name('get-product-price');
             Route::get('addInteration/{id}', [LeadController::class, 'addInteration'])->name('addInteration');
             Route::get('addQuotation/{id}', [LeadController::class, 'addQuotation'])->name('addQuotation');
+            Route::get('addPerforma/{id}', [LeadController::class, 'addPerforma'])->name('addPerforma');
             Route::get('changeStatus/{id}', [LeadController::class, 'changeStatus'])->name('changeStatus');
             Route::post('submitInteraction', [LeadController::class, 'submitInteraction'])->name('submitInteraction'); 
             Route::post('sendQuotation', [LeadController::class, 'sendQuotation'])->name('sendQuotation'); 

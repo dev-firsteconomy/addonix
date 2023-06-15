@@ -242,7 +242,10 @@
                                                 <?php endif; ?>
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" data-ajax-popup="true" class="dropdown-item">Add Interaction</a>
                                                 <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
-                                                    <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Send Quotation')); ?>">Send Quotation</a>
+                                                    <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Quotation</a>
+                                                <?php endif; ?>
+                                                <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
+                                                    <a href="#" data-size="lg" data-url="<?php echo e(route('addPerforma',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Performa Invoice')); ?>">Generate Performa Invoice</a>
                                                 <?php endif; ?>
                                                 <?php echo Form::open(['method' => 'DELETE', 'route' => ['lead.destroy', $lead->id]]); ?>
 
@@ -267,6 +270,7 @@
 
 <?php $__env->startPush('script-page'); ?>
 <script>
+    let productPrice;
     $(document).ready(function() {
 
         const currentUrl = window.location.href;
@@ -320,6 +324,36 @@
     }, 3000);
 
     $(document).ready(function() {
+        var quantity = 1;
+
+        $(document).on('click', '#increaseButton', function() {
+            var quantity = parseInt($("#quantityInput").val());
+            quantity++;
+            $("#quantityInput").val(quantity);
+            if(typeof productPrice !== "undefined"){ // Check if productPrice is defined.
+                var quantityPrice = quantity * productPrice;
+                $('#price-input').val(quantityPrice);
+            } else {
+                $('#price-input').val('');
+            }
+        });
+
+
+        $(document).on('click', '#decreaseButton', function() {
+            var quantity = parseInt($("#quantityInput").val()); // Added parseInt to convert the value to a number.
+            if(quantity > 1) {
+                quantity--;
+                $("#quantityInput").val(quantity);
+                if(typeof productPrice !== "undefined"){ // Added typeof to check if productPrice is defined.
+                    var quantityPrice = quantity * productPrice;
+                    $('#price-input').val(quantityPrice);
+                } else {
+                    $('#price-input').val('');
+                }
+            }
+        });
+
+    
         $(document).on('change','#product-select',function() {
             var productId = $(this).val();
             if (productId !== '') {
@@ -330,7 +364,9 @@
                     data: { productId: productId },
                     success: function(response) {
                         // Update the price input with the fetched price
-                        $('#price-input').val(response.price);
+                        productPrice = response.price;
+                        var quantityPrice = $('#quantityInput').val() * productPrice;
+                        $('#price-input').val(quantityPrice)
                     },
                     error: function() {
                         // Handle error if the AJAX request fails
