@@ -96,7 +96,7 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                     </li>
                 @endcan -->
                 @can('Manage Lead')
-                    <li class="dash-item {{ \Request::route()->getName() == 'lead' || \Request::route()->getName() == 'lead.edit' ? ' active' : '' }}">
+                    <li class="dash-item {{ \Request::route()->getName() == 'lead' || \Request::route()->getName() == 'lead.create' || \Request::route()->getName() == 'lead.edit' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('lead')) ? route(\Auth::user()->getDefualtViewRouteByModule('lead')) : route('lead.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-filter"></i></span><span class="dash-mtext">{{ __('Leads') }}</span>
                         </a>

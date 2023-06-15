@@ -166,7 +166,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-6">
                                     <div class="form-group">
                                         {{Form::label('description',__('Description'),['class'=>'form-label']) }}
@@ -178,7 +178,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                 <div class="col-6">
+                                <!--<div class="col-6">
                                 <div class="form-group">
                                     {{Form::label('sku',__('SKU'),['class'=>'form-label']) }}
                                     {!!Form::text('sku',null,array('class' => 'form-control','required'=>'required')) !!}

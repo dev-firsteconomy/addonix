@@ -112,8 +112,10 @@ class ProductController extends Controller
             $product                = new Product();
             $product['user_id']     =\Auth::user()->id;
             $product['name']        = $request->name;
+            $product['description']        = $request->description;
             $product['status']      = $request->status;
             $product['price']      = $request->price;
+            $product['created_by']      = \Auth::user()->id;
             $product->save();
 
             // $product['category']    = $request->category;
@@ -235,8 +237,10 @@ class ProductController extends Controller
 
             $product['user_id']     =\Auth::user()->id;
             $product['name']        = $request->name;
+            $product['description']        = $request->description;
             $product['status']      = $request->status;
             $product['price']      = $request->price;
+            $product['updated_by']      = \Auth::user()->id;;
 
             // $product['user_id']     = $request->user;
             // $product['name']        = $request->name;

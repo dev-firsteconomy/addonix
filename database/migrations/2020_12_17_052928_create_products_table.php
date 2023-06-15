@@ -26,7 +26,8 @@ class CreateProductsTable extends Migration
             $table->string('weight')->nullable();
             $table->string('URL')->nullable();
             $table->text('description')->nullable();
-            $table->integer('created_by')->default(0);
+            $table->integer('created_by');
+            $table->integer('updated_by');
             $table->timestamps();
         });
     }

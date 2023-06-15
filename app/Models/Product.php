@@ -19,6 +19,7 @@ class Product extends Model
         'URL',
         'sku',
         'created_by',
+        'updated_by',
         'description',
     ];
 

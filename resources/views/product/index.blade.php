@@ -53,7 +53,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col" class="sort" data-sort="name">{{ __('Name') }}</th>
-                                        <!-- <th scope="col" class="sort" data-sort="Brand">{{ __('Brand') }}</th> -->
+                                        <th scope="col" class="sort" data-sort="Description">{{ __('Description') }}</th>
                                         <!-- <th scope="col" class="sort" data-sort="Status">{{ __('Status') }}</th> -->
                                         <th scope="col" class="sort" data-sort="Price">{{ __('Price') }}</th>
                                         <!-- <th scope="col" class="sort" data-sort="assign User">
@@ -74,6 +74,9 @@
                                                     class="action-item text-primary">
                                                     {{ ucfirst($product->name) }}
                                                 </a>
+                                            </td>
+                                            <td>
+                                                {{ $product->description ? $product->description : '-' }}
                                             </td>
                                             <td>
                                                 {{ $product->price ? $product->price : '-' }}

@@ -194,17 +194,17 @@ class LeadController extends Controller
     
                 DB::commit();
                     
-                return redirect()->back()->with('success', __('Lead Successfully Created.'));
+                return redirect('lead')->with('success', __('Lead Successfully Created.'));
             } 
             else 
             {
-                return redirect()->back()->with('error', 'permission Denied');
+                return redirect('lead')->with('error', 'permission Denied');
             }
 
         }catch(\Exception $e){
             // dd('error',$e);
             DB::rollback();
-            return redirect()->back()->with('error', 'Something Went Wrong');
+            return redirect('lead')->with('error', 'Something Went Wrong');
         }
 
        
@@ -226,7 +226,7 @@ class LeadController extends Controller
             return redirect('lead')->with('success', 'Mail Sent Successfully.');
 
         }catch(\Exception $e){
-            return redirect()->back()->with('error', 'Something Went Wrong');
+            return redirect('lead')->with('error', 'Something Went Wrong');
         }
     }
 
@@ -236,7 +236,7 @@ class LeadController extends Controller
         if (\Auth::user()->can('Show Lead')) {
             return view('lead.addInteration', compact('lead'));
         } else {
-            return redirect()->back()->with('error', 'permission Denied');
+            return redirect('lead')->with('error', 'permission Denied');
         }
     }
     
@@ -271,7 +271,7 @@ class LeadController extends Controller
         if (\Auth::user()->can('Show Lead')) {
             return view('lead.addQuotation', compact('lead','products'));
         } else {
-            return redirect()->back()->with('error', 'permission Denied');
+            return redirect('lead')->with('error', 'permission Denied');
         }
     }
     
@@ -327,7 +327,7 @@ class LeadController extends Controller
         if (\Auth::user()->can('Show Lead')) {
             return view('lead.addPerforma', compact('lead','products'));
         } else {
-            return redirect()->back()->with('error', 'permission Denied');
+            return redirect('lead')->with('error', 'permission Denied');
         }
     }
 
@@ -370,7 +370,7 @@ class LeadController extends Controller
             $lead_interaction=lead_interaction::where('lead_id',$lead->id)->get();
             return view('lead.view', compact('lead','leadProducts','leadPoc','lead_interaction'));
         } else {
-            return redirect()->back()->with('error', 'permission Denied');
+            return redirect('lead')->with('error', 'permission Denied');
         }
     }
 
@@ -397,7 +397,7 @@ class LeadController extends Controller
         } 
         else 
         {
-            return redirect()->back()->with('error', 'permission Denied');
+            return redirect('lead')->with('error', 'permission Denied');
         }
 
         // dd($lead);
@@ -560,12 +560,12 @@ class LeadController extends Controller
 
                 return redirect('lead')->with('success', __('Lead Successfully Updated.'));
             } else {
-                return redirect()->back()->with('error', 'permission Denied');
+                return redirect('lead')->with('error', 'permission Denied');
             }
         }catch(\Exception $e){
             // dd('error',$e);
             DB::rollback();
-            return redirect()->back()->with('error', 'Something Went Wrong');
+            return redirect('lead')->with('error', 'Something Went Wrong');
         }
     }
 
@@ -581,9 +581,9 @@ class LeadController extends Controller
         if (\Auth::user()->can('Delete Lead')) {
             $lead->delete();
 
-            return redirect()->back()->with('success', __('Lead Successfully Deleted.'));
+            return redirect('lead')->with('success', __('Lead Successfully Deleted.'));
         } else {
-            return redirect()->back()->with('error', 'permission Denied');
+            return redirect('lead')->with('error', 'permission Denied');
         }
     }
 
@@ -643,7 +643,7 @@ class LeadController extends Controller
 
             return view('lead.convert', compact('lead', 'accountype', 'industry', 'user', 'document_id'));
         } else {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect('lead')->with('error', __('Permission denied.'));
         }
     }
 
@@ -666,7 +666,7 @@ class LeadController extends Controller
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
-                return redirect()->back()->with('error', $messages->first());
+                return redirect('lead')->with('error', $messages->first());
             }
 
             $account                        = new account();
@@ -697,9 +697,9 @@ class LeadController extends Controller
             $lead->is_converted = $account->id;
             $lead->save();
 
-            return redirect()->back()->with('success', __('Lead successfully converted.'));
+            return redirect('lead')->with('success', __('Lead successfully converted.'));
         } else {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect('lead')->with('error', __('Permission denied.'));
         }
     }
 

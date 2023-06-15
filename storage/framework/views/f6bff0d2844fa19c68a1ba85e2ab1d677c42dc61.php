@@ -95,7 +95,7 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                     </li>
                 <?php endif; ?> -->
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Lead')): ?>
-                    <li class="dash-item <?php echo e(\Request::route()->getName() == 'lead' || \Request::route()->getName() == 'lead.edit' ? ' active' : ''); ?>">
+                    <li class="dash-item <?php echo e(\Request::route()->getName() == 'lead' || \Request::route()->getName() == 'lead.create' || \Request::route()->getName() == 'lead.edit' ? ' active' : ''); ?>">
                         <a href="<?php echo e(!empty(\Auth::user()->getDefualtViewRouteByModule('lead')) ? route(\Auth::user()->getDefualtViewRouteByModule('lead')) : route('lead.index')); ?>" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-filter"></i></span><span class="dash-mtext"><?php echo e(__('Leads')); ?></span>
                         </a>

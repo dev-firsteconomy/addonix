@@ -56,14 +56,14 @@
             {{Form::label('URL',__('URL'),['class'=>'form-label']) }}
             {{Form::text('URL',null,array('class'=>'form-control','placeholder'=>__('Enter URL'),'required'=>'required'))}}
         </div>
-    </div>
-    <div class="col-12">
+    </div>-->
+    <div class="col-6">
         <div class="form-group">
             {{Form::label('description',__('Description'),['class'=>'form-label']) }}
             {{Form::textarea('description',null,array('class'=>'form-control','rows'=>2,'placeholder'=>__('Enter Description')))}}
         </div>
     </div>
-    <div class="col-6">
+    <!--<div class="col-6">
         <div class="form-group">
             {{Form::label('Assign User',__('Assign User'),['class'=>'form-label']) }}
             {!! Form::select('user', $user, null,array('class' => 'form-control')) !!}
