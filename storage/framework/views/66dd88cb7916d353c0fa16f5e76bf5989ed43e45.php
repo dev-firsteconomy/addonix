@@ -82,7 +82,7 @@
 </a> -->
 
 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create Lead')): ?>
-<a href="#" data-url="<?php echo e(route('lead.create',['lead',0])); ?>" data-size="lg" data-ajax-popup="true"
+<a href="<?php echo e(route('lead.create',['',''])); ?>" 
     data-bs-toggle="tooltip" data-title="<?php echo e(__('Create New Lead')); ?>" title="<?php echo e(__('Create')); ?>"
     class="btn btn-sm btn-primary btn-icon m-1">
     <i class="ti ti-plus"></i>

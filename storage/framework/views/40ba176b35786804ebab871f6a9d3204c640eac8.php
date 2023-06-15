@@ -1,7 +1,38 @@
+
+
+<?php $__env->startSection('page-title'); ?>
+    <?php echo e(__('Lead Create')); ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('title'); ?>
+<div class="page-header-title">
+    <?php echo e(__('Create Lead')); ?>
+
+</div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('action-btn'); ?>
+<div class="btn-group" role="group">
+    <div class="action-btn  ms-2">
+        <a href="<?php echo e(route('lead.index')); ?>" class="btn btn-sm btn-primary btn-icon m-1">
+            Back
+        </a>
+    </div>
+</div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('breadcrumb'); ?>
+<li class="breadcrumb-item"><a href="<?php echo e(route('dashboard')); ?>"><?php echo e(__('Home')); ?></a></li>
+<li class="breadcrumb-item"><a href="<?php echo e(route('lead.index')); ?>"><?php echo e(__('Lead')); ?></a></li>
+<li class="breadcrumb-item"><?php echo e(__('Create')); ?></li>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+
 <?php echo e(Form::open(array('url'=>'lead','method'=>'post','enctype'=>'multipart/form-data'))); ?>
 
 <div class="row">
-
     <div class="col-12">
         <div class="form-group">
             <?php echo e(Form::label('Source',__('Source'),['class'=>'form-label'])); ?>
@@ -10,7 +41,6 @@
 
         </div>
     </div>
-
     <div class="col-6">
         <div class="form-group">
             <?php echo e(Form::label('company_name',__('Company Name'),['class'=>'form-label'])); ?>
@@ -274,19 +304,17 @@
             <button class="btn btn-danger" type="button" id="interaction-remove-field"><i class="ti ti-minus"></i></button>
         </div>
     </div>
+    <div class="modal-footer">
+        <button type="button" class="btn  btn-light" data-bs-dismiss="modal">Close</button>
+        <?php echo e(Form::submit(__('Save'),array('class'=>'btn btn-primary '))); ?>
 
-
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn  btn-light" data-bs-dismiss="modal">Close</button>
-    <?php echo e(Form::submit(__('Save'),array('class'=>'btn btn-primary '))); ?>
-
-</div>
+    </div>
 </div>
 <?php echo e(Form::close()); ?>
 
+<?php $__env->stopSection(); ?>
 
-
+<?php $__env->startPush('script-page'); ?>
 <script>
     document.getElementById('poc-add-field').addEventListener('click', function() {
         const container = document.getElementById('poc-repeater-container');
@@ -337,9 +365,32 @@
             lastRow1.parentNode.removeChild(lastRow1);
         }
     });
+
+    //AUTOCOMPLETE
+    $(document).ready(function() {
+        $('#company_name').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/companies/search",
+                    type: "GET",
+                    dataType:"json",
+                    data: {
+                        term: $('#company_name').val()
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 2
+        });
+    });
+    //AUTOCOMPLETE
 </script>
+<?php $__env->stopPush(); ?>
 
 
 
 
-<?php /**PATH C:\xampp\htdocs\projects\addonix\resources\views/lead/create.blade.php ENDPATH**/ ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\projects\addonix\resources\views/lead/create.blade.php ENDPATH**/ ?>

@@ -68,7 +68,7 @@ class LeadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($type, $id,Request $request)
+    public function create(Request $request)
     {
 
         if (\Auth::user()->can('Create Lead')) 
@@ -92,7 +92,7 @@ class LeadController extends Controller
             $activities->prepend('Select Type', 0);
             $status     = Lead::$status;
 
-            return view('lead.create', compact('status', 'leadsource','products', 'user', 'account', 'type', 'industry', 'activities','industryVertical', 'campaign', 'type', 'id'));
+            return view('lead.create', compact('status', 'leadsource','products', 'user', 'account', 'type', 'industry', 'activities','industryVertical', 'campaign'));
         } else {
             return redirect()->back()->with('error', 'permission Denied');
         }

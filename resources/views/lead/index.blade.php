@@ -80,7 +80,7 @@
 </a> -->
 
 @can('Create Lead')
-<a href="#" data-url="{{ route('lead.create',['lead',0]) }}" data-size="lg" data-ajax-popup="true"
+<a href="{{ route('lead.create') }}" 
     data-bs-toggle="tooltip" data-title="{{__('Create New Lead')}}" title="{{__('Create')}}"
     class="btn btn-sm btn-primary btn-icon m-1">
     <i class="ti ti-plus"></i>

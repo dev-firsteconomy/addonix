@@ -322,7 +322,7 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('lead/grid', [LeadController::class, 'grid'])->name('lead.grid');
             Route::resource('lead', LeadController::class);
             Route::post('lead/change-order', [LeadController::class, 'changeorder'])->name('lead.change.order');
-            Route::get('lead/create/{type}/{id}', [LeadController::class, 'create'])->name('lead.create');
+            Route::get('lead/create', [LeadController::class, 'create'])->name('lead.create');
             Route::get('lead/{id}/show_convert', [LeadController::class, 'showConvertToAccount'])->name('lead.convert.account');
             Route::post('lead/{id}/convert', [LeadController::class, 'convertToAccount'])->name('lead.convert.to.account');
             

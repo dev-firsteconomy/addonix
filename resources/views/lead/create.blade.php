@@ -1,13 +1,41 @@
+@extends('layouts.admin')
+
+@section('page-title')
+    {{__('Lead Create')}}
+@endsection
+
+@section('title')
+<div class="page-header-title">
+    {{__('Create Lead')}}
+</div>
+@endsection
+
+@section('action-btn')
+<div class="btn-group" role="group">
+    <div class="action-btn  ms-2">
+        <a href="{{ route('lead.index') }}" class="btn btn-sm btn-primary btn-icon m-1">
+            Back
+        </a>
+    </div>
+</div>
+@endsection
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{__('Home')}}</a></li>
+<li class="breadcrumb-item"><a href="{{route('lead.index')}}">{{__('Lead')}}</a></li>
+<li class="breadcrumb-item">{{__('Create')}}</li>
+@endsection
+
+@section('content')
+
 {{Form::open(array('url'=>'lead','method'=>'post','enctype'=>'multipart/form-data'))}}
 <div class="row">
-
     <div class="col-12">
         <div class="form-group">
             {{Form::label('Source',__('Source'),['class'=>'form-label']) }}
             {{Form::select('source',[''=>'Select source','Referral'=>'Referral','Digital'=>'Digital','Offline'=>'Offline','Other'=>'Other'],null,array('class'=>'form-control'))}}
         </div>
     </div>
-
     <div class="col-6">
         <div class="form-group">
             {{Form::label('company_name',__('Company Name'),['class'=>'form-label']) }}
@@ -236,17 +264,15 @@
             <button class="btn btn-danger" type="button" id="interaction-remove-field"><i class="ti ti-minus"></i></button>
         </div>
     </div>
-
-
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn  btn-light" data-bs-dismiss="modal">Close</button>
-    {{Form::submit(__('Save'),array('class'=>'btn btn-primary '))}}
-</div>
+    <div class="modal-footer">
+        <button type="button" class="btn  btn-light" data-bs-dismiss="modal">Close</button>
+        {{Form::submit(__('Save'),array('class'=>'btn btn-primary '))}}
+    </div>
 </div>
 {{Form::close()}}
+@endsection
 
-
+@push('script-page')
 <script>
     document.getElementById('poc-add-field').addEventListener('click', function() {
         const container = document.getElementById('poc-repeater-container');
@@ -297,7 +323,29 @@
             lastRow1.parentNode.removeChild(lastRow1);
         }
     });
+
+    //AUTOCOMPLETE
+    $(document).ready(function() {
+        $('#company_name').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/companies/search",
+                    type: "GET",
+                    dataType:"json",
+                    data: {
+                        term: $('#company_name').val()
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 2
+        });
+    });
+    //AUTOCOMPLETE
 </script>
+@endpush
 
 
 
