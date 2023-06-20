@@ -336,6 +336,7 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('changeStatus/{id}', [LeadController::class, 'changeStatus'])->name('changeStatus');
             Route::post('submitInteraction', [LeadController::class, 'submitInteraction'])->name('submitInteraction'); 
             Route::post('sendQuotation', [LeadController::class, 'sendQuotation'])->name('sendQuotation'); 
+            Route::post('sendPerforma', [LeadController::class, 'sendPerforma'])->name('sendPerforma'); 
             Route::post('send-approval-mail', [LeadController::class, 'sendApprovalEmail'])->name('leadApprovalMail');           
         }
     );

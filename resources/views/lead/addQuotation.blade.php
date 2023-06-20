@@ -1,13 +1,7 @@
 {{Form::open(array('url'=>'sendQuotation','method'=>'post','enctype'=>'multipart/form-data'))}}
 <div class="row">
-<!-- 
-    <div class="col-12 mt-4">
-        <div class="form-heading">
-            <h3 style="font-weight: 600;font-size: 18px;">Send Quotation</h3>
-        </div>
-    </div> -->
-    {{Form::hidden('lead_id',$lead->id,array('class'=>'form-control','required'=>'required'))}}
     @csrf
+    {{Form::hidden('lead_id',$lead->id,array('class'=>'form-control','required'=>'required'))}}
     <div class="col-3">
         <div class="form-group">
             {{Form::label('product_id',__('Product'),['class'=>'form-label']) }}

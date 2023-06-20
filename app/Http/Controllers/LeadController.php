@@ -316,7 +316,7 @@ class LeadController extends Controller
 
                 // Save file
                 $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-                $file = $lead->company_name.'word-file.docx';
+                $file = $lead->company_name.'quotation.docx';
                 $path = public_path($file);
                 $objWriter->save($path);
 
@@ -352,6 +352,76 @@ class LeadController extends Controller
         } else {
             return redirect('lead')->with('error', 'permission Denied');
         }
+    }
+
+    public function sendPerforma(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Create Lead')) {
+                LeadQuotation::create([
+                    'lead_id'=> (int)$request->lead_id,
+                    'invoice_no'=>$request->invoice_no,
+                    'date'=>$request->date,
+                    'buyers_order_no'=>$request->buyers_order_no,
+                    'buyer'=>$request->buyer,
+                    'address'=>$request->address,
+                    'to_name'=>$request->to_name,
+                    'gst_no'=>$request->gst_no,
+                    'product_id'=>$request->product_id,
+                    'quantity'=>$request->quantity,
+                    'price'=>$request->price,
+                    'discount'=>$request->discount,
+                    'final_amount'=>$request->final_amount,
+                ]); 
+
+                $performaData['invoice_no'] = $request->invoice_no;
+                $performaData['date'] = $request->date;
+                $performaData['buyers_order_no'] = $request->buyers_order_no;
+                $performaData['buyer'] = $request->buyer;
+                $performaData['address'] = $request->address;
+                $performaData['to_name'] = $request->to_name;
+                $performaData['gst_no'] = $request->gst_no;
+                $performaData['quantity'] = $request->quantity;
+                $performaData['discount'] = $request->discount;
+                $performaData['final_amount'] = $request->final_amount;
+
+                $lead = Lead::where('id',$request->lead_id)->first();
+                $product = Product::where('id',$request->product_id)->first();
+
+
+                // WORD CODE
+                $phpWord = new \PhpOffice\PhpWord\PhpWord();
+                
+                $section = $phpWord->addSection();
+
+                // Defining the HTML content
+                $htmlContent = view('lead.download_performa',compact('lead','performaData','product'))->render();
+
+                \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent);
+
+                // Save file
+                $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+                $file = $lead->company_name.'performa.docx';
+                $path = public_path($file);
+                $objWriter->save($path);
+                
+                DB::commit();
+
+                // Download the file
+                return response()->download($file)->deleteFileAfterSend(true);
+                // WORD CODE
+                
+                // return view('lead.download_performa',compact('lead','performaData','product'));
+
+            } else {
+                return redirect('lead')->with('error', 'Permission Denied');
+            }
+        }catch(\Exception $e){
+            dd('error',$e);
+            DB::rollback();
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }   
     }
 
     public function getProductPrice(Request $request)
