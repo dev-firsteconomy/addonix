@@ -298,9 +298,32 @@ class LeadController extends Controller
                 // $ccEmails = IndustryPerson::where('lead_id',$request->lead_id)->pluck('email_id')->toArray();
                 // $lead_quotations = LeadQuotation::where('lead_id',$request->lead_id)->get();
 
-                $pdf = \PDF::loadView('lead.download_quotation',compact('lead','quotationData','product'));
-                return $pdf->download($lead->company_name."-".date('Y-m-d H:i:s').".pdf");
+                // WORD CODE
+                // $pdf = \PDF::loadView('lead.download_quotation',compact('lead','quotationData','product'));
+                // return $pdf->download($lead->company_name."-".date('Y-m-d H:i:s').".pdf");
+                // WORD CODE
 
+
+                // WORD CODE
+                $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+                $section = $phpWord->addSection();
+
+                // Defining the HTML content
+                $htmlContent = view('lead.download_quotation',compact('lead','quotationData','product'))->render();
+
+                \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent);
+
+                // Save file
+                $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+                $file = $lead->company_name.'word-file.docx';
+                $path = public_path($file);
+                $objWriter->save($path);
+
+                // Download the file
+                return response()->download($file)->deleteFileAfterSend(true);
+                // WORD CODE
+                
                 // return view('lead.download_quotation',compact('lead','quotationData','product'));
 
 
