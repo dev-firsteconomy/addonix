@@ -382,6 +382,15 @@
                 $('#final-amount').val('');
             }
         });
+
+        $(document).on('change','#interaction_activity_type',function() {
+            var selectedValue = $(this).val();
+            if (selectedValue == 'Demo') {
+                $('.demo').show();
+            } else {
+                $('.demo').hide();
+            }
+        });
     });
 </script>
 

@@ -233,8 +233,10 @@ class LeadController extends Controller
     public function addInteration(Request $request)
     {
         $lead=Lead::where('id',$request->id)->first();
+        $products= Product::pluck('name','id');
+        $products->prepend('Select Product', '');
         if (\Auth::user()->can('Show Lead')) {
-            return view('lead.addInteration', compact('lead'));
+            return view('lead.addInteration', compact('lead','products'));
         } else {
             return redirect('lead')->with('error', 'permission Denied');
         }
