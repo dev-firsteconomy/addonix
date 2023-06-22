@@ -213,17 +213,19 @@ class LeadController extends Controller
     public function sendApprovalEmail(Request $request)
     {
         try{
-            $lead = Lead::find($request->lead_id);
+            $lead = Lead::find($request->id);
             $leadProducts=IndustryProduct::where('lead_id',$lead->id)->get();
             $leadPoc=IndustryPerson::where('lead_id',$lead->id)->get();
             $lead_interaction=lead_interaction::where('lead_id',$lead->id)->get();
 
-            $mail =  Mail::to('hasnain@firsteconomy.com')->send(new ApprovalMail($lead,$leadProducts,$leadPoc,$lead_interaction));
+            // $mail =  Mail::to('hasnain@firsteconomy.com')->send(new ApprovalMail($lead,$leadProducts,$leadPoc,$lead_interaction));
             
-            $lead->mail_sent = 1;
-            $lead->save();
-            
-            return redirect('lead')->with('success', 'Mail Sent Successfully.');
+            // $lead->mail_sent = 1;
+            // $lead->save();
+
+            return view('lead.approvalMail', compact('lead'));
+
+            // return redirect('lead')->with('success', 'Mail Sent Successfully.');
 
         }catch(\Exception $e){
             return redirect('lead')->with('error', 'Something Went Wrong');
@@ -437,6 +439,26 @@ class LeadController extends Controller
             return response()->json(['price' => null]);
         }
     }
+
+    public function verifyHtml(Request $request)
+    {
+        $leadId = $request->input('leadId');
+        $lead = Lead::find($leadId);
+
+        if ($lead) {
+
+
+            $html = "<h1>" .$lead->company_name. "<h1>";  
+            $html .= "<h1>" .$lead->email. "<h1>";  
+            $html .= "<h1>" .$lead->phone. "<h1>";  
+            $html .= "<h1>" .$lead->type. "<h1>";  
+
+            return response()->json(['html' => $html]);
+        } else {
+            return response()->json(['html' => null]);
+        }
+    }
+    
     
     public function companySearch(Request $request)
     {

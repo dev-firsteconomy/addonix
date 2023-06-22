@@ -234,11 +234,9 @@
                                                     <a href="#" data-size="lg" data-url="<?php echo e(route('lead.show',$lead->id)); ?>" data-ajax-popup="true" data-title="<?php echo e(__('Lead Details')); ?>" class="dropdown-item">View</a>
                                                 <?php endif; ?>
                                                 <?php if($lead->type == 'Lead' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 0): ?>
-                                                <form method="POST" action="<?php echo e(route('leadApprovalMail')); ?>">
-                                                    <?php echo csrf_field(); ?>
-                                                    <input type="hidden" name="lead_id" value="<?php echo e($lead->id); ?>">
-                                                    <button type="submit" class="dropdown-item">Send Approval Email</button>
-                                                </form>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('approvalEmail',$lead->id)); ?>" data-id="<?php echo e($lead->id); ?>" data-ajax-popup="true" class="dropdown-item">Send Approval Email</a>
+                                           
+                                                <!-- <a href="mailto:hasnain@firsteconomy.com.com?cc=ankita@firsteconomy.com,sanjay@firsteconomy.com&subject=TEST EMAIL FOR COMPOSE&body=Body content goes here" class="dropdown-item">Send Email</a> -->
                                                 <?php endif; ?>
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" data-ajax-popup="true" class="dropdown-item">Add Interaction</a>
                                                 <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
@@ -398,7 +396,82 @@
                 $('.demo').hide();
             }
         });
+
+        $(document).on('click','#sendEmailSubmit',function(e) {
+            e.preventDefault(); //prevent the form from actually submitting
+            console.log('dd');
+            var body;
+            if(AmazeIsAllFormValid())
+            {
+                $.ajax({
+                    url: '/verifyHtml',
+                    type: 'GET',
+                    data: { leadId: $('#lead_id').val() },
+                    success: function(response) {
+                        // Update the price input with the fetched price
+                        body = response.html;
+
+                        var userEmail = $('#to_email').val();
+                        var ccEmail = $('#cc_email').val();
+            
+                        var subject = 'Mail subject goes here';
+                        // var body = 'Body content goes here';
+            
+                        var mailtoLink = 'mailto:' + userEmail + '?cc=' + ccEmail + '&subject=' + subject + '&body=' + body;
+                        
+                        // Create a hidden anchor tag and simulate a click
+                        var link = document.createElement('a');
+                        link.href = mailtoLink;
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        $('#commonModal').modal('hide');
+                    },
+                    error: function() {
+                        // Handle error if the AJAX request fails
+                        console.log('Error occurred while fetching the product price.');
+                    }
+                });
+            }
+        });
+
+       
     });
+
+  
+
+    function AmazeIsAllFormValid() {
+        var isValid = true;
+        if (!inputIsValid($('#to_email').val().trim())) {
+          $('#error_to_email').html('Please enter your first name.');
+          isValid = false;
+        } else {
+          $('#error_to_email').html('');
+        }
+        if (!inputIsValid($('#cc_email').val().trim())) {
+          $('#error_cc_email').html('Please enter your last name.');
+          isValid = false;
+        } else {
+          $('#error_cc_email').html('');
+        }
+        return isValid;
+    }
+
+    function inputIsValid(schedule_data) {
+        var FooterIsValid = true
+        if (
+          schedule_data == undefined ||
+          schedule_data == 'undefined' ||
+          schedule_data == null ||
+          schedule_data == '' ||
+          schedule_data.length == 0
+        ) {
+          FooterIsValid = false
+        }
+        return FooterIsValid
+    }
+
 </script>
 
 </script>
