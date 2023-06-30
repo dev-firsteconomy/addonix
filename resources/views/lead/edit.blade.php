@@ -343,7 +343,7 @@
                     </div>
                 </div>
 
-                <div class="col-12">
+                <!-- <div class="col-12">
                     <hr class="mt-2 mb-2">
                     <h5>Product</h5>
                 </div>
@@ -365,7 +365,7 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </div> -->
 
                                 
                                 <div class="text-center mt-2">

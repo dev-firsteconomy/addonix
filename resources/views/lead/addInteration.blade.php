@@ -22,8 +22,7 @@
     <div class="col-4">
         <div class="form-group">
             {{Form::label('interaction_status',__('Interaction Status'),['class'=>'form-label']) }}
-            {{Form::select('interaction_status',[''=>'Select Activities Type','Call'=>'Call','Meeting'=>'Meeting','Opportunity'=>'Opportunity','Demo'=>'Demo',
-                'Quotation'=>'Quotation','MOM'=>'MOM','PI'=>'PI'],null,array('class'=>'form-control','required'=>'required'))}}
+            {{Form::select('interaction_status',[''=>'Select Status','Scheduled'=>'Scheduled','Cancel'=>'Cancel','Done'=>'Done','Onhold'=>'Onhold'],null,array('class'=>'form-control','required'=>'required'))}}
         </div>
     </div>
     <div class="col-4">
@@ -40,7 +39,7 @@
     </div>    
     <div class="col-4">
         <div class="form-group">
-            {{Form::label('interaction_followup_date',__('Interaction Date'),['class'=>'form-label']) }}
+            {{Form::label('interaction_followup_date',__('InteractionFollow Up Date'),['class'=>'form-label']) }}
             {{Form::date('interaction_followup_date',null,array('class'=>'form-control','required'=>'required'))}}
         </div>
     </div>
@@ -48,38 +47,38 @@
     <div class="col-4">
         <div class="form-group demo" style="display: none;">
             {{Form::label('company_name',__('Company Name'),['class'=>'form-label']) }}
-            {{Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Enter Feedback'),'required'=>'required'))}}
+            {{Form::text('company_name',null,array('class'=>'form-control','placeholder'=>__('Enter Company Name')))}}
         </div>
     </div> 
     <div class="col-4">
         <div class="form-group demo" style="display: none;">
             {{Form::label('demo_date',__('Demo Date'),['class'=>'form-label']) }}
-            {{Form::date('demo_date',null,array('class'=>'form-control','required'=>'required'))}}
+            {{Form::date('demo_date',null,array('class'=>'form-control'))}}
         </div>
     </div>
     <div class="col-4">
         <div class="form-group demo" style="display: none;">
             {{Form::label('contact_person',__('Contact Person'),['class'=>'form-label']) }}
-            {{Form::text('contact_person',null,array('class'=>'form-control','placeholder'=>__('Enter Feedback'),'required'=>'required'))}}
+            {{Form::text('contact_person',null,array('class'=>'form-control','placeholder'=>__('Enter Person Name')))}}
         </div>
     </div>
     <div class="col-4">
         <div class="form-group demo" style="display: none;">
             {{Form::label('product_id',__('Product'),['class'=>'form-label']) }}
-            {{ Form::select('product_id',$products,null,array('class'=>'form-control','required'=>'required', 'id' => 'product-select')) }}
+            {{ Form::select('product_id',$products,null,array('class'=>'form-control', 'id' => 'product-select')) }}
         </div>
     </div>
     <div class="col-4">
         <div class="form-group demo" style="display: none;">
             {{Form::label('demo_status',__('Demo Status'),['class'=>'form-label']) }}
             {{Form::select('demo_status',[''=>'Select Activities Type','Call'=>'Call','Meeting'=>'Meeting','Opportunity'=>'Opportunity','Demo'=>'Demo',
-                'Quotation'=>'Quotation','MOM'=>'MOM','PI'=>'PI'],null,array('class'=>'form-control','required'=>'required'))}}
+                'Quotation'=>'Quotation','MOM'=>'MOM','PI'=>'PI'],null,array('class'=>'form-control'))}}
         </div>
     </div>
     <div class="col-4">
         <div class="form-group demo" style="display: none;">
             {{Form::label('oft_unique_id',__('OFT Unique Id'),['class'=>'form-label']) }}
-            {{Form::text('oft_unique_id',null,array('class'=>'form-control','placeholder'=>__('Enter OFT ID'),'required'=>'required'))}}
+            {{Form::text('oft_unique_id',null,array('class'=>'form-control','placeholder'=>__('Enter OFT ID')))}}
         </div>
     </div> 
     <div class="col-4">

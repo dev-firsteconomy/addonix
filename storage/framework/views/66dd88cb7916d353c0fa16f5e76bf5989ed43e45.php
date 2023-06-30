@@ -235,13 +235,12 @@
                                                 <?php endif; ?>
                                                 <?php if($lead->type == 'Lead' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 0): ?>
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('approvalEmail',$lead->id)); ?>" data-id="<?php echo e($lead->id); ?>" data-ajax-popup="true" class="dropdown-item">Send Approval Email</a>
-                                           
-                                                <!-- <a href="mailto:hasnain@firsteconomy.com.com?cc=ankita@firsteconomy.com,sanjay@firsteconomy.com&subject=TEST EMAIL FOR COMPOSE&body=Body content goes here" class="dropdown-item">Send Email</a> -->
                                                 <?php endif; ?>
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" data-ajax-popup="true" class="dropdown-item">Add Interaction</a>
                                                 <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
                                                     <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Quotation</a>
                                                 <?php endif; ?>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('convertToOpportunityModal',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Convert To Opportunity')); ?>">Convert To Opportunity</a>
                                                 <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
                                                     <a href="#" data-size="lg" data-url="<?php echo e(route('addPerforma',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Performa Invoice')); ?>">Generate Performa Invoice</a>
                                                 <?php endif; ?>
@@ -411,8 +410,8 @@
                         // Update the price input with the fetched price
                         body = response.html;
 
-                        var userEmail = $('#to_email').val();
-                        var ccEmail = $('#cc_email').val();
+                        var userEmail = $('#to_email').val()
+                        var ccEmail = $('#cc_email').val()
             
                         var subject = 'Mail subject goes here';
                         // var body = 'Body content goes here';

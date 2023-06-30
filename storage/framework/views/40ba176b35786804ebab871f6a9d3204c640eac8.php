@@ -177,14 +177,14 @@
         <div class="form-group">
                 <?php echo e(Form::label('create_date',__('Creation Date'),['class'=>'form-label'])); ?>
 
-                <input type="date" name="create_date" class="form-control" value="<?php echo isset($_REQUEST['create_date']) ? $_REQUEST['create_date'] : ''; ?>" >
+                <input type="date" name="create_date" class="form-control">
         </div>
     </div>
     <div class="col-6">
         <div class="form-group">
                 <?php echo e(Form::label('estimated_close_date',__('Estimated Closed Date'),['class'=>'form-label'])); ?>
 
-                <input type="date" name="estimated_close_date" class="form-control" value="<?php echo isset($_REQUEST['estimated_close_date']) ? $_REQUEST['estimated_close_date'] : ''; ?>" >
+                <input type="date" name="estimated_close_date" class="form-control">
         </div>
     </div>
     <div class="col-6">
@@ -237,7 +237,7 @@
         </div>
     </div>
 
-    <div class="col-12 mt-4">
+    <!-- <div class="col-12 mt-4">
         <div class="form-heading">
             <h3 style="font-weight: 600;font-size: 18px;">Product</h3>
         </div>
@@ -260,9 +260,9 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </div> -->
 
-    <div class="col-12 mt-4">
+    <!-- <div class="col-12 mt-4">
         <div class="form-heading">
             <h3 style="font-weight: 600;font-size: 18px;">Interaction Activity</h3>
         </div>
@@ -303,7 +303,8 @@
             <button class="btn btn-primary" type="button" id="interaction-add-field"><i class="ti ti-plus"></i></button>
             <button class="btn btn-danger" type="button" id="interaction-remove-field"><i class="ti ti-minus"></i></button>
         </div>
-    </div>
+    </div> -->
+
     <div class="modal-footer">
         <button type="button" class="btn  btn-light" data-bs-dismiss="modal">Close</button>
         <?php echo e(Form::submit(__('Save'),array('class'=>'btn btn-primary '))); ?>
@@ -341,30 +342,30 @@
         }
     });
 
-    document.getElementById('interaction-add-field').addEventListener('click', function() {
-        const container1 = document.getElementById('interaction-repeater-container');
-        const lastRow1 = container1.querySelector('.interaction-repeater:last-of-type');
-        const newRow1 = lastRow1.cloneNode(true);
-        const inputs1 = newRow1.querySelectorAll('.interaction_inputs');
+    // document.getElementById('interaction-add-field').addEventListener('click', function() {
+    //     const container1 = document.getElementById('interaction-repeater-container');
+    //     const lastRow1 = container1.querySelector('.interaction-repeater:last-of-type');
+    //     const newRow1 = lastRow1.cloneNode(true);
+    //     const inputs1 = newRow1.querySelectorAll('.interaction_inputs');
 
-        // Clear input field values in the new row
-        inputs1.forEach(input => {
-            input.value = '';
-        });
+    //     // Clear input field values in the new row
+    //     inputs1.forEach(input => {
+    //         input.value = '';
+    //     });
 
-        container1.querySelector('tbody').appendChild(newRow1);
-    });
+    //     container1.querySelector('tbody').appendChild(newRow1);
+    // });
 
-    // Remove row
-    var removeButton1 = document.getElementById('interaction-remove-field');
-    var repeaterContainer1 = document.getElementById('interaction-repeater-container');
-    removeButton1.addEventListener('click', function() {
-        var repeaterRows1 = repeaterContainer1.querySelectorAll('.interaction-repeater');
-        if (repeaterRows1.length > 1) {
-            var lastRow1 = repeaterRows1[repeaterRows1.length - 1];
-            lastRow1.parentNode.removeChild(lastRow1);
-        }
-    });
+    // // Remove row
+    // var removeButton1 = document.getElementById('interaction-remove-field');
+    // var repeaterContainer1 = document.getElementById('interaction-repeater-container');
+    // removeButton1.addEventListener('click', function() {
+    //     var repeaterRows1 = repeaterContainer1.querySelectorAll('.interaction-repeater');
+    //     if (repeaterRows1.length > 1) {
+    //         var lastRow1 = repeaterRows1[repeaterRows1.length - 1];
+    //         lastRow1.parentNode.removeChild(lastRow1);
+    //     }
+    // });
 
     //AUTOCOMPLETE
     $(document).ready(function() {
