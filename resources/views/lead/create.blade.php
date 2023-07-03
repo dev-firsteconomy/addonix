@@ -97,12 +97,6 @@
     </div>
     <div class="col-6">
         <div class="form-group">
-            {{Form::label('cbi_identified',__('CBI’s identified'),['class'=>'form-label']) }}
-            {{Form::text('cbi_identified',null,array('class'=>'form-control','placeholder'=>__('Enter CBI’s identified')))}}
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
             {{Form::label('met_or_spoke',__('Met Or Spoke to Person'),['class'=>'form-label']) }}
             {{ Form::select('met_or_spoke', [
                     '' => 'Select Option',
@@ -129,19 +123,6 @@
                 'Manufacturing'=>'Manufacturing','Aerospace'=>'Aerospace','Transportation & Automotive'=>'Transportation & Automotive',
                 'Oil & Gas'=>'Oil & Gas','Safety'=>'Safety','Construction'=>'Construction' , 'Utilities'=>'Utilities','Government and Military Entities'=>'Government and Military Entities'
                 ],null,array('class'=>'form-control'))}}
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            {{Form::label('sales_stage',__('Sales Stage'),['class'=>'form-label']) }}
-            {{ Form::select('sales_stage', [
-                    '' => 'Select Option',
-                    'W' => 'W',
-                    'NW' => 'NW',
-                    'A+' => 'A+',
-                    'A' => 'A',
-                    'B' => 'B',
-                ], 'sales_stage', ['class' => 'form-control']) }}
         </div>
     </div>
     <div class="col-6">
@@ -275,30 +256,30 @@
 
 @push('script-page')
 <script>
-    document.getElementById('poc-add-field').addEventListener('click', function() {
-        const container = document.getElementById('poc-repeater-container');
-        const lastRow = container.querySelector('.poc-repeater:last-of-type');
-        const newRow = lastRow.cloneNode(true);
-        const inputs = newRow.querySelectorAll('.poc_inputs');
+    // document.getElementById('poc-add-field').addEventListener('click', function() {
+    //     const container = document.getElementById('poc-repeater-container');
+    //     const lastRow = container.querySelector('.poc-repeater:last-of-type');
+    //     const newRow = lastRow.cloneNode(true);
+    //     const inputs = newRow.querySelectorAll('.poc_inputs');
 
-        // Clear input field values in the new row
-        inputs.forEach(input => {
-            input.value = '';
-        });
+    //     // Clear input field values in the new row
+    //     inputs.forEach(input => {
+    //         input.value = '';
+    //     });
 
-        container.querySelector('tbody').appendChild(newRow);
-    });
+    //     container.querySelector('tbody').appendChild(newRow);
+    // });
 
-    // Remove row
-    var removeButton = document.getElementById('poc-remove-field');
-    var repeaterContainer = document.getElementById('poc-repeater-container');
-    removeButton.addEventListener('click', function() {
-        var repeaterRows = repeaterContainer.querySelectorAll('.poc-repeater');
-        if (repeaterRows.length > 1) {
-            var lastRow = repeaterRows[repeaterRows.length - 1];
-            lastRow.parentNode.removeChild(lastRow);
-        }
-    });
+    // // Remove row
+    // var removeButton = document.getElementById('poc-remove-field');
+    // var repeaterContainer = document.getElementById('poc-repeater-container');
+    // removeButton.addEventListener('click', function() {
+    //     var repeaterRows = repeaterContainer.querySelectorAll('.poc-repeater');
+    //     if (repeaterRows.length > 1) {
+    //         var lastRow = repeaterRows[repeaterRows.length - 1];
+    //         lastRow.parentNode.removeChild(lastRow);
+    //     }
+    // });
 
     // document.getElementById('interaction-add-field').addEventListener('click', function() {
     //     const container1 = document.getElementById('interaction-repeater-container');

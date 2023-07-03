@@ -24,11 +24,9 @@ class CreateLeadsTable extends Migration
             $table->string('website')->nullable();
             $table->string('existing_customer')->nullable();
             $table->string('type')->default('Lead');
-            $table->string('cbi_identified')->nullable();
             $table->string('met_or_spoke')->nullable();
             $table->string('is_mnc')->nullable();
             $table->string('industry_vertical')->nullable();
-            $table->string('sales_stage')->nullable();
             $table->date('create_date')->nullable();
             $table->date('estimated_close_date')->nullable();
             $table->integer('assign_user_id')->nullable();

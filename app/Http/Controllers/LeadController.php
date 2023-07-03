@@ -218,7 +218,6 @@ class LeadController extends Controller
      */
     public function show(Lead $lead)
     {
-        // dd($lead);
         if (\Auth::user()->can('Show Lead')) {
 
             $leadProducts=IndustryProduct::where('lead_id',$lead->id)->get();
@@ -664,6 +663,75 @@ class LeadController extends Controller
             }
         }catch(\Exception $e){
             // dd('error',$e);
+            DB::rollback();
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }   
+    }
+
+    public function addPoc(Request $request)
+    {
+        $lead=Lead::where('id',$request->id)->first();
+        if (\Auth::user()->can('Show Lead')) {
+            return view('lead.addPoc', compact('lead'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
+    }
+
+    public function submitAddPoc(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Show Lead')) {
+                IndustryPerson::create([
+                    'lead_id'=> (int)$request->lead_id,
+                    'name'=>$request->name,
+                    'email_id'=>$request->email_id,
+                    'contact_number'=>$request->contact_number,
+                    'designation'=>$request->designation,
+                ]); 
+                DB::commit();
+                return redirect('lead')->with('success', __('POC Added Successfully.'));
+            } else {
+                return redirect('lead')->with('error', 'Permission Denied');
+            }
+        }catch(\Exception $e){
+            dd('error',$e);
+            DB::rollback();
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }   
+    }
+
+    public function editPoc(Request $request)
+    {
+        $poc = IndustryPerson::find($request->id);
+        if (\Auth::user()->can('Show Lead')) {
+            return view('lead.editPoc', compact('poc'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
+    }
+
+    public function submitEditPoc(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Show Lead')) {
+
+                $pocData['name']            = $request->name;
+                $pocData['email_id']      = $request->email_id;
+                $pocData['contact_number']      = $request->contact_number;
+                $pocData['designation']   = $request->designation;
+
+                $pocUpdated =  IndustryPerson::where('id',$request->poc_id)->update($pocData);
+
+                DB::commit();
+                return redirect('lead')->with('success', __('POC Updated Successfully.'));
+            } else {
+                return redirect('lead')->with('error', 'Permission Denied');
+            }
+        }catch(\Exception $e){
+            dd('error',$e);
             DB::rollback();
             return redirect('lead')->with('error', 'Something Went Wrong');
         }   

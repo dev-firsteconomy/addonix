@@ -15,18 +15,17 @@ class CreateOpportunitiesTable extends Migration
     {
         Schema::create('opportunities', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('campaign')->default(0);
-            $table->string('name')->nullable();
-            $table->integer('account')->default(0);
-            $table->integer('stage')->default(0);
-            $table->float('amount')->default(0.00);
-            $table->string('probability')->nullable();
-            $table->string('close_date')->nullable();
-            $table->integer('contact')->default(0);
-            $table->string('lead_source')->nullable();
-            $table->string('description')->nullable();
-            $table->integer('created_by')->default(0);
+            $table->date('date_created');
+            $table->string('product_type');
+            $table->integer('poc_id');
+            $table->integer('sales_stage');
+            $table->string('close_date');
+            $table->integer('assigned_to');
+            $table->string('status');
+            $table->string('cbi_identified');
+            $table->text('feedback')->nullable();
+            $table->integer('created_by');
+            $table->integer('updated_by');
             $table->timestamps();
         });
     }

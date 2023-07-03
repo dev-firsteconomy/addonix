@@ -37,30 +37,13 @@
     display: none;
 }
 
-.table-data {
-    margin: 0px 0px 10px;;
-    border-collapse: collapse;
-}
-.table-data >* {
-    border: 1px solid #ced4da;
-    padding: 6px 15px;
-    border-collapse: collapse;
-}
-
-.table-data dd {
-    margin-bottom: 0;
-}
-
-.table-data dt {
-    text-transform: capitalize;
-}
-
-.table-data dt span.h6 {
-    font-size: 14px !important;
-}
-
 .viewData input {
     border: 0;
+}
+
+.prodcut-heading{
+    font-size:25px;
+    font-weight:600;
 }
 
 </style> 
@@ -231,7 +214,7 @@
                                                     <a href="<?php echo e(route('lead.edit',$lead->id)); ?>" class="dropdown-item">Edit</a>
                                                 <?php endif; ?>
                                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Show Lead')): ?>
-                                                    <a href="#" data-size="lg" data-url="<?php echo e(route('lead.show',$lead->id)); ?>" data-ajax-popup="true" data-title="<?php echo e(__('Lead Details')); ?>" class="dropdown-item">View</a>
+                                                    <a href="<?php echo e(route('lead.show',$lead->id)); ?>" data-size="lg" class="dropdown-item">View</a>
                                                 <?php endif; ?>
                                                 <?php if($lead->type == 'Lead' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 0): ?>
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('approvalEmail',$lead->id)); ?>" data-id="<?php echo e($lead->id); ?>" data-ajax-popup="true" class="dropdown-item">Send Approval Email</a>
@@ -471,7 +454,33 @@
         return FooterIsValid
     }
 
-</script>
+    // if(document.getElementById('co-add-field') && document.getElementById('co-remove-field')){
+    //     document.getElementById('co-add-field').addEventListener('click', function() {
+    //         const container = document.getElementById('co-repeater-container');
+    //         const lastRow = container.querySelector('.co-repeater:last-of-type');
+    //         const newRow = lastRow.cloneNode(true);
+    //         const inputs = newRow.querySelectorAll('.co-repeater-input');
+    //         const selects = newRow.querySelectorAll('co-repeater-select');
+    
+    //         // Clear input field values in the new row
+    //         inputs.forEach(input => {
+    //             input.value = '';
+    //         });
+    
+    //         container.appendChild(newRow);
+    //     });
+    
+    //     // Remove row
+    //     var removeButton = document.getElementById('co-remove-field');
+    //     var repeaterContainer = document.getElementById('co-repeater-container');
+    //     removeButton.addEventListener('click', function() {
+    //         var repeaterRows = repeaterContainer.querySelectorAll('.co-repeater');
+    //         if (repeaterRows.length > 1) {
+    //             var lastRow = repeaterRows[repeaterRows.length - 1];
+    //             lastRow.parentNode.removeChild(lastRow);
+    //         }
+    //     });
+    // }
 
 </script>
 <?php $__env->stopPush(); ?>

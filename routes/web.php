@@ -331,11 +331,15 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('leadTab', [LeadController::class, 'leadTab'])->name('lead.leadTab');
             Route::get('get-product-price', [LeadController::class, 'getProductPrice'])->name('get-product-price');
             Route::get('addInteration/{id}', [LeadController::class, 'addInteration'])->name('addInteration');
+            Route::get('addPoc/{id}', [LeadController::class, 'addPoc'])->name('addPoc');
+            Route::get('editPoc/{id}', [LeadController::class, 'editPoc'])->name('editPoc');
             Route::get('addQuotation/{id}', [LeadController::class, 'addQuotation'])->name('addQuotation');
             Route::get('addPerforma/{id}', [LeadController::class, 'addPerforma'])->name('addPerforma');
             Route::get('approvalEmail/{id}', [LeadController::class, 'sendApprovalEmail'])->name('approvalEmail');
             Route::get('changeStatus/{id}', [LeadController::class, 'changeStatus'])->name('changeStatus');
             Route::post('submitInteraction', [LeadController::class, 'submitInteraction'])->name('submitInteraction'); 
+            Route::post('submitAddPoc', [LeadController::class, 'submitAddPoc'])->name('submitAddPoc'); 
+            Route::post('submitEditPoc', [LeadController::class, 'submitEditPoc'])->name('submitEditPoc'); 
             Route::post('sendQuotation', [LeadController::class, 'sendQuotation'])->name('sendQuotation'); 
             Route::post('sendPerforma', [LeadController::class, 'sendPerforma'])->name('sendPerforma'); 
             Route::get('verifyHtml', [LeadController::class, 'verifyHtml'])->name('verifyHtml');      

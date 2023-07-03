@@ -36,30 +36,13 @@
     display: none;
 }
 
-.table-data {
-    margin: 0px 0px 10px;;
-    border-collapse: collapse;
-}
-.table-data >* {
-    border: 1px solid #ced4da;
-    padding: 6px 15px;
-    border-collapse: collapse;
-}
-
-.table-data dd {
-    margin-bottom: 0;
-}
-
-.table-data dt {
-    text-transform: capitalize;
-}
-
-.table-data dt span.h6 {
-    font-size: 14px !important;
-}
-
 .viewData input {
     border: 0;
+}
+
+.prodcut-heading{
+    font-size:25px;
+    font-weight:600;
 }
 
 </style> 
@@ -226,7 +209,7 @@
                                                     <a href="{{ route('lead.edit',$lead->id) }}" class="dropdown-item">Edit</a>
                                                 @endcan
                                                 @can('Show Lead')
-                                                    <a href="#" data-size="lg" data-url="{{ route('lead.show',$lead->id) }}" data-ajax-popup="true" data-title="{{__('Lead Details')}}" class="dropdown-item">View</a>
+                                                    <a href="{{ route('lead.show',$lead->id) }}" data-size="lg" class="dropdown-item">View</a>
                                                 @endcan
                                                 @if($lead->type == 'Lead' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 0)
                                                 <a href="#" data-size="lg" data-url="{{ route('approvalEmail',$lead->id) }}" data-id="{{$lead->id}}" data-ajax-popup="true" class="dropdown-item">Send Approval Email</a>
@@ -464,7 +447,6 @@
         return FooterIsValid
     }
 
-</script>
-
+    
 </script>
 @endpush

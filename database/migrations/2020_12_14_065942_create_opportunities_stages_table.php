@@ -13,10 +13,16 @@ class CreateOpportunitiesStagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('opportunities_stages', function (Blueprint $table) {
+        Schema::create('opportunities_products', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->integer('created_by')->default(0);
+            $table->integer('lead_id');
+            $table->integer('opportunity_id');
+            $table->integer('product_id');
+            $table->integer('quantity');
+            $table->float('price');
+            $table->integer('discount');
+            $table->integer('created_by');
+            $table->integer('updated_by');
             $table->timestamps();
         });
     }
@@ -28,6 +34,6 @@ class CreateOpportunitiesStagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('opportunities_stages');
+        Schema::dropIfExists('opportunities_products');
     }
 }

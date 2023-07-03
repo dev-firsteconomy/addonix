@@ -1,6 +1,58 @@
+@extends('layouts.admin')
+
+@section('title')
+<div class="page-header-title">
+    {{__('View Lead')}}
+</div>
+@endsection
+<style>
+.table-data {
+    margin: 0px 0px 10px;;
+    border-collapse: collapse;
+}
+
+.table-data >* {
+    border: 1px solid #ced4da;
+    padding: 6px 15px;
+    border-collapse: collapse;
+}
+
+.table-data dd {
+    margin-bottom: 0;
+}
+
+.table-data dt {
+    text-transform: capitalize;
+}
+
+.table-data dt span.h6 {
+    font-size: 14px !important;
+}
+.btn-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+@section('action-btn')
+<div class="btn-group" role="group">
+    <div class="action-btn  ms-2">
+        <a href="{{ route('lead.index') }}" class="btn btn-sm btn-primary btn-icon m-1">
+            Back
+        </a>
+    </div>
+</div>
+@endsection
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{__('Home')}}</a></li>
+<li class="breadcrumb-item"><a href="{{route('lead.index')}}">{{__('Lead')}}</a></li>
+<li class="breadcrumb-item">{{__('View Lead')}}</li>
+@endsection
+
+@section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="">
             <dl class="row table-data">
                 <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('source')}}</span></dt>
@@ -54,6 +106,17 @@
                 <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Assign User')}}</span></dt>
                 <dd class="col-md-8"><span class="text-md">{{ @$lead->assign_user_id }}</span></dd>
             </dl>
+
+            <div class="btn-center">
+                <div class="action-btn bg-info ms-2">
+                    <a href="{{ route('lead.edit', $lead->id) }}"
+                        class="mx-3 btn btn-sm d-inline-flex align-items-center text-white"
+                        data-bs-toggle="tooltip" title="{{ __('Edit') }}"
+                        data-title="{{ __('Edit Product') }}">
+                        <i class="ti ti-edit"></i>
+                    </a>
+                </div>
+            </div>
             
             <dl class="row viewData">
                 <div class="col-12">
@@ -78,40 +141,58 @@
                                 <th>
                                     <p class="mb-0">Email Id</p>
                                 </th>
+                                <th>
+                                    <p class="mb-0">Action</p>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @php $i =1; @endphp
                             @foreach ($lead->industryPerson as $person)
-                            <tr class="repeater mt-repeater">
-                                <!-- <th scope="col">{{ $i}}</th>
-                                <td><input name="name[]" class="form-control" type="text" value="{{ $person->name }}" readonly/></td>
-                                <td><input name="designation[]" class="form-control" type="text" value="{{ $person->designation }}"  readonly/></td>
-                                <td><input name="contact_number[]" class="form-control" type="tel"  value="{{ $person->contact_number }}" readonly/></td>
-                                <td><input name="email_id[]" class="form-control" type="email" value="{{ $person->email_id }}"  readonly/></td> -->
-
-                                <th scope="col">{{ $i}}</th>
+                            <tr>
+                                <td scope="col">{{ $i}}</td>
                                 <td class="text-capitalize">{{ $person->name }}</td>
                                 <td class="text-capitalize">{{ $person->designation }}</td>
                                 <td>{{ $person->contact_number }}</td>
                                 <td>{{ $person->email_id }}</td>
+                                <td>
+                                    <div>
+                                    @can('Show Lead')
+                                        <div class="action-btn bg-warning ms-2">
+                                            <a href="{{ route('lead.show', $lead->id) }}" data-size="md" data-title="{{ __('Lead Details') }}"
+                                                class="mx-3 btn btn-sm d-inline-flex align-items-center text-white">
+                                                <i class="ti ti-eye"></i>
+                                            </a>
+                                        </div>
+                                    @endcan
+                                    @can('Edit Lead')
+                                        <div class="action-btn bg-info ms-2">
+                                            <a href="javascript:void(0)" data-url="{{ route('editPoc', $person->id) }}" data-ajax-popup="true"
+                                                class="mx-3 btn btn-sm d-inline-flex align-items-center text-white"
+                                                data-bs-toggle="tooltip" title="{{ __('Edit') }}"
+                                                data-title="{{ __('Edit Point of Contact') }}">
+                                                <i class="ti ti-edit"></i>
+                                            </a>
+                                        </div>
+                                    @endcan
+                                    </div>
+                                </td>
                             </tr>
                             @php $i++; @endphp
                             @endforeach
-                            <!-- <tr class="repeater mt-repeater">
-                                <th scope="col">2</th>
-                                <td><input name="name[]" class="form-control" type="text" /></td>
-                                <td><input name="designation[]" class="form-control" type="text" /></td>
-                                <td><input name="contact_number[]" class="form-control" type="tel" /></td>
-                                <td><input name="email_id[]" class="form-control" type="email" /></td>
-                            </tr> -->
                         </tbody>
                     </table>
                 </div>
 
+                <div class="btn-center">
+                    <a href="javascript:void(0)" data-url="{{ route('addPoc',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="Create New Point of Contact" title="" class="btn btn-sm btn-primary btn-icon m-1" data-bs-original-title="Create">
+                        <i class="ti ti-plus"></i>
+                    </a>
+                </div>
+
                 <div class="col-12">
                     <hr class="mt-2 mb-2">
-                    <h5>Product Enquiries</h5>
+                    <h5>Opportunities</h5>
                 </div>
 
                 <div class="col-12 table-responsive">
@@ -133,22 +214,14 @@
                             </tr>
                             @php $i++; @endphp
                             @endforeach
-                            
-
-                            <!-- <tr class="repeater mt-repeater">
-                                <th scope="col">2</th>
-                                <td><input name="product_name[]" class="form-control" type="text" /></td>
-                                <td><input name="serial_number[]" class="form-control" type="text" /></td>
-                                <td><input name="sub_start_date[]" class="form-control" type="date" /></td>
-                                <td><input name="sub_end_date[]" class="form-control" type="date" /></td>
-                                <td><input name="price[]" class="form-control" type="text" value="1000"
-                                        style="width:120px" /></td>
-                                <td><input name="sale_date[]" class="form-control" type="date" /></td>
-                                <td><input name="created_by[]" class="form-control" type="text" /></td>
-                            </tr> -->
-
                         </tbody>
                     </table>
+                </div>
+
+                <div class="btn-center">
+                    <a href="javascript:void(0)" data-url="{{ route('convertToOpportunityModal',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="Create New Opportunity" title="" class="btn btn-sm btn-primary btn-icon m-1" data-bs-original-title="Create">
+                        <i class="ti ti-plus"></i>
+                    </a>
                 </div>
 
                 <div class="col-12">
@@ -230,3 +303,65 @@
             </dl>
         </div>
     </div>
+@endsection
+@push('script-page')
+<script>
+    // $(document).on('click', '#co-add-field', function() {
+    //             console.log(123);
+    //     const container = document.getElementById('co-repeater-container');
+    //     const lastRow = container.querySelector('.co-repeater:last-of-type');
+    //     const newRow = lastRow.cloneNode(true);
+    //     const inputs = newRow.querySelectorAll('.co-repeater-input');
+    //     const selects = newRow.querySelectorAll('co-repeater-select');
+
+    //     // Clear input field values in the new row
+    //     inputs.forEach(input => {
+    //         input.value = '';
+    //     });
+
+    //     container.appendChild(newRow);
+    // });
+
+    // // Remove row
+    // var repeaterContainer = document.getElementById('co-repeater-container');
+    // $(document).on('click', '#co-remove-field', function() {
+    //     console.log('co-remove-field')
+    //     var repeaterRows = repeaterContainer.querySelectorAll('.co-repeater');
+    //     if (repeaterRows.length > 1) {
+    //         var lastRow = repeaterRows[repeaterRows.length - 1];
+    //         lastRow.parentNode.removeChild(lastRow);
+    //     }
+    // });
+
+    // $(document).on('click', '#co-add-field', function() {
+    //     const container = document.getElementById('co-repeater-container');
+    //     const lastRow   = container.querySelector('.co-repeater:last-of-type');
+    //     const newRow    = lastRow.cloneNode(true);
+    //     const inputs    = newRow.querySelectorAll('.co-repeater-input');
+    //     const selects   = newRow.querySelectorAll('.co-repeater-select');
+
+    //     // Clear input field values in the new row
+    //     inputs.forEach(input => {
+    //         input.value = '';
+    //     });
+
+    //     // Clear select field values in the new row
+    //     selects.forEach(select => {
+    //         select.value = '';
+    //     });
+
+    //     container.appendChild(newRow);
+    // });
+
+    // // Remove row
+    // var repeaterContainer = document.getElementById('co-repeater-container');
+    // $(document).on('click', '#co-remove-field', function() {
+    //     var repeaterRows = repeaterContainer.querySelectorAll('.co-repeater');
+    //     if (repeaterRows.length > 1) {
+    //         var lastRow = repeaterRows[repeaterRows.length - 1];
+    //         lastRow.parentNode.removeChild(lastRow);
+    //     }
+    // });
+
+</script>
+@endpush

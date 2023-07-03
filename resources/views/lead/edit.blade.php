@@ -183,17 +183,6 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        {{Form::label('cbi_identified',__('CBI’s identified'),['class'=>'form-label']) }}
-                                        {{Form::text('cbi_identified',$lead->cbi_identified,array('class'=>'form-control','placeholder'=>__('Enter CBI’s identified')))}}
-                                        @error('cbi_identified')
-                                        <span class="invalid-cbi_identified" role="alert">
-                                    <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
                                         {{Form::label('met_or_spoke',__('Met Or Spoke to Person'),['class'=>'form-label']) }}
                                         {{ Form::select('met_or_spoke', [
                                             '' => 'Select Option',
@@ -236,24 +225,6 @@
                                             </span>
                                         @enderror
 
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        {{Form::label('sales_stage',__('Sales Stage'),['class'=>'form-label']) }}
-                                        {{ Form::select('sales_stage', [
-                                                '' => 'Select Option',
-                                                'W' => 'W',
-                                                'NW' => 'NW',
-                                                'A+' => 'A+',
-                                                'A' => 'A',
-                                                'B' => 'B',
-                                            ], $lead->sales_stage, ['class' => 'form-control']) }}
-                                        @error('sales_stage')
-                                            <span class="invalid-sales_stage" role="alert">
-                                                <strong class="text-danger">{{ $message }}</strong>
-                                            </span>
-                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">

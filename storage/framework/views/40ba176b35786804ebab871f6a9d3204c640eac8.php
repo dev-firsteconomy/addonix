@@ -117,14 +117,6 @@
     </div>
     <div class="col-6">
         <div class="form-group">
-            <?php echo e(Form::label('cbi_identified',__('CBI’s identified'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::text('cbi_identified',null,array('class'=>'form-control','placeholder'=>__('Enter CBI’s identified')))); ?>
-
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
             <?php echo e(Form::label('met_or_spoke',__('Met Or Spoke to Person'),['class'=>'form-label'])); ?>
 
             <?php echo e(Form::select('met_or_spoke', [
@@ -155,21 +147,6 @@
                 'Manufacturing'=>'Manufacturing','Aerospace'=>'Aerospace','Transportation & Automotive'=>'Transportation & Automotive',
                 'Oil & Gas'=>'Oil & Gas','Safety'=>'Safety','Construction'=>'Construction' , 'Utilities'=>'Utilities','Government and Military Entities'=>'Government and Military Entities'
                 ],null,array('class'=>'form-control'))); ?>
-
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-group">
-            <?php echo e(Form::label('sales_stage',__('Sales Stage'),['class'=>'form-label'])); ?>
-
-            <?php echo e(Form::select('sales_stage', [
-                    '' => 'Select Option',
-                    'W' => 'W',
-                    'NW' => 'NW',
-                    'A+' => 'A+',
-                    'A' => 'A',
-                    'B' => 'B',
-                ], 'sales_stage', ['class' => 'form-control'])); ?>
 
         </div>
     </div>

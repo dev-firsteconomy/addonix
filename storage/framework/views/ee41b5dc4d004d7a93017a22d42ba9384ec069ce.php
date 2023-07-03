@@ -50,6 +50,8 @@
 <!-- datepicker -->
 <script src="<?php echo e(asset('assets/js/plugins/datepicker-full.min.js')); ?>"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+
 <script src="<?php echo e(asset('js/custom.js')); ?>"></script>
 
 

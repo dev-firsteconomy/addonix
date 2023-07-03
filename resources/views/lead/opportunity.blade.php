@@ -10,41 +10,10 @@
     </div>
     <div class="col-4">
         <div class="form-group">
-            {{Form::label('product_id',__('Product'),['class'=>'form-label']) }}
-            {{ Form::select('product_id',$products,null,array('class'=>'form-control','required'=>'required', 'id' => 'product-select')) }}
+            {{Form::label('poc_id',__('Person'),['class'=>'form-label']) }}
+            {!! Form::select('poc_id', $user, null,array('class' => 'form-control')) !!}
         </div>
     </div>
-    <div class="col-4">
-        {{Form::label('quantity',__('Quantity'),['class'=>'form-label']) }}
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <button type="button" class="btn btn-outline-secondary" id="decreaseButton">-</button>
-            </div>
-            <input type="text" class="form-control" id="quantityInput" value="1" name="quantity">
-            <div class="input-group-append">
-                <button type="button" class="btn btn-outline-secondary" id="increaseButton">+</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-4">
-        <div class="form-group">
-            {{Form::label('price',__('Price'),['class'=>'form-label']) }}
-            {{Form::text('price',null,array('class'=>'form-control','required'=>'required', 'id' => 'price-input', 'readonly'=>'readonly'))}}
-        </div>
-    </div>    
-    <div class="col-4">
-        <div class="form-group">
-            {{Form::label('discount',__('Discount'),['class'=>'form-label']) }}
-            {{Form::select('discount',[''=>'Select Discount','0'=>'No Discount','10'=>'10%','20'=>'20%','30'=>'30%',
-                '50'=>'50%'],null,array('class'=>'form-control','required'=>'required', 'id' => 'discount-input'))}}
-        </div>
-    </div>
-    <!-- <div class="col-3">
-        <div class="form-group">
-            {{Form::label('final_amount',__('Final Amount'),['class'=>'form-label']) }}
-            {{Form::text('final_amount',null,array('class'=>'form-control','required'=>'required', 'id' => 'final-amount', 'readonly'=>'readonly'))}}
-        </div>
-    </div> -->
     <div class="col-4">
         <div class="form-group">
             {{Form::label('sales_stage',__('Sales Stage'),['class'=>'form-label']) }}
@@ -73,21 +42,81 @@
     </div>
     <div class="col-4">
         <div class="form-group">
-            {{Form::label('type',__('Status'),['class'=>'form-label']) }}
-            {{ Form::select('type', [
+            {{Form::label('status',__('Status'),['class'=>'form-label']) }}
+            {{ Form::select('status', [
                     'Lead' => 'Lead',
                     'Opportunity' => 'Opportunity',
                     'Active Customer' => 'Active Customer',
                     'Non Active Customer' => 'Non Active Customer',
                     'Dead' => 'Dead'
-                ], 'lead', ['class' => 'form-control']) 
+                ], 'status', ['class' => 'form-control']) 
             }}
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            {{Form::label('feedback',__('Feedback'),['class'=>'form-label']) }}
+            {{Form::textarea('feedback',null,array('class'=>'form-control','id' => 'feedback-input'))}}
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group">
+            {{Form::label('product_type',__('Product Type'),['class'=>'form-label']) }}
+            {{ Form::select('product_type', [
+                    'StandAlone' => 'StandAlone',
+                    'Network' => 'Network'
+                ], 'product_type', ['class' => 'form-control']) 
+            }}
+        </div>
+    </div>
+    <div class="repeater mt-repeater">
+        <div>
+            <p class="prodcut-heading">
+                Products
+            </p>
+        </div>
+        <div class="row co-repeater mt-repeater" data-repeater-item>
+            <div class="col-3">
+                <div class="form-group">
+                    {{Form::label('product_id',__('Product'),['class'=>'form-label']) }}
+                    {{ Form::select('product_id',$products,null,array('class'=>'form-control co-repeater-select','required'=>'required', 'id' => 'product-select')) }}
+                </div>
+            </div>
+            <div class="col-3">
+                {{Form::label('quantity',__('Quantity'),['class'=>'form-label']) }}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button type="button" class="btn btn-outline-secondary" id="decreaseButton">-</button>
+                    </div>
+                    <input type="text" class="form-control co-repeater-input" id="quantityInput" value="1" name="quantity">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary" id="increaseButton">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    {{Form::label('price',__('Price'),['class'=>'form-label']) }}
+                    {{Form::text('price',null,array('class'=>'form-control co-repeater-input','required'=>'required', 'id' => 'price-input', 'readonly'=>'readonly'))}}
+                </div>
+            </div>    
+            <div class="col-3">
+                <div class="form-group">
+                    {{Form::label('discount',__('Discount'),['class'=>'form-label']) }}
+                    {{Form::select('discount',[''=>'Select Discount','0'=>'No Discount','10'=>'10%','20'=>'20%','30'=>'30%',
+                        '50'=>'50%'],null,array('class'=>'form-control co-repeater-select','required'=>'required', 'id' => 'discount-input'))}}
+                </div>
+            </div>
+        </div>
+        <div class="pull-right text-center mb-2">
+            <button class="btn btn-primary" type="button" id="co-add-field" data-repeater-create><i class="ti ti-plus"></i></button>
+            <button class="btn btn-danger" type="button" id="co-remove-field"><i class="ti ti-minus"></i></button>
         </div>
     </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn  btn-light" data-bs-dismiss="modal">Close</button>
-    {{Form::submit(__('Download'),array('class'=>'btn btn-primary '))}}
+    {{Form::submit(__('Save'),array('class'=>'btn btn-primary '))}}
 </div>
 </div>
 {{Form::close()}}
