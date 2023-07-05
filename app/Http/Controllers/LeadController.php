@@ -16,6 +16,8 @@ use App\Models\Task;
 use App\Models\Utility;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Opportunities;
+use App\Models\OpportunitiesProduct;
 use App\Models\UserDefualtView;
 use App\Models\IndustryPerson;
 use App\Models\lead_interaction;
@@ -137,11 +139,9 @@ class LeadController extends Controller
                 $lead['website']           = $request->website ? $request->website : NULL;
                 $lead['existing_customer']      = $request->existing_customer ? $request->existing_customer : NULL;
                 $lead['type'] = $request->type ? $request->type : 'Lead';
-                $lead['cbi_identified']    = $request->cbi_identified ? $request->cbi_identified : NULL;
                 $lead['met_or_spoke']    = $request->met_or_spoke ? $request->met_or_spoke : NULL;
                 $lead['is_mnc']    = $request->is_mnc ? $request->is_mnc : NULL;
                 $lead['industry_vertical']    = $request->industry_vertical ? $request->industry_vertical : NULL;
-                $lead['sales_stage']    = $request->sales_stage ? $request->sales_stage : NULL;
                 $lead['create_date']    = $request->create_date ? $request->create_date : NULL;
                 $lead['estimated_close_date']    = $request->estimated_close_date ? $request->estimated_close_date : NULL;
                 $lead['created_by']           = Auth::user()->id;
@@ -162,35 +162,7 @@ class LeadController extends Controller
                         }
                     }
                 }
-    
-                // if(isset($request->product_name)){
-                //     foreach($request->product_name as $k=>$product_id)
-                //     {
-                //         if(!empty($request->product_name))
-                //         {
-                //             IndustryProduct::create([
-                //                 'lead_id'=> $lead->id,
-                //                 'product_id'=>$product_id,
-                //             ]);
-                //         }
-                //     }
-                // }
-    
-                // if(isset($request->interaction_date) && isset($request->interaction_activity_type) && isset($request->interaction_feedback)){
-                //     foreach($request->interaction_date as $k=>$item)
-                //     {
-                //         if(!empty($request->interaction_date[$k]) && !empty($request->interaction_activity_type[$k]) && !empty($request->interaction_feedback[$k]))
-                //         {
-                //             lead_interaction::create([
-                //                 'lead_id'=> $lead->id,
-                //                 'interaction_date'=>$request->interaction_date[$k],
-                //                 'interaction_activity_type'=>$request->interaction_activity_type[$k],
-                //                 'interaction_feedback'=>$request->interaction_feedback[$k],
-                //             ]);  
-                //         }
-                //     }
-                // }
-    
+
                 DB::commit();
                     
                 return redirect('lead')->with('success', __('Lead Successfully Created.'));
@@ -201,7 +173,6 @@ class LeadController extends Controller
             }
 
         }catch(\Exception $e){
-            // dd('error',$e);
             DB::rollback();
             return redirect('lead')->with('error', 'Something Went Wrong');
         }
@@ -323,11 +294,9 @@ class LeadController extends Controller
                 $update['website']           = $request->website;
                 $update['existing_customer']      = $request->existing_customer;
                 $update['type'] = $request->type ? $request->type : 'Lead';
-                $update['cbi_identified']    = $request->cbi_identified;
                 $update['met_or_spoke']    = $request->met_or_spoke;
                 $update['is_mnc']    = $request->is_mnc;
                 $update['industry_vertical']    = $request->industry_vertical;
-                $update['sales_stage']    = $request->sales_stage;
                 $update['create_date']    = $request->create_date;
                 $update['estimated_close_date']    = $request->estimated_close_date;
                 $update['created_by']           = Auth::user()->id;
@@ -816,22 +785,24 @@ class LeadController extends Controller
         }   
     }
 
-    // convert to opportunity
-    public function convertToOpportunityModal(Request $request)
+    // create an opportunity
+    public function createOpportunityModal(Request $request)
     {
         $lead=Lead::where('id',$request->id)->first();
+        $poc= IndustryPerson::where('lead_id',$request->id)->get()->pluck('name','id');
+        $poc->prepend('Select Point of Contact', '');
         $products= Product::pluck('name','id');
         $products->prepend('Select Product', '');
         $user = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
         $user->prepend('Select Owner', '');
         if (\Auth::user()->can('Show Lead')) {
-            return view('lead.opportunity', compact('lead','products','user'));
+            return view('lead.opportunity', compact('lead','products','user','poc'));
         } else {
             return redirect('lead')->with('error', 'permission Denied');
         }
     }
     
-    public function convertToOpportunity(Request $request)
+    public function createOpportunity(Request $request)
     {
         DB::beginTransaction();
         try{
@@ -840,26 +811,42 @@ class LeadController extends Controller
                 $lead = Lead::where('id',$request->lead_id)->first();
                 $product = Product::where('id',$request->product_id)->first();
 
-                LeadQuotation::create([
+                $opportunity = Opportunities::create([
                     'lead_id'=> (int)$request->lead_id,
-                    'product_id'=>$request->product_id,
-                    // 'quantity'=>$request->quantity,
-                    'price'=>$request->price,
-                    'discount'=>$request->discount,
-                    'final_amount'=>$request->final_amount,
+                    'date_created'=>$request->date_created ? $request->date_created : NULL,
+                    'poc_id'=>$request->poc_id ? $request->poc_id : NULL,
+                    'sales_stage'=>$request->sales_stage ? $request->sales_stage : NULL,
+                    'close_date'=>$request->close_date ? $request->close_date : NULL,
+                    'cbi_identified'=>$request->cbi_identified ? $request->cbi_identified : NULL,
+                    'assigned_to'=>$request->assigned_to ? $request->assigned_to : NULL,
+                    'status'=>$request->status ? $request->status : NULL,
+                    'feedback'=>$request->feedback ? $request->feedback : NULL,
+                    'product_type'=>$request->product_type ? $request->product_type : NULL,
+                    'created_by'=>Auth::user()->id,
                 ]); 
-                
 
-                $quotationData['quantity'] = $request->quantity;
-                $quotationData['discount'] = $request->discount;
-                $quotationData['final_amount'] = $request->final_amount;
-
-                $lead = Lead::where('id',$request->lead_id)->first();
-                $product = Product::where('id',$request->product_id)->first();
+                if($opportunity){
+                    if(isset($request->product_id) && isset($request->quantity) && isset($request->price)  && isset($request->discount)){
+                        foreach($request->product_id as $k=>$item)
+                        {   
+                            if($request->product_id[$k] && $request->quantity[$k] && $request->price[$k])
+                            {
+                                OpportunitiesProduct::create([
+                                    'opportunity_id'=> $opportunity->id,
+                                    'product_id'=>$request->product_id[$k],
+                                    'quantity'=>$request->quantity[$k],
+                                    'price'=>$request->price[$k],
+                                    'discount'=>$request->discount[$k],
+                                    'created_by'=>Auth::user()->id,
+                                ]);  
+                            }
+                        }
+                    }
+                }
 
                 DB::commit();
 
-                return redirect('lead')->with('success', __('Converted To Opportunity Successfully.'));
+                return redirect('lead')->with('success', __('Opportunity Created Successfully.'));
             } else {
                 return redirect('lead')->with('error', 'Permission Denied');
             }
@@ -869,7 +856,122 @@ class LeadController extends Controller
             return redirect('lead')->with('error', 'Something Went Wrong');
         }   
     }
-    // convert to opportunity
+    // create an opportunity
+    
+    // edit an opportunity
+    public function editOpportunityModal(Request $request)
+    {
+        $opportunity = Opportunities::where('id',$request->id)->first();
+        $poc= $opportunity->lead->industryPerson->pluck('name','id');
+        $poc->prepend('Select Point of Contact', '');
+        $products= Product::pluck('name','id');
+        $products->prepend('Select Product', '');
+        $user = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
+        $user->prepend('Select Owner', '');
+        if (\Auth::user()->can('Show Lead')) {
+            return view('lead.editOpportunity', compact('products','user','poc','opportunity'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
+    }
+    
+    public function editOpportunity(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Create Lead')) {
+                $opportunity = Opportunities::find($request->opportunity_id);
+                $opportunity->date_created = $request->date_created ?: null;
+                $opportunity->poc_id = $request->poc_id ?: null;
+                $opportunity->sales_stage = $request->sales_stage ?: null;
+                $opportunity->close_date = $request->close_date ?: null;
+                $opportunity->cbi_identified = $request->cbi_identified ?: null;
+                $opportunity->assigned_to = $request->assigned_to ?: null;
+                $opportunity->status = $request->status ?: null;
+                $opportunity->feedback = $request->feedback ?: null;
+                $opportunity->product_type = $request->product_type ?: null;
+                $opportunity->updated_by = Auth::user()->id;
+                $opportunity->save();
+
+                if($request->product_type === 'Network')
+                    if($opportunity){
+                        if(isset($request->product_id) && isset($request->quantity) && isset($request->price)  && isset($request->discount)){
+                            // old opportunities Details 
+                            $oldIds = OpportunitiesProduct::where('opportunity_id',$opportunity->id)->pluck('id')->toArray();
+                            $newIds = $request->op_id;
+                            $removedIds = array_diff($oldIds,$newIds);
+                            // old opportunities Details 
+
+                            // delete removed opportunities first
+                            if(!empty($removedIds && $removedIds > 0)){
+                                foreach($removedIds as $rid){
+                                    $opData = OpportunitiesProduct::find($rid);
+                                    $opData->delete();
+                                }
+                            }
+                            // delete removeed person first
+
+                            if(!empty($request->product_id)){
+                                foreach ($request->product_id as $k => $item) 
+                                {
+                                    // check in orderDetails db by id
+                                    $opAlreadyExist = OpportunitiesProduct::find($request->op_id[$k]);
+                                    // check in orderDetails db by id 
+                                    if($opAlreadyExist)
+                                    {   
+                                        $opAlreadyExist->update([
+                                            'product_id' => $request->product_id[$k],
+                                            'quantity' => $request->quantity[$k],
+                                            'price' => $request->price[$k],
+                                            'discount' => $request->discount[$k],
+                                            'updated_by' => Auth::user()->id,
+                                        ]);
+                                    }else{
+                                        OpportunitiesProduct::create([
+                                            'opportunity_id'=> $opportunity->id,
+                                            'product_id'=> $request->product_id[$k],
+                                            'quantity'=>$request->quantity[$k],
+                                            'price'=>$request->price[$k],
+                                            'discount'=>$request->discount[$k],
+                                            'updated_by'=>Auth::user()->id
+                                        ]);  
+                                    }
+                                    
+                                }
+                            }
+
+                        }
+
+                        DB::commit();
+
+                        return redirect('lead')->with('success', __('Opportunity Updated Successfully.'));
+                    }
+
+                else
+                {
+                    // dd('down',$opportunity,$request->all());
+                    $opUpdate['product_id'] = $request->product_id[0] ? $request->product_id[0] : NULL;
+                    $opUpdate['quantity'] = $request->quantity[0] ? $request->quantity[0] : NULL;
+                    $opUpdate['price'] = $request->price[0] ? $request->price[0] : NULL;
+                    $opUpdate['discount'] = $request->discount[0] ? $request->discount[0] : NULL;
+                    $opUpdate['updated_by'] = Auth::user()->id;
+
+                    $op_Data = OpportunitiesProduct::where('id',$request->op_id[0])->update($opUpdate);
+
+                    DB::commit();
+
+                    return redirect('lead')->with('success', __('Opportunity Created Successfully.'));
+                }
+            } else {
+                return redirect('lead')->with('error', 'Permission Denied');
+            }
+        }catch(\Exception $e){
+            dd('error',$e);
+            DB::rollback();
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }   
+    }
+    // edit an opportunity
 
     public function addPerforma(Request $request)
     {

@@ -319,31 +319,6 @@
         }
     });
 
-    // document.getElementById('interaction-add-field').addEventListener('click', function() {
-    //     const container1 = document.getElementById('interaction-repeater-container');
-    //     const lastRow1 = container1.querySelector('.interaction-repeater:last-of-type');
-    //     const newRow1 = lastRow1.cloneNode(true);
-    //     const inputs1 = newRow1.querySelectorAll('.interaction_inputs');
-
-    //     // Clear input field values in the new row
-    //     inputs1.forEach(input => {
-    //         input.value = '';
-    //     });
-
-    //     container1.querySelector('tbody').appendChild(newRow1);
-    // });
-
-    // // Remove row
-    // var removeButton1 = document.getElementById('interaction-remove-field');
-    // var repeaterContainer1 = document.getElementById('interaction-repeater-container');
-    // removeButton1.addEventListener('click', function() {
-    //     var repeaterRows1 = repeaterContainer1.querySelectorAll('.interaction-repeater');
-    //     if (repeaterRows1.length > 1) {
-    //         var lastRow1 = repeaterRows1[repeaterRows1.length - 1];
-    //         lastRow1.parentNode.removeChild(lastRow1);
-    //     }
-    // });
-
     //AUTOCOMPLETE
     $(document).ready(function() {
         $('#company_name').autocomplete({

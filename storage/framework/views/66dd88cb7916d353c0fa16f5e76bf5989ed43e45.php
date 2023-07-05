@@ -221,9 +221,8 @@
                                                 <?php endif; ?>
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" data-ajax-popup="true" class="dropdown-item">Add Interaction</a>
                                                 <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
-                                                    <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Quotation</a>
                                                 <?php endif; ?>
-                                                <a href="#" data-size="lg" data-url="<?php echo e(route('convertToOpportunityModal',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Convert To Opportunity')); ?>">Convert To Opportunity</a>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Quotation</a>
                                                 <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
                                                     <a href="#" data-size="lg" data-url="<?php echo e(route('addPerforma',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Performa Invoice')); ?>">Generate Performa Invoice</a>
                                                 <?php endif; ?>
@@ -454,34 +453,7 @@
         return FooterIsValid
     }
 
-    // if(document.getElementById('co-add-field') && document.getElementById('co-remove-field')){
-    //     document.getElementById('co-add-field').addEventListener('click', function() {
-    //         const container = document.getElementById('co-repeater-container');
-    //         const lastRow = container.querySelector('.co-repeater:last-of-type');
-    //         const newRow = lastRow.cloneNode(true);
-    //         const inputs = newRow.querySelectorAll('.co-repeater-input');
-    //         const selects = newRow.querySelectorAll('co-repeater-select');
     
-    //         // Clear input field values in the new row
-    //         inputs.forEach(input => {
-    //             input.value = '';
-    //         });
-    
-    //         container.appendChild(newRow);
-    //     });
-    
-    //     // Remove row
-    //     var removeButton = document.getElementById('co-remove-field');
-    //     var repeaterContainer = document.getElementById('co-repeater-container');
-    //     removeButton.addEventListener('click', function() {
-    //         var repeaterRows = repeaterContainer.querySelectorAll('.co-repeater');
-    //         if (repeaterRows.length > 1) {
-    //             var lastRow = repeaterRows[repeaterRows.length - 1];
-    //             lastRow.parentNode.removeChild(lastRow);
-    //         }
-    //     });
-    // }
-
 </script>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\projects\addonix\resources\views/lead/index.blade.php ENDPATH**/ ?>

@@ -343,8 +343,10 @@ Route::group(['middleware' => ['verified']], function () {
             Route::post('sendQuotation', [LeadController::class, 'sendQuotation'])->name('sendQuotation'); 
             Route::post('sendPerforma', [LeadController::class, 'sendPerforma'])->name('sendPerforma'); 
             Route::get('verifyHtml', [LeadController::class, 'verifyHtml'])->name('verifyHtml');      
-            Route::get('convertToOpportunityModal/{id}', [LeadController::class, 'convertToOpportunityModal'])->name('convertToOpportunityModal');
-            Route::post('convertToOpportunity', [LeadController::class, 'convertToOpportunity'])->name('convertToOpportunity'); 
+            Route::get('createOpportunityModal/{id}', [LeadController::class, 'createOpportunityModal'])->name('createOpportunityModal');
+            Route::post('createOpportunity', [LeadController::class, 'createOpportunity'])->name('createOpportunity'); 
+            Route::get('editOpportunityModal/{id}', [LeadController::class, 'editOpportunityModal'])->name('editOpportunityModal');
+            Route::post('editOpportunity', [LeadController::class, 'editOpportunity'])->name('editOpportunity'); 
         }
     );
     Route::group(

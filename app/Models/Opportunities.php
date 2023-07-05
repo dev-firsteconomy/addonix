@@ -7,23 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class Opportunities extends Model
 {
     protected $fillable = [
-        'user_id',
-        'name',
-        'account_name',
-        'stage',
-        'amount',
-        'probability',
+        'lead_id',
+        'poc_id',
+        'date_created',
+        'product_type',
+        'sales_stage',
         'close_date',
-        'contacts',
-        'lead_source',
+        'assigned_to',
+        'status',
+        'cbi_identified',
+        'feedback',
         'created_by',
         'description',
     ];
     protected $appends  = [
-        'contact_name',
-        'account_name',
-        'campaign_name',
+        'assigned_to',
         'stage_name',
+        'updated_by'
     ];
 
     public function assign_user()
@@ -31,9 +31,9 @@ class Opportunities extends Model
         return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
 
-    public function stages()
+    public function opportunity_products()
     {
-        return $this->hasOne('App\Models\OpportunitiesStage', 'id', 'stage');
+        return $this->hasMany('App\Models\OpportunitiesProduct', 'opportunity_id', 'id');
     }
 
     public function accounts()
@@ -93,6 +93,11 @@ class Opportunities extends Model
     public function taskstages()
     {
         return $this->hasOne('App\Models\TaskStage', 'id', 'stage');
+    }
+
+    public function lead()
+    {
+        return $this->belongsTo('App\Models\Lead','lead_id','id');
     }
 }
 

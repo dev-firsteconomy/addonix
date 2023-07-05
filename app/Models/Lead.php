@@ -36,11 +36,11 @@ class Lead extends Model
         'website',
         'existing_customer',
         'type',
-        'cbi_identified',
+        // 'cbi_identified',
         'met_or_spoke',
         'is_mnc',
         'industry_vertical',
-        'sales_stage',
+        // 'sales_stage',
         'create_date',
         'estimated_close_date',
         'assign_user_id',
@@ -149,6 +149,11 @@ class Lead extends Model
     public function leadQuotation()
     {
         return $this->hasMany('App\Models\LeadQuotation','lead_id','id');
+    }
+
+    public function leadOpportunities()
+    {
+        return $this->hasMany('App\Models\Opportunities','lead_id','id');
     }
 
 }

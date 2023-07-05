@@ -222,6 +222,20 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
             // common_bind("#commonModal");
             // common_bind_select("#commonModal");
             select2();
+            // console.log('123');
+            // OPPORTUNITY EDIT MODAL CODE
+            if ($('.edeleteButton').length > 0 && $('.edeleteButton').length > 0) {
+                var product_type_val = $('#eproduct_type').val();
+                console.log(product_type_val);
+                if(product_type_val === 'Network'){
+                    $('.edeleteButton').show();
+                    $('.eop_repeater_buttons').show();
+                } else {
+                    $('.edeleteButton').hide();
+                    $('.eop_repeater_buttons').hide();
+                }
+            }
+            // OPPORTUNITY EDIT MODAL CODE
 
         },
         error: function(data) {

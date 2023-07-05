@@ -216,9 +216,8 @@
                                                 @endif
                                                 <a href="#" data-size="lg" data-url="{{ route('addInteration',$lead->id) }}" data-ajax-popup="true" class="dropdown-item">Add Interaction</a>
                                                 @if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1)
-                                                    <a href="#" data-size="lg" data-url="{{ route('addQuotation',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Generate Quotation')}}">Generate Quotation</a>
                                                 @endif
-                                                <a href="#" data-size="lg" data-url="{{ route('convertToOpportunityModal',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Convert To Opportunity')}}">Convert To Opportunity</a>
+                                                <a href="#" data-size="lg" data-url="{{ route('addQuotation',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Generate Quotation')}}">Generate Quotation</a>
                                                 @if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1)
                                                     <a href="#" data-size="lg" data-url="{{ route('addPerforma',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Generate Performa Invoice')}}">Generate Performa Invoice</a>
                                                 @endif

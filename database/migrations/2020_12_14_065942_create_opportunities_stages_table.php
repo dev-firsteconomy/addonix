@@ -15,14 +15,13 @@ class CreateOpportunitiesStagesTable extends Migration
     {
         Schema::create('opportunities_products', function (Blueprint $table) {
             $table->id();
-            $table->integer('lead_id');
             $table->integer('opportunity_id');
             $table->integer('product_id');
             $table->integer('quantity');
             $table->float('price');
             $table->integer('discount');
             $table->integer('created_by');
-            $table->integer('updated_by');
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }
