@@ -629,7 +629,7 @@ class LeadController extends Controller
         }
     }
 
-    public function addInteration(Request $request)
+    public function addInteraction(Request $request)
     {
         $lead=Lead::where('id',$request->id)->first();
         $products= Product::pluck('name','id');
@@ -648,20 +648,20 @@ class LeadController extends Controller
             if (\Auth::user()->can('Show Lead')) {
                 lead_interaction::create([
                     'lead_id'=> (int)$request->lead_id,
-                    'interaction_activity_type'=>$request->interaction_activity_type ? $request->interaction_activity_type : NULL,
-                    'interaction_subject'=>$request->interaction_subject ? $request->interaction_subject : NULL,
-                    'interaction_status'=>$request->interaction_status ? $request->interaction_status : NULL,
-                    'interaction_date'=>$request->interaction_date ? $request->interaction_date : NULL,
-                    'interaction_feedback'=>$request->interaction_feedback ? $request->interaction_feedback : NULL,
-                    'interaction_followup_date'=>$request->interaction_followup_date,
-                    'company_name'=>$request->company_name ? $request->company_name : NULL,
-                    'demo_date'=>$request->demo_date ? $request->demo_date : NULL,
-                    'contact_person'=>$request->contact_person ? $request->contact_person : NULL,
-                    'product_id'=>$request->product_id ? $request->product_id : NULL,
-                    'demo_status'=>$request->demo_status ? $request->demo_status : NULL,
-                    'oft_unique_id'=>$request->oft_unique_id ? $request->oft_unique_id : NULL,
-                    'created_by'=>$request->created_by ? $request->created_by : NULL,
-                    'assign_user_id'=>$request->assign_user_id ? $request->assign_user_id : NULL,
+                    'interaction_activity_type'=>$request->interaction_activity_type ?: NULL,
+                    'interaction_subject'=>$request->interaction_subject ?: NULL,
+                    'interaction_status'=>$request->interaction_status ?: NULL,
+                    'interaction_date'=>$request->interaction_date ?: NULL,
+                    'interaction_feedback'=>$request->interaction_feedback ?: NULL,
+                    'interaction_followup_date'=>$request->interaction_followup_date ?: NULL,
+                    'company_name'=>$request->company_name ?: NULL,
+                    'demo_date'=>$request->demo_date ?: NULL,
+                    'contact_person'=>$request->contact_person ?: NULL,
+                    'product_id'=>$request->product_id ?: NULL,
+                    'demo_status'=>$request->demo_status ?: NULL,
+                    'oft_unique_id'=>$request->oft_unique_id ?: NULL,
+                    'created_by'=>Auth::user()->idL,
+                    'assign_user_id'=>$request->assign_user_id ?: NULL,
                 ]); 
                 DB::commit();
                 return redirect('lead')->with('success', __('Interaction Added Successfully.'));
@@ -673,6 +673,16 @@ class LeadController extends Controller
             DB::rollback();
             return redirect('lead')->with('error', 'Something Went Wrong');
         }   
+    }
+
+    public function viewInteraction(Request $request)
+    {
+        $interaction=lead_interaction::where('id',$request->id)->first();
+        if (\Auth::user()->can('Show Lead')) {
+            return view('lead.viewInteraction', compact('interaction'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
     }
 
     public function addPoc(Request $request)

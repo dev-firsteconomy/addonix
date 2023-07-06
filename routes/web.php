@@ -330,7 +330,8 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('/companies/search', [LeadController::class, 'companySearch'])->name('lead.companySearch');
             Route::get('leadTab', [LeadController::class, 'leadTab'])->name('lead.leadTab');
             Route::get('get-product-price', [LeadController::class, 'getProductPrice'])->name('get-product-price');
-            Route::get('addInteration/{id}', [LeadController::class, 'addInteration'])->name('addInteration');
+            Route::get('addInteraction/{id}', [LeadController::class, 'addInteraction'])->name('addInteraction');
+            Route::get('viewInteraction/{id}', [LeadController::class, 'viewInteraction'])->name('viewInteraction');
             Route::get('addPoc/{id}', [LeadController::class, 'addPoc'])->name('addPoc');
             Route::get('editPoc/{id}', [LeadController::class, 'editPoc'])->name('editPoc');
             Route::get('addQuotation/{id}', [LeadController::class, 'addQuotation'])->name('addQuotation');

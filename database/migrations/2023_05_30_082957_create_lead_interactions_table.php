@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('lead_id');
             $table->string('interaction_activity_type');
-            $table->date('interaction_subject');
+            $table->string('interaction_subject');
             $table->string('interaction_status');
             $table->date('interaction_date');
             $table->string('interaction_feedback');

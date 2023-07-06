@@ -13,9 +13,21 @@ class lead_interaction extends Model
 
     protected     $fillable = [
         'lead_id',
-        'interaction_date',
         'interaction_activity_type',
-        'interaction_feedback'
+        'interaction_subject',
+        'interaction_status',
+        'interaction_date',
+        'interaction_feedback',
+        'interaction_followup_date',
+        'company_name',
+        'demo_date',
+        'contact_person',
+        'product_id',
+        'demo_status',
+        'oft_unique_id',
+        'created_by',
+        'assign_user_id'
+
     ];
     
     public function lead()
