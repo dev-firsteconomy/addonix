@@ -259,12 +259,14 @@
                                                 </a>
                                             </div>
                                         @endcan
-                                        <div class="dropdown viewDropDown">
-                                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">...</a>
-                                            <div class="dropdown-menu py-0">
-                                                <a href="javascript:void(0)" data-size="lg" data-url="{{ route('approvalEmail',$opportunity->id) }}" data-ajax-popup="true" class="dropdown-item">Send Email</a>
+                                        @can('Edit Lead')
+                                            <div class="dropdown viewDropDown">
+                                                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">...</a>
+                                                <div class="dropdown-menu py-0">
+                                                    <a href="javascript:void(0)" data-size="lg" data-url="{{ route('approvalEmailModal',$opportunity->id) }}" data-ajax-popup="true" class="dropdown-item">Send Email</a>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

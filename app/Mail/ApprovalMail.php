@@ -8,27 +8,22 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class ApprovalMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $leads;
-    public $leadProducts;
-    public $leadPoc;
-    public $lead_interaction;
+    public $data;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($leads,$leadProducts,$leadPoc,$lead_interaction)
+    public function __construct($data)
     {
-        $this->leads = $leads;
-        $this->leadProducts = $leadProducts;
-        $this->leadPoc = $leadPoc;
-        $this->lead_interaction = $lead_interaction;
+        $this->data = $data;
     }
 
     
@@ -39,7 +34,11 @@ class ApprovalMail extends Mailable
      */
     public function build()
     {
-        return $this->view('email.approval',['lead'=>$this->leads,'leadProducts'=>$this->leadProducts,'leadPoc'=>$this->leadPoc,'lead_interaction'=>$this->lead_interaction])->subject('NEW LEAD TEST EMAIL');
+        return $this->to($this->data['to_email'])
+                    ->cc($this->data['cc_email'])
+                    ->from(Auth::user()->email)
+                    ->view('email.approval',['data'=>$this->data])
+                    ->subject('NEW LEAD TEST EMAIL');
     }
 
     /**

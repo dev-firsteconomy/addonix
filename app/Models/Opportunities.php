@@ -99,5 +99,10 @@ class Opportunities extends Model
     {
         return $this->belongsTo('App\Models\Lead','lead_id','id');
     }
+
+    public function poc()
+    {
+        return $this->belongsTo('App\Models\IndustryPerson','poc_id','id');
+    }
 }
 

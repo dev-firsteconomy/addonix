@@ -569,24 +569,62 @@ class LeadController extends Controller
        
     }
 
+    public function sendApprovalEmailModal(Request $request)
+    {
+        try{
+            $opportunity = Opportunities::find($request->id);
+            $lead = $opportunity->lead;
+            $opportunity_products = $opportunity->opportunity_products;
+            $products = [];
+            foreach ($opportunity_products as $op) {
+                $name = $op->product->name;
+                if ($name) {
+                    $products[$name] = $name;
+                }
+            }
+            $products = ['' => 'Select Product'] + $products;
+            $poc = IndustryPerson::where('lead_id',$lead->id)->get()->pluck('name','name');
+            $poc->prepend('Select Point of Contact', '');
+
+            return view('lead.approvalMail', compact('lead','opportunity','poc','products'));
+
+        }catch(\Exception $e){
+            // dd($e);
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }
+    }
+
     public function sendApprovalEmail(Request $request)
     {
         try{
-            $lead = Lead::find($request->id);
-            $leadProducts=IndustryProduct::where('lead_id',$lead->id)->get();
-            $leadPoc=IndustryPerson::where('lead_id',$lead->id)->get();
-            $lead_interaction=lead_interaction::where('lead_id',$lead->id)->get();
 
-            // $mail =  Mail::to('hasnain@firsteconomy.com')->send(new ApprovalMail($lead,$leadProducts,$leadPoc,$lead_interaction));
+            $lead = Lead::find($request->lead_id);
+
+            $data['to_email'] = $request->to_email;
+            $ccEmails = $request->cc_email;
+            // Split the comma-separated email addresses into an array
+            $data['cc_email'] = explode(',', $ccEmails);
+            $data['company_name'] = $request->company_name;
+            $data['parent_companyy_name'] = $request->parent_companyy_name;
+            $data['lead_address'] = $request->lead_address;
+            $data['website'] = $request->website;
+            $data['existing_customer'] = $request->existing_customer;
+            $data['cbi_identified'] = $request->cbi_identified;
+            $data['met_or_spoke'] = $request->met_or_spoke;
+            $data['poc_name'] = $request->poc_name;
+            $data['is_mnc'] = $request->is_mnc;
+            $data['product_name'] = $request->product_name;
+
+            $mail =  Mail::to('hasnain@firsteconomy.com')->send(new ApprovalMail($data));
             
-            // $lead->mail_sent = 1;
-            // $lead->save();
+            $lead->mail_sent = 1;
+            $lead->save();
 
-            return view('lead.approvalMail', compact('lead'));
-
-            // return redirect('lead')->with('success', 'Mail Sent Successfully.');
+            return redirect('lead')->with('success', 'Mail Sent Successfully.');
+            // return view('email.approval', compact('data'));
 
         }catch(\Exception $e){
+            dd($e);
             return redirect('lead')->with('error', 'Something Went Wrong');
         }
     }
