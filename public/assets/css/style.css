@@ -4763,7 +4763,7 @@ textarea.is-invalid.dataTable-input {
     --bs-card-cap-padding-x: 25px;
     --bs-card-cap-bg: transparent;
     --bs-card-cap-color: ;
-  --bs-card-height:;
+  --bs-card-height: ;
     --bs-card-color: ;
   --bs-card-bg: #ffffff;
     --bs-card-img-overlay-padding: 1.25rem;
@@ -5110,7 +5110,7 @@ textarea.is-invalid.dataTable-input {
     --bs-breadcrumb-padding-y: 0;
     --bs-breadcrumb-margin-bottom: 1rem;
     --bs-breadcrumb-bg: ;
-  --bs-breadcrumb-border-radius:;
+    --bs-breadcrumb-border-radius: ;
     --bs-breadcrumb-divider-color: #6c757d;
     --bs-breadcrumb-item-padding-x: 0.5rem;
     --bs-breadcrumb-item-active-color: #6c757d;
@@ -18041,8 +18041,7 @@ body.theme-10 .card .card-header h5:after, body.theme-10 .card .card-header .h5:
 
 @media (min-width: 1024px) {
     .dash-sidebar.light-sidebar.transprent-bg {
-        background: transparent;
-        box-shadow: none;
+        background: #fff;
     }
 
     .dash-sidebar.light-sidebar.transprent-bg .navbar-content {
@@ -18521,6 +18520,8 @@ body:not(.minimenu) .dash-sidebar .dash-submenu .dash-submenu .dash-submenu > .d
 .dash-header .header-wrapper {
     display: flex;
     padding: 0 30px;
+    background-color: #fff;
+    box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
 }
 
 .dash-header .dash-h-item {
@@ -29504,4 +29505,24 @@ input.top-buffer {
 }
 .data-table tbody td input{
     width: 100%;
+}
+
+.table-responsive::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.table-responsive::-webkit-scrollbar
+{
+	width: 4px;
+	background-color: #F5F5F5;
+}
+
+.table-responsive::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #6FD943;
 }

@@ -27,9 +27,9 @@
 }
 
 .radioForm.active  button {
-    background: #2bdc52;
+    background: #6fd943;
     color: #fff;
-    border-color: #2bdc52;
+    border-color: #6fd943;
 }
 
 .datatable .dropdown-toggle::after {
@@ -85,7 +85,7 @@
             <input type="date" name="fromDate" class="form-control">
             </div>
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <div class="input-group mb-3">
             <span class="input-group-text">To Date:</span>
             <input type="date" name="toDate" class="form-control">
@@ -104,16 +104,15 @@
             </select>
             </div>
         </div> -->
-        <div class="col-lg-1">
-            <div class="input-group mb-3">  
-                <button class="btn btn-primary" type="submit" id="leadSearchBtn">Search!</button>
+        <div class="col-lg-3 d-flex gap-1">
+            <div class="input-group mb-3 w-100">  
+                <a href="/lead" class="btn btn-primary w-100">Reset</a>
+            </div>
+            <div class="input-group mb-3 w-100">  
+                <button class="btn btn-primary w-100" type="submit" id="leadSearchBtn">Search!</button>
             </div>
         </div>
-        <div class="col-lg-1">
-            <div class="input-group mb-3">  
-                <a href="/lead" class="btn btn-primary">Reset</a>
-            </div>
-        </div>
+        
     </div>
 </form>
 <!-- radioForm -->
@@ -181,7 +180,7 @@
                                 </td>
 
                                 <td>
-                                    <span class="budget">{{ ucfirst(@$lead->email)}}</span>
+                                    <span class="budget text-lowercase">{{ ucfirst(@$lead->email)}}</span>
                                 </td>
 
                                 <td>

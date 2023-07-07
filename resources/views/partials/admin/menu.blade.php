@@ -18,8 +18,10 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                 <!-- ========   change your logo hear   ============ -->
                 {{-- <img src="{{ asset(Storage::url('logo/'.$logo)) }}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" />
                     <img src="{{ asset(Storage::url('logo/'.$logo)) }}" alt="{{ env('APP_NAME') }}" class="logo logo-sm" /> --}}
-                <img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png') }}"
-                    alt="{{ config('app.name', 'Salesy') }}" class="logo logo-lg nav-sidebar-logo" />
+                    {{-- <img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png') }}"
+                    alt="{{ config('app.name', 'Salesy') }}" class="logo logo-lg nav-sidebar-logo" /> --}}
+                <img src="http://www.addonix.com/wp-content/uploads/2015/11/addonix-logo.png"
+                alt="{{ config('app.name', 'Salesy') }}" class="logo logo-lg nav-sidebar-logo" />
             </a>
         </div>
 

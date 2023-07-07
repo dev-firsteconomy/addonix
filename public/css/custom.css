@@ -391,11 +391,14 @@
         width: 100%;
         min-width: 255px;
         /*max-width: 255px;*/
+        border-bottom: 1px solid #cccccc82;
     }
 
     a.b-brand {
         height: 100%;
         width: 100%;
+        display: flex;
+        align-items: center;
     }
 
     .dash-sidebar .main-logo a img {

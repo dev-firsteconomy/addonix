@@ -12,9 +12,9 @@ $unseenCounter = App\Models\ChMessage::where('to_id', Auth::user()->id)
 @else
     <header class="dash-header">
 @endif
-    <div class="header-wrapper">
-        <div class="me-auto dash-mob-drp">
-            <ul class="list-unstyled">
+    <div class="header-wrapper w-100">
+        <div class="dash-mob-drp w-100">
+            <ul class="list-unstyled w-100 d-flex">
                 <li class="dash-h-item mob-hamburger">
                     <a href="#" class="nav-link nav-link-icon sidenav-toggler" data-action="sidenav-pin"
                         data-target="#sidenav-main"></a>
@@ -39,14 +39,14 @@ $unseenCounter = App\Models\ChMessage::where('to_id', Auth::user()->id)
                             </form>
                         </div> --}}
 
-                <li class="dropdown dash-h-item drp-company">
+                <li class="dropdown dash-h-item drp-company ms-auto">
                     <a class="dash-head-link dropdown-toggle arrow-none me-0" data-target="#sidenav-main"
                         data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <span class="theme-avtar">
                             @if(\Request::route()->getName() == 'chats' )
                             <img class="rounded-circle" src="{{ !empty($users->avatar) ? $users->avatar : 'avatar.png' }}" style="width:30px;">
                             @else
-                            <img class="rounded-circle" src="{{$profile . '/' }}{{ !empty($users->avatar) ? $users->avatar : 'avatar.png' }}" style="width:30px;">
+                            <img class="rounded-circle" src="{{$profile}}{{ !empty($users->avatar) ? $users->avatar : 'avatar.png' }}" style="width:30px;">
                             @endif
                         </span>
                         <span class="hide-mob ms-2">{{ __('Hi') }}, {{ $users->name }}</span>
