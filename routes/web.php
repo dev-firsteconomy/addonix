@@ -336,6 +336,7 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('editPoc/{id}', [LeadController::class, 'editPoc'])->name('editPoc');
             Route::get('addQuotation/{id}', [LeadController::class, 'addQuotation'])->name('addQuotation');
             Route::get('addPerforma/{id}', [LeadController::class, 'addPerforma'])->name('addPerforma');
+            Route::get('addinternalPO/{id}', [LeadController::class, 'addinternalPO'])->name('addinternalPO');
             Route::get('approvalEmailModal/{id}', [LeadController::class, 'sendApprovalEmailModal'])->name('approvalEmailModal');
             Route::get('changeStatus/{id}', [LeadController::class, 'changeStatus'])->name('changeStatus');
             Route::post('submitInteraction', [LeadController::class, 'submitInteraction'])->name('submitInteraction'); 
@@ -343,6 +344,7 @@ Route::group(['middleware' => ['verified']], function () {
             Route::post('submitEditPoc', [LeadController::class, 'submitEditPoc'])->name('submitEditPoc'); 
             Route::post('sendQuotation', [LeadController::class, 'sendQuotation'])->name('sendQuotation'); 
             Route::post('sendPerforma', [LeadController::class, 'sendPerforma'])->name('sendPerforma'); 
+            Route::post('sendInternalPO', [LeadController::class, 'sendInternalPO'])->name('sendInternalPO'); 
             Route::get('verifyHtml', [LeadController::class, 'verifyHtml'])->name('verifyHtml');      
             Route::get('createOpportunityModal/{id}', [LeadController::class, 'createOpportunityModal'])->name('createOpportunityModal');
             Route::post('createOpportunity', [LeadController::class, 'createOpportunity'])->name('createOpportunity'); 

@@ -635,7 +635,7 @@ class LeadController extends Controller
         $products= Product::pluck('name','id');
         $products->prepend('Select Product', '');
         if (\Auth::user()->can('Show Lead')) {
-            return view('lead.addInteration', compact('lead','products'));
+            return view('lead.addInteraction', compact('lead','products'));
         } else {
             return redirect('lead')->with('error', 'permission Denied');
         }
@@ -770,59 +770,54 @@ class LeadController extends Controller
     {
         DB::beginTransaction();
         try{
+            // dd($request->all());
             if (\Auth::user()->can('Create Lead')) {
-                LeadQuotation::create([
-                    'lead_id'=> (int)$request->lead_id,
-                    'product_id'=>$request->product_id,
-                    // 'quantity'=>$request->quantity,
-                    'price'=>$request->price,
-                    'discount'=>$request->discount,
-                    'final_amount'=>$request->final_amount,
-                ]); 
+                // LeadQuotation::create([
+                //     'lead_id'=> (int)$request->lead_id,
+                //     'product_id'=>$request->product_id,
+                //     // 'quantity'=>$request->quantity,
+                //     'price'=>$request->price,
+                //     'discount'=>$request->discount,
+                //     'final_amount'=>$request->final_amount,
+                // ]); 
 
+                $date = strtotime($request->validity);
+                $validity = date('jS F Y', $date);
+
+                $products = [];
+                if(!empty($request->product_id)){
+                    foreach ($request->product_id as $key => $value) {
+                        $product = Product::where('id',$value)->first();
+                        $name = $product->name;
+                        if ($name) {
+                            $products[$key] = $name;
+                        }
+                    }
+                }
+
+                $quotationData['validity'] = $validity;
+                $quotationData['product_id'] = $products;
                 $quotationData['quantity'] = $request->quantity;
+                $quotationData['price'] = $request->price;
                 $quotationData['discount'] = $request->discount;
                 $quotationData['final_amount'] = $request->final_amount;
 
                 $lead = Lead::where('id',$request->lead_id)->first();
-                $product = Product::where('id',$request->product_id)->first();
-                // $ccEmails = IndustryPerson::where('lead_id',$request->lead_id)->pluck('email_id')->toArray();
-                // $lead_quotations = LeadQuotation::where('lead_id',$request->lead_id)->get();
 
-                // WORD CODE
-                // $pdf = \PDF::loadView('lead.download_quotation',compact('lead','quotationData','product'));
-                // return $pdf->download($lead->company_name."-".date('Y-m-d H:i:s').".pdf");
-                // WORD CODE
+                // return view('lead.download_quotation',compact('lead','quotationData'));
 
+                //PDF CODE
+                $pdf = \PDF::loadView('lead.download_quotation',compact('lead','quotationData'));
+                return $pdf->download($lead->company_name."-".date('Y-m-d H:i:s').".pdf");
+                //PDF CODE
 
-                // WORD CODE
-                $phpWord = new \PhpOffice\PhpWord\PhpWord();
-
-                $section = $phpWord->addSection();
-
-                // Defining the HTML content
-                $htmlContent = view('lead.download_quotation',compact('lead','quotationData','product'))->render();
-
-                \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent);
-
-                // Save file
-                $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-                $file = $lead->company_name.'quotation.docx';
-                $path = public_path($file);
-                $objWriter->save($path);
-
-                // Download the file
-                return response()->download($file)->deleteFileAfterSend(true);
-                // WORD CODE
-                
-                // return view('lead.download_quotation',compact('lead','quotationData','product'));
 
 
                 // $mail =  Mail::to(@$lead->email)->cc($ccEmails)->send(new SendQuotationMail($lead,$lead_quotations));
 
-                DB::commit();
+                // DB::commit();
 
-                return redirect('lead')->with('success', __('Quotation Sent Successfully.'));
+                // return redirect('lead')->with('success', __('Quotation Sent Successfully.'));
             } else {
                 return redirect('lead')->with('error', 'Permission Denied');
             }

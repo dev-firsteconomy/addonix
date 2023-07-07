@@ -219,10 +219,13 @@
                                                 <?php if($lead->type == 'Lead' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 0): ?>
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('approvalEmail',$lead->id)); ?>" data-id="<?php echo e($lead->id); ?>" data-ajax-popup="true" class="dropdown-item">Send Approval Email</a>
                                                 <?php endif; ?>
-                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addInteration',$lead->id)); ?>" data-ajax-popup="true" class="dropdown-item">Add Interaction</a>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addInteraction',$lead->id)); ?>" data-ajax-popup="true" class="dropdown-item">Add Interaction</a>
                                                 <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Quotation</a>
                                                 <?php endif; ?>
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Quotation</a>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addPerforma',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Performa</a>
+                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addinternalPO',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Internal PO</a>
                                                 <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
                                                     <a href="#" data-size="lg" data-url="<?php echo e(route('addPerforma',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Performa Invoice')); ?>">Generate Performa Invoice</a>
                                                 <?php endif; ?>
@@ -249,7 +252,7 @@
 
 <?php $__env->startPush('script-page'); ?>
 <script>
-    let productPrice;
+    // tab code
     $(document).ready(function() {
 
         const currentUrl = window.location.href;
@@ -288,172 +291,191 @@
 
             // ... continue with your existing click handler code ...
         });
+    });
+    // tab code
 
+    //Quotation Code
+    $(document).on('change', '.quotation-product-select', function() {
+        var $row = $(this).closest('.quotation-repeater');
+        var $quantityInput = $row.find('.quotation-quantityInput');
+        var $priceInput = $row.find('.quotation-price-input');
         
-        // $(".radioForm").click(function(){
-        //     $(this).addClass('active')
-        //     $(this).siblings().removeClass('active')
-        // })
+        var productId = $(this).val();
+        
+        if (productId !== '') {
+            // Make an AJAX request to fetch the product price
+            $.ajax({
+                url: '/get-product-price',
+                type: 'GET',
+                data: { productId: productId },
+                success: function(response) {
+                    // Update the price input with the fetched price
+                    var productPrice = response.price;
+                    var quantity = parseInt($quantityInput.val());
+                    console.log($quantityInput.val());
+                    var totalPrice = parseFloat(productPrice) * quantity;
+                    $priceInput.val(totalPrice);
+                },
+                error: function() {
+                    // Handle error if the AJAX request fails
+                    console.log('Error occurred while fetching the product price.');
+                }
+            });
+        } else {
+            // Clear the price input if no product is selected
+            $priceInput.val('');
+        }
     });
 
+    $(document).on('click', '.quotation-increaseButton', function() {
+        var row = $(this).closest('.quotation-repeater');
+        var quantityInput = row.find('.quotation-quantityInput');
+        var priceInput = row.find('.quotation-price-input');
+        
+        var price = parseFloat(priceInput.val());
+        var quantity = parseInt(quantityInput.val());
+        
+        if (!isNaN(quantity) && !isNaN(price)) {
+            var unitPrice = price / quantity;
+            quantity++;
+            quantityInput.val(quantity);
+            var updatedPrice = unitPrice * quantity;
+            priceInput.val(updatedPrice);
+        }
+    });
+
+    $(document).on('click', '.quotation-decreaseButton', function() {
+        var row = $(this).closest('.quotation-repeater');
+        var quantityInput = row.find('.quotation-quantityInput');
+        var priceInput = row.find('.quotation-price-input');
+
+        var price = parseFloat(priceInput.val());
+        var quantity = parseInt(quantityInput.val());
+
+        if (!isNaN(quantity) && quantity > 1 && !isNaN(price)) {
+            var unitPrice = price / quantity;
+            quantity--;
+            quantityInput.val(quantity);
+            var updatedPrice = unitPrice.toFixed(2) * quantity;
+            priceInput.val(updatedPrice);
+        }
+    });
+
+    // Add row
+    $(document).on('click', '#quotation-add-field', function() {
+        const container = $('.quotation-repeater');
+        const lastRow = $('.quotation-repeater:last');
+        if (lastRow.length) {
+            const newRow = lastRow.clone(true);
+            newRow.find('.quotation-input-clear').val('');
+            newRow.find('select').prop('selectedIndex', 0);
+            newRow.find('.quotation-quantityInput').val(1);
+            newRow.insertBefore($(this).parent());
+        } else {
+            console.error('No row to clone found');
+        }
+    });
+
+    // Remove row
+    $(document).on('click', '#quotation-remove-field', function() {    
+        if ($('.quotation-repeater').length > 1) {
+            $('.quotation-repeater:last').remove();
+        } else {
+            console.log('Cannot remove the only row');
+        }
+    });
+
+    $(document).on('change','.quotation-discount-input',function() {
+        var row = $(this).closest('.quotation-repeater');
+        var priceInput = row.find('.quotation-price-input');
+        var finalAmountInput = row.find('.quotation-final-amount');
+        var price = parseFloat(priceInput.val());
+        var discount = parseInt($(this).val());
+        if(price){
+            if (!isNaN(price) && !isNaN(discount)) {
+                var finalAmount = price - (price * discount / 100);
+                finalAmountInput.val(finalAmount.toFixed(2));
+            } else {
+                finalAmountInput.val('');
+            }
+        }
+    });
+    //Quotation Code
 
     setTimeout(function() {
         document.getElementById('success-message').style.display = 'none';
         document.getElementById('error-message').style.display = 'none';
     }, 3000);
 
-    $(document).ready(function() {
-        var quantity = 1;
+    // $(document).on('click','#sendEmailSubmit',function(e) {
+    //     e.preventDefault(); //prevent the form from actually submitting
+    //     console.log('dd');
+    //     var body;
+    //     if(AmazeIsAllFormValid())
+    //     {
+    //         $.ajax({
+    //             url: '/verifyHtml',
+    //             type: 'GET',
+    //             data: { leadId: $('#lead_id').val() },
+    //             success: function(response) {
+    //                 // Update the price input with the fetched price
+    //                 body = response.html;
 
-        $(document).on('click', '#increaseButton', function() {
-            var quantity = parseInt($("#quantityInput").val());
-            quantity++;
-            $("#quantityInput").val(quantity);
-            if(typeof productPrice !== "undefined"){ // Check if productPrice is defined.
-                var quantityPrice = quantity * productPrice;
-                $('#price-input').val(quantityPrice);
-            } else {
-                $('#price-input').val('');
-            }
-        });
+    //                 var userEmail = $('#to_email').val()
+    //                 var ccEmail = $('#cc_email').val()
+        
+    //                 var subject = 'Mail subject goes here';
+    //                 // var body = 'Body content goes here';
+        
+    //                 var mailtoLink = 'mailto:' + userEmail + '?cc=' + ccEmail + '&subject=' + subject + '&body=' + body;
+                    
+    //                 // Create a hidden anchor tag and simulate a click
+    //                 var link = document.createElement('a');
+    //                 link.href = mailtoLink;
+    //                 link.style.display = 'none';
+    //                 document.body.appendChild(link);
+    //                 link.click();
+    //                 document.body.removeChild(link);
+    //                 $('#commonModal').modal('hide');
+    //             },
+    //             error: function() {
+    //                 // Handle error if the AJAX request fails
+    //                 console.log('Error occurred while fetching the product price.');
+    //             }
+    //         });
+    //     }
+    // });
 
+    // function AmazeIsAllFormValid() {
+    //     var isValid = true;
+    //     if (!inputIsValid($('#to_email').val().trim())) {
+    //       $('#error_to_email').html('Please enter your first name.');
+    //       isValid = false;
+    //     } else {
+    //       $('#error_to_email').html('');
+    //     }
+    //     if (!inputIsValid($('#cc_email').val().trim())) {
+    //       $('#error_cc_email').html('Please enter your last name.');
+    //       isValid = false;
+    //     } else {
+    //       $('#error_cc_email').html('');
+    //     }
+    //     return isValid;
+    // }
 
-        $(document).on('click', '#decreaseButton', function() {
-            var quantity = parseInt($("#quantityInput").val()); // Added parseInt to convert the value to a number.
-            if(quantity > 1) {
-                quantity--;
-                $("#quantityInput").val(quantity);
-                if(typeof productPrice !== "undefined"){ // Added typeof to check if productPrice is defined.
-                    var quantityPrice = quantity * productPrice;
-                    $('#price-input').val(quantityPrice);
-                } else {
-                    $('#price-input').val('');
-                }
-            }
-        });
-
-    
-        $(document).on('change','#product-select',function() {
-            var productId = $(this).val();
-            if (productId !== '') {
-                // Make an AJAX request to fetch the product price
-                $.ajax({
-                    url: '/get-product-price',
-                    type: 'GET',
-                    data: { productId: productId },
-                    success: function(response) {
-                        // Update the price input with the fetched price
-                        productPrice = response.price;
-                        var quantityPrice = $('#quantityInput').val() * productPrice;
-                        $('#price-input').val(quantityPrice)
-                    },
-                    error: function() {
-                        // Handle error if the AJAX request fails
-                        console.log('Error occurred while fetching the product price.');
-                    }
-                });
-            } else {
-                // Clear the price input if no product is selected
-                $('#price-input').val('');
-            }
-        });
-
-        $(document).on('change','#discount-input',function() {
-            var price = parseFloat($('#price-input').val());
-            var discount = parseFloat($(this).val());
-            if (!isNaN(price) && !isNaN(discount)) {
-                var finalAmount = price - (price * discount / 100);
-                $('#final-amount').val(finalAmount.toFixed(2));
-            } else {
-                $('#final-amount').val('');
-            }
-        });
-
-        $(document).on('change','#interaction_activity_type',function() {
-            var selectedValue = $(this).val();
-            if (selectedValue == 'Demo') {
-                $('.demo').show();
-            } else {
-                $('.demo').hide();
-            }
-        });
-
-        $(document).on('click','#sendEmailSubmit',function(e) {
-            e.preventDefault(); //prevent the form from actually submitting
-            console.log('dd');
-            var body;
-            if(AmazeIsAllFormValid())
-            {
-                $.ajax({
-                    url: '/verifyHtml',
-                    type: 'GET',
-                    data: { leadId: $('#lead_id').val() },
-                    success: function(response) {
-                        // Update the price input with the fetched price
-                        body = response.html;
-
-                        var userEmail = $('#to_email').val()
-                        var ccEmail = $('#cc_email').val()
-            
-                        var subject = 'Mail subject goes here';
-                        // var body = 'Body content goes here';
-            
-                        var mailtoLink = 'mailto:' + userEmail + '?cc=' + ccEmail + '&subject=' + subject + '&body=' + body;
-                        
-                        // Create a hidden anchor tag and simulate a click
-                        var link = document.createElement('a');
-                        link.href = mailtoLink;
-                        link.style.display = 'none';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        $('#commonModal').modal('hide');
-                    },
-                    error: function() {
-                        // Handle error if the AJAX request fails
-                        console.log('Error occurred while fetching the product price.');
-                    }
-                });
-            }
-        });
-
-       
-    });
-
-  
-
-    function AmazeIsAllFormValid() {
-        var isValid = true;
-        if (!inputIsValid($('#to_email').val().trim())) {
-          $('#error_to_email').html('Please enter your first name.');
-          isValid = false;
-        } else {
-          $('#error_to_email').html('');
-        }
-        if (!inputIsValid($('#cc_email').val().trim())) {
-          $('#error_cc_email').html('Please enter your last name.');
-          isValid = false;
-        } else {
-          $('#error_cc_email').html('');
-        }
-        return isValid;
-    }
-
-    function inputIsValid(schedule_data) {
-        var FooterIsValid = true
-        if (
-          schedule_data == undefined ||
-          schedule_data == 'undefined' ||
-          schedule_data == null ||
-          schedule_data == '' ||
-          schedule_data.length == 0
-        ) {
-          FooterIsValid = false
-        }
-        return FooterIsValid
-    }
-
-    
+    // function inputIsValid(schedule_data) {
+    //     var FooterIsValid = true
+    //     if (
+    //       schedule_data == undefined ||
+    //       schedule_data == 'undefined' ||
+    //       schedule_data == null ||
+    //       schedule_data == '' ||
+    //       schedule_data.length == 0
+    //     ) {
+    //       FooterIsValid = false
+    //     }
+    //     return FooterIsValid
+    // }
 </script>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\projects\addonix\resources\views/lead/index.blade.php ENDPATH**/ ?>

@@ -63,6 +63,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="">
+            <!-- Lead Section -->
             <dl class="row table-data">
                 <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('source')}}</span></dt>
                 <dd class="col-md-8"><span class="text-md">{{ $lead->source }}</span></dd>
@@ -126,8 +127,10 @@
                     </a>
                 </div>
             </div>
+            <!-- Lead Section -->
             
             <dl class="row viewData">
+                <!-- Poc Section -->
                 <div class="col-12">
                     <hr class="mt-2 mb-2">
                     <h5>Point of Contacts</h5>
@@ -198,7 +201,79 @@
                         <i class="ti ti-plus"></i>
                     </a>
                 </div>
+                <!-- Poc Section -->
 
+
+                <!-- Interaction Section -->
+                <div class="col-12">
+                    <hr class="mt-2 mb-2">
+                    <h5>Interactions</h5>
+                </div>
+
+                <div class="col-12 table-responsive">
+                    <table id="data" class="table data-table data-table-horizontal data-table-highlight">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th>
+                                    <p class="mb-0">Activity Type</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Subject</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Status</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Date</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Feedback</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Follow Up Date</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Action</p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $i =1; @endphp
+                            @foreach ($lead->lead_interaction as $interaction)
+                            <tr class="repeater mt-repeater">
+                                <th scope="col">{{ $i }}</th>
+                                <td>{{ @$interaction->interaction_activity_type }}</td>
+                                <td>{{ @$interaction->interaction_subject }}</td>
+                                <td>{{ @$interaction->interaction_status }}</td>
+                                <td>{{ @$interaction->interaction_date }}</td>
+                                <td>{{ @$interaction->interaction_feedback }}</td>
+                                <td>{{ @$interaction->interaction_followup_date }}</td>
+                                <td>
+                                @can('Show Lead')
+                                    <div class="action-btn bg-warning ms-2">
+                                        <a href="javascript:void(0)" data-url="{{ route('viewInteraction',$interaction->id) }}" data-ajax-popup="true" data-size="md" data-title="{{ __('Interaction Details') }}"
+                                            class="mx-3 btn btn-sm d-inline-flex align-items-center text-white">
+                                            <i class="ti ti-eye"></i>
+                                        </a>
+                                    </div>
+                                @endcan
+                                </td>
+                            </tr>
+                            @php $i++; @endphp
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="btn-center">
+                    <a href="javascript:void(0)" data-url="{{ route('addInteraction',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="Create New Interaction" title="" class="btn btn-sm btn-primary btn-icon m-1" data-bs-original-title="Create">
+                        <i class="ti ti-plus"></i>
+                    </a>
+                </div>
+                <!-- Interaction Section -->
+
+                <!-- Opportunities Section -->
                 <div class="col-12">
                     <hr class="mt-2 mb-2">
                     <h5>Opportunities</h5>
@@ -281,77 +356,12 @@
                         <i class="ti ti-plus"></i>
                     </a>
                 </div>
+                <!-- Opportunities Section -->
 
+                <!-- Add Subscription Section -->
                 <div class="col-12">
                     <hr class="mt-2 mb-2">
-                    <h5>Interactions</h5>
-                </div>
-
-                <div class="col-12 table-responsive">
-                    <table id="data" class="table data-table data-table-horizontal data-table-highlight">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th>
-                                    <p class="mb-0">Activity Type</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Subject</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Status</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Date</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Feedback</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Follow Up Date</p>
-                                </th>
-                                <th>
-                                    <p class="mb-0">Action</p>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $i =1; @endphp
-                            @foreach ($lead->lead_interaction as $interaction)
-                            <tr class="repeater mt-repeater">
-                                <th scope="col">{{ $i }}</th>
-                                <td>{{ @$interaction->interaction_activity_type }}</td>
-                                <td>{{ @$interaction->interaction_subject }}</td>
-                                <td>{{ @$interaction->interaction_status }}</td>
-                                <td>{{ @$interaction->interaction_date }}</td>
-                                <td>{{ @$interaction->interaction_feedback }}</td>
-                                <td>{{ @$interaction->interaction_followup_date }}</td>
-                                <td>
-                                @can('Show Lead')
-                                    <div class="action-btn bg-warning ms-2">
-                                        <a href="javascript:void(0)" data-url="{{ route('viewInteraction',$interaction->id) }}" data-ajax-popup="true" data-size="md" data-title="{{ __('Interaction Details') }}"
-                                            class="mx-3 btn btn-sm d-inline-flex align-items-center text-white">
-                                            <i class="ti ti-eye"></i>
-                                        </a>
-                                    </div>
-                                @endcan
-                                </td>
-                            </tr>
-                            @php $i++; @endphp
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="btn-center">
-                    <a href="javascript:void(0)" data-url="{{ route('addInteraction',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="Create New Interaction" title="" class="btn btn-sm btn-primary btn-icon m-1" data-bs-original-title="Create">
-                        <i class="ti ti-plus"></i>
-                    </a>
-                </div>
-
-                <div class="col-12">
-                    <hr class="mt-2 mb-2">
-                    <h5>Quotation History</h5>
+                    <h5>Add License</h5>
                 </div>
 
                 <div class="col-12 table-responsive">
@@ -388,6 +398,13 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="btn-center">
+                    <a href="javascript:void(0)" data-url="{{ route('createOpportunityModal',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="Create New Opportunity" title="" class="btn btn-sm btn-primary btn-icon m-1" data-bs-original-title="Create">
+                        <i class="ti ti-plus"></i>
+                    </a>
+                </div>
+                <!-- Add Subscription Section -->
             </dl>
         </div>
     </div>
