@@ -331,9 +331,12 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('leadTab', [LeadController::class, 'leadTab'])->name('lead.leadTab');
             Route::get('get-product-price', [LeadController::class, 'getProductPrice'])->name('get-product-price');
             Route::get('addInteraction/{id}', [LeadController::class, 'addInteraction'])->name('addInteraction');
+            Route::get('viewPoc/{id}', [LeadController::class, 'viewPoc'])->name('viewPoc');
             Route::get('viewInteraction/{id}', [LeadController::class, 'viewInteraction'])->name('viewInteraction');
             Route::get('addPoc/{id}', [LeadController::class, 'addPoc'])->name('addPoc');
             Route::get('editPoc/{id}', [LeadController::class, 'editPoc'])->name('editPoc');
+            Route::get('addSubscription/{id}', [LeadController::class, 'addSubscription'])->name('addSubscription');
+            Route::post('createSubscription', [LeadController::class, 'createSubscription'])->name('createSubscription');
             Route::get('addQuotation/{id}', [LeadController::class, 'addQuotation'])->name('addQuotation');
             Route::get('addPerforma/{id}', [LeadController::class, 'addPerforma'])->name('addPerforma');
             Route::get('addinternalPO/{id}', [LeadController::class, 'addinternalPO'])->name('addinternalPO');
@@ -350,6 +353,7 @@ Route::group(['middleware' => ['verified']], function () {
             Route::post('createOpportunity', [LeadController::class, 'createOpportunity'])->name('createOpportunity'); 
             Route::get('editOpportunityModal/{id}', [LeadController::class, 'editOpportunityModal'])->name('editOpportunityModal');
             Route::post('editOpportunity', [LeadController::class, 'editOpportunity'])->name('editOpportunity'); 
+            Route::get('opportunity/{id}', [LeadController::class, 'opportunityShow'])->name('opportunity.show');
             Route::post('sendApprovalEmail', [LeadController::class, 'sendApprovalEmail'])->name('sendApprovalEmail'); 
         }
     );

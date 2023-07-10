@@ -171,7 +171,7 @@
                                     <div>
                                     @can('Show Lead')
                                         <div class="action-btn bg-warning ms-2">
-                                            <a href="{{ route('lead.show', $lead->id) }}" data-size="md" data-title="{{ __('Lead Details') }}"
+                                            <a href="javascript:void(0)" data-url="{{ route('viewPoc', $person->id) }}" data-ajax-popup="true" data-size="md" data-title="{{ __('Point Of Contact Details') }}"
                                                 class="mx-3 btn btn-sm d-inline-flex align-items-center text-white">
                                                 <i class="ti ti-eye"></i>
                                             </a>
@@ -318,7 +318,7 @@
                                     <div>
                                         @can('Show Lead')
                                             <div class="action-btn bg-warning ms-2">
-                                                <a href="{{ route('lead.show', $lead->id) }}" data-size="md" data-title="{{ __('Lead Details') }}"
+                                                <a href="{{ route('opportunity.show', $opportunity->id) }}" data-size="md" data-title="{{ __('Lead Details') }}"
                                                     class="mx-3 btn btn-sm d-inline-flex align-items-center text-white">
                                                     <i class="ti ti-eye"></i>
                                                 </a>
@@ -329,7 +329,7 @@
                                                 <a href="javascript:void(0)" data-url="{{ route('editOpportunityModal', $opportunity->id) }}" data-ajax-popup="true"
                                                     class="mx-3 btn btn-sm d-inline-flex align-items-center text-white"
                                                     data-bs-toggle="tooltip" title="{{ __('Edit') }}"
-                                                    data-title="{{ __('Edit Point of Contact') }}">
+                                                    data-title="{{ __('Edit Opportunity') }}">
                                                     <i class="ti ti-edit"></i>
                                                 </a>
                                             </div>
@@ -400,7 +400,7 @@
                 </div>
 
                 <div class="btn-center">
-                    <a href="javascript:void(0)" data-url="{{ route('createOpportunityModal',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="Create New Opportunity" title="" class="btn btn-sm btn-primary btn-icon m-1" data-bs-original-title="Create">
+                    <a href="javascript:void(0)" data-url="{{ route('addSubscription',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="Create New Subscription" title="" class="btn btn-sm btn-primary btn-icon m-1" data-bs-original-title="Create">
                         <i class="ti ti-plus"></i>
                     </a>
                 </div>

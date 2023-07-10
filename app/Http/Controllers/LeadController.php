@@ -15,6 +15,8 @@ use App\Models\Stream;
 use App\Models\Task;
 use App\Models\Utility;
 use App\Models\User;
+use App\Models\Subscription;
+use App\Models\SubscriptionProduct;
 use App\Models\Product;
 use App\Models\Opportunities;
 use App\Models\OpportunitiesProduct;
@@ -754,6 +756,16 @@ class LeadController extends Controller
         }   
     }
 
+    public function viewPoc(Request $request)
+    {
+        $poc=IndustryPerson::where('id',$request->id)->first();
+        if (\Auth::user()->can('Show Lead')) {
+            return view('lead.viewPoc', compact('poc'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
+    }
+
     public function addQuotation(Request $request)
     {
         $lead=Lead::where('id',$request->id)->first();
@@ -839,7 +851,7 @@ class LeadController extends Controller
         $user = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
         $user->prepend('Select Owner', '');
         if (\Auth::user()->can('Show Lead')) {
-            return view('lead.opportunity', compact('lead','products','user','poc'));
+            return view('lead.addOpportunity', compact('lead','products','user','poc'));
         } else {
             return redirect('lead')->with('error', 'permission Denied');
         }
@@ -1016,6 +1028,18 @@ class LeadController extends Controller
     }
     // edit an opportunity
 
+    // opportunity show page
+    public function opportunityShow(Request $request)
+    {
+        if (\Auth::user()->can('Show Lead')) {
+            $opportunity = Opportunities::where('id',$request->id)->first();            
+            return view('lead.opportunity', compact('opportunity'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
+    }
+    // opportunity show page
+
     public function addPerforma(Request $request)
     {
         $lead=Lead::where('id',$request->id)->first();
@@ -1093,6 +1117,80 @@ class LeadController extends Controller
             }
         }catch(\Exception $e){
             dd('error',$e);
+            DB::rollback();
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }   
+    }
+
+    public function addSubscription(Request $request)
+    {
+        $opportunity = Opportunities::where('id',$request->id)->first();
+        if (\Auth::user()->can('Show Lead')) {
+            $company = $opportunity->lead()->pluck('company_name','id');
+            $opportunity_products = $opportunity->opportunity_products;
+            $products = [];
+            foreach ($opportunity_products as $op) {
+                $id = $op->product->id;
+                $name = $op->product->name;
+                if ($name) {
+                    $products[$id] = $name;
+                }
+            }
+            $products = ['' => 'Select Product'] + $products;
+            $user = User::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'name');
+            $user->prepend('Select Owner', '');
+            return view('lead.addSubscription', compact('opportunity','company','products','user'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
+    }
+
+    public function createSubscription(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Create Lead')) {
+
+                $opportunity = Opportunities::where('id',$request->opportunity_id)->first();
+                $lead =  Lead::where('id',$request->lead_id)->first();
+
+                $subscription = Subscription::create([
+                    'lead_id'=> $lead->id,
+                    'opportunity_id'=>$opportunity->id,
+                    'product_type'=>$request->product_type ?: NULL,
+                    'subscription_start_date'=>$request->subscription_start_date ?: NULL,
+                    'subscription_end_date'=>$request->subscription_end_date ?: NULL,
+                    'contract_value'=>$request->contract_value ?: NULL,
+                    'contract_terms'=>$request->contract_terms ?: NULL,
+                    'created_by'=>Auth::user()->id,
+                ]); 
+
+                if($subscription){
+                    if(isset($request->license) && isset($request->product_id) && isset($request->quantity)){
+                        foreach($request->product_id as $k=>$item)
+                        {   
+                            if($request->product_id[$k] && $request->quantity[$k] && $request->license[$k])
+                            {
+                                SubscriptionProduct::create([
+                                    'subscription_id'=> $subscription->id,
+                                    'license'=>$request->license[$k],
+                                    'product_id'=>$request->product_id[$k],
+                                    'quantity'=>$request->quantity[$k],
+                                    'created_by'=>Auth::user()->id,
+                                ]);  
+                            }
+                        }
+                    }
+                }
+
+                DB::commit();
+
+                return redirect('lead')->with('success', __('Subscription Created Successfully.'));
+            } else {
+                return redirect('lead')->with('error', 'Permission Denied');
+            }
+        }catch(\Exception $e){
+
             DB::rollback();
             return redirect('lead')->with('error', 'Something Went Wrong');
         }   
