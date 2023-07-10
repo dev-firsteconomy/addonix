@@ -1321,6 +1321,82 @@ class LeadController extends Controller
         }   
     }
 
+    public function renewSubscriptionModal(Request $request)
+    {
+        $subscription = Subscription::where('id',$request->id)->first();
+        $opportunity = Opportunities::where('id',$subscription->opportunity_id)->first(); 
+        $company = $opportunity->lead()->pluck('company_name','id');   
+        $opportunity_products = $opportunity->opportunity_products;
+        $products = [];
+        foreach ($opportunity_products as $op) {
+            $id = $op->product->id;
+            $name = $op->product->name;
+            if ($name) {
+                $products[$id] = $name;
+            }
+        }
+        $products = ['' => 'Select Product'] + $products;  
+        if (\Auth::user()->can('Edit Lead')) {
+            return view('lead.renewSubscription', compact('subscription','products','company'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
+    }
+
+    public function renewSubscription(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Create Lead')) {
+
+                $oldSubscription = Subscription::where('id',$request->subscription_id)->first();
+
+                $lead =  Lead::where('id',$request->lead_id)->first();
+
+                $subscription = Subscription::create([
+                    'lead_id'=> $lead->id,
+                    'opportunity_id'=>$oldSubscription->opportunity_id,
+                    'product_type'=>$request->product_type ?: NULL,
+                    'subscription_start_date'=>$request->subscription_start_date ?: NULL,
+                    'subscription_end_date'=>$request->subscription_end_date ?: NULL,
+                    'contract_value'=>$request->contract_value ?: NULL,
+                    'contract_terms'=>$request->contract_terms ?: NULL,
+                    'contract_sub_type'=>$request->contract_sub_type ?: NULL,
+                    'parent'=>$oldSubscription->id ?: NULL,
+                    'is_renew'=>1,
+                    'created_by'=>Auth::user()->id,
+                ]); 
+
+                if($subscription){
+                    if(isset($request->license) && isset($request->product_id) && isset($request->quantity)){
+                        foreach($request->product_id as $k=>$item)
+                        {   
+                            if($request->product_id[$k] && $request->quantity[$k] && $request->license[$k])
+                            {
+                                SubscriptionProduct::create([
+                                    'subscription_id'=> $subscription->id,
+                                    'license'=>$request->license[$k],
+                                    'product_id'=>$request->product_id[$k],
+                                    'quantity'=>$request->quantity[$k],
+                                    'created_by'=>Auth::user()->id,
+                                ]);  
+                            }
+                        }
+                    }
+                }
+
+                DB::commit();
+
+                return redirect('lead')->with('success', __('Subscription Created Successfully.'));
+            } else {
+                return redirect('lead')->with('error', 'Permission Denied');
+            }
+        }catch(\Exception $e){
+
+            DB::rollback();
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }   
+    }
     // Subscription
 
     public function getProductPrice(Request $request)

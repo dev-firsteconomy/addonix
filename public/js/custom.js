@@ -226,7 +226,6 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
             // OPPORTUNITY EDIT MODAL CODE
             if ($('.edeleteButton').length > 0 && $('.edeleteButton').length > 0) {
                 var product_type_val = $('#eproduct_type').val();
-                console.log(product_type_val);
                 if(product_type_val === 'Network'){
                     $('.edeleteButton').show();
                     $('.eop_repeater_buttons').show();
@@ -240,7 +239,6 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
             // SUBSCRIPTION EDIT MODAL CODE
             if ($('.edit-subscription-deleteButton').length > 0 && $('.edit-subscription-deleteButton').length > 0) {
                 var product_type_val = $('#edit_subscription_product_type').val();
-                console.log(product_type_val);
                 if(product_type_val === 'Network'){
                     $('.edit-subscription-deleteButton').show();
                     $('.edit_subscription_repeater_buttons').show();
@@ -250,6 +248,19 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
                 }
             }
             // SUBSCRIPTION EDIT MODAL CODE
+
+            // RENEW MODAL CODE
+            if ($('.renew-subscription-deleteButton').length > 0 && $('.renew-subscription-deleteButton').length > 0) {
+                var product_type_val = $('#renew_subscription_product_type').val();
+                if(product_type_val === 'Network'){
+                    $('.renew-subscription-deleteButton').show();
+                    $('.renew_subscription_repeater_buttons').show();
+                } else {
+                    $('.renew-subscription-deleteButton').hide();
+                    $('.renew_subscription_repeater_buttons').hide();
+                }
+            }
+            // RENEW MODAL CODE
 
         },
         error: function(data) {

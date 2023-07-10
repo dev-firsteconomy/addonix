@@ -357,6 +357,8 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('editSubscriptionModal/{id}', [LeadController::class, 'editSubscriptionModal'])->name('editSubscriptionModal');
             Route::post('editSubscription', [LeadController::class, 'editSubscription'])->name('editSubscription'); 
             Route::get('subscription/{id}', [LeadController::class, 'subscriptionShow'])->name('subscription.show');
+            Route::get('renewSubscriptionModal/{id}', [LeadController::class, 'renewSubscriptionModal'])->name('renewSubscriptionModal');
+            Route::post('renewSubscription', [LeadController::class, 'renewSubscription'])->name('renewSubscription');
             Route::post('sendApprovalEmail', [LeadController::class, 'sendApprovalEmail'])->name('sendApprovalEmail'); 
         }
     );

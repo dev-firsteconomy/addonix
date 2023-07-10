@@ -17,6 +17,9 @@ class Subscription extends Model
         'subscription_end_date',
         'contract_value',
         'contract_terms',
+        'contract_sub_type',
+        'parent',
+        'is_renew',
         'created_by'
     ];
 
