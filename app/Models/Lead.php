@@ -156,4 +156,14 @@ class Lead extends Model
         return $this->hasMany('App\Models\Opportunities','lead_id','id');
     }
 
+    public function leadSubscriptions()
+    {
+        return $this->hasMany('App\Models\Subscription','lead_id','id');
+    }
+
+    public function Owner()
+    {
+        return $this->belongsTo('App\Models\User','created_by','id');
+    }
+
 }

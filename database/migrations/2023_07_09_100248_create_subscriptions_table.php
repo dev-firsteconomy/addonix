@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('subscription_end_date');
             $table->string('contract_value');
             $table->string('contract_terms');
-            $table->string('contract_sub_type');
+            $table->string('contract_sub_type')->nullable();
             $table->integer('parent')->default(0);
             $table->integer('is_renew')->default(0);
             $table->integer('created_by');

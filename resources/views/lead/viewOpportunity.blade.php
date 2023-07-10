@@ -93,7 +93,7 @@
                 <dd class="col-md-8"><span class="text-md">{{ $opportunity->feedback }}</span></dd>
 
                 <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Created By')}}</span></dt>
-                <dd class="col-md-8"><span class="text-md">{{ $opportunity->created_by }}</span></dd>
+                <dd class="col-md-8"><span class="text-md">{{ $opportunity->Owner->name }}</span></dd>
 
                 <dt class="col-md-4"><span class="h6 text-md mb-0">{{__('Created At')}}</span></dt>
                 <dd class="col-md-8"><span class="text-md">{{ $opportunity->created_at }}</span></dd>

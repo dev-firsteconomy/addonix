@@ -104,5 +104,10 @@ class Opportunities extends Model
     {
         return $this->belongsTo('App\Models\IndustryPerson','poc_id','id');
     }
+
+    public function Owner()
+    {
+        return $this->belongsTo('App\Models\User','created_by','id');
+    }
 }
 

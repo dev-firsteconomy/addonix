@@ -370,39 +370,50 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th>
-                                    <p class="mb-0">Product Name</p>
+                                    <p class="mb-0">Product Type</p>
                                 </th>
                                 <th>
-                                    <p class="mb-0">Price</p>
+                                    <p class="mb-0">Subscription Start Date</p>
                                 </th>
                                 <th>
-                                    <p class="mb-0">Discount</p>
+                                    <p class="mb-0">Subscription End Date</p>
                                 </th>
                                 <th>
-                                    <p class="mb-0">Final Amount</p>
+                                    <p class="mb-0">Contract Value</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Contract Terms</p>
+                                </th>
+                                <th>
+                                    <p class="mb-0">Action</p>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             @php $i =1; @endphp
-                            @foreach ($lead->leadQuotation as $quotation)
+                            @foreach ($lead->leadSubscriptions as $subscription)
                             <tr class="repeater mt-repeater">
                                 <th scope="col">{{ $i }}</th>
-                                <td>{{ @$quotation->product->name }}</td>
-                                <td>{{ @$quotation->price }}</td>
-                                <td>{{ @$quotation->discount }}</td>
-                                <td>{{ @$quotation->final_amount }}</td>
+                                <td>{{ @$subscription->product_type }}</td>
+                                <td>{{ @$subscription->subscription_start_date }}</td>
+                                <td>{{ @$subscription->subscription_end_date }}</td>
+                                <td>{{ @$subscription->contract_value }}</td>
+                                <td>{{ @$subscription->contract_terms }}</td>
+                                <td>
+                                    @can('Show Lead')
+                                    <div class="action-btn bg-warning ms-2">
+                                        <a href="{{ route('subscription.show', $subscription->id) }}" data-size="md" data-title="{{ __('Lead Details') }}"
+                                            class="mx-3 btn btn-sm d-inline-flex align-items-center text-white">
+                                            <i class="ti ti-eye"></i>
+                                        </a>
+                                    </div>
+                                    @endcan
+                                </td>
                             </tr>
                             @php $i++; @endphp
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-
-                <div class="btn-center">
-                    <a href="javascript:void(0)" data-url="{{ route('addSubscription',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="Create New Subscription" title="" class="btn btn-sm btn-primary btn-icon m-1" data-bs-original-title="Create">
-                        <i class="ti ti-plus"></i>
-                    </a>
                 </div>
                 <!-- Add Subscription Section -->
             </dl>

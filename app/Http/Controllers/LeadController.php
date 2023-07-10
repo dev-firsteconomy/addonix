@@ -1033,7 +1033,7 @@ class LeadController extends Controller
     {
         if (\Auth::user()->can('Show Lead')) {
             $opportunity = Opportunities::where('id',$request->id)->first();            
-            return view('lead.opportunity', compact('opportunity'));
+            return view('lead.viewOpportunity', compact('opportunity'));
         } else {
             return redirect('lead')->with('error', 'permission Denied');
         }
@@ -1122,6 +1122,7 @@ class LeadController extends Controller
         }   
     }
 
+    // Subscription
     public function addSubscription(Request $request)
     {
         $opportunity = Opportunities::where('id',$request->id)->first();
@@ -1195,6 +1196,17 @@ class LeadController extends Controller
             return redirect('lead')->with('error', 'Something Went Wrong');
         }   
     }
+
+    public function subscriptionShow(Request $request)
+    {
+        if (\Auth::user()->can('Show Lead')) {
+            $subscription = Subscription::where('id',$request->id)->first();            
+            return view('lead.viewSubscription', compact('subscription'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
+    }
+    // Subscription
 
     public function getProductPrice(Request $request)
     {

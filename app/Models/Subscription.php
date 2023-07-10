@@ -25,13 +25,18 @@ class Subscription extends Model
         return $this->belongsTo('App\Models\Lead','lead_id','id');
     }
 
+    public function Owner()
+    {
+        return $this->belongsTo('App\Models\User','created_by','id');
+    }
+
     public function opportunity()
     {
         return $this->belongsTo('App\Models\Opportunities','opportunity_id','id');
     }
 
-    public function product()
+    public function subscriptionProducts()
     {
-        return $this->belongsTo('App\Models\Product','product_id','id');
+        return $this->hasMany('App\Models\SubscriptionProduct','subscription_id','id');
     }
 }
