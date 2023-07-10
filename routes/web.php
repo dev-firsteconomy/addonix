@@ -354,6 +354,8 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('editOpportunityModal/{id}', [LeadController::class, 'editOpportunityModal'])->name('editOpportunityModal');
             Route::post('editOpportunity', [LeadController::class, 'editOpportunity'])->name('editOpportunity'); 
             Route::get('opportunity/{id}', [LeadController::class, 'opportunityShow'])->name('opportunity.show');
+            Route::get('editSubscriptionModal/{id}', [LeadController::class, 'editSubscriptionModal'])->name('editSubscriptionModal');
+            Route::post('editSubscription', [LeadController::class, 'editSubscription'])->name('editSubscription'); 
             Route::get('subscription/{id}', [LeadController::class, 'subscriptionShow'])->name('subscription.show');
             Route::post('sendApprovalEmail', [LeadController::class, 'sendApprovalEmail'])->name('sendApprovalEmail'); 
         }

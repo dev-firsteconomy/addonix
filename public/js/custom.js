@@ -236,6 +236,20 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
                 }
             }
             // OPPORTUNITY EDIT MODAL CODE
+            
+            // SUBSCRIPTION EDIT MODAL CODE
+            if ($('.edit-subscription-deleteButton').length > 0 && $('.edit-subscription-deleteButton').length > 0) {
+                var product_type_val = $('#edit_subscription_product_type').val();
+                console.log(product_type_val);
+                if(product_type_val === 'Network'){
+                    $('.edit-subscription-deleteButton').show();
+                    $('.edit_subscription_repeater_buttons').show();
+                } else {
+                    $('.edit-subscription-deleteButton').hide();
+                    $('.edit_subscription_repeater_buttons').hide();
+                }
+            }
+            // SUBSCRIPTION EDIT MODAL CODE
 
         },
         error: function(data) {

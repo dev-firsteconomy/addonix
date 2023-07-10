@@ -1200,12 +1200,127 @@ class LeadController extends Controller
     public function subscriptionShow(Request $request)
     {
         if (\Auth::user()->can('Show Lead')) {
-            $subscription = Subscription::where('id',$request->id)->first();            
+            $subscription = Subscription::where('id',$request->id)->first();                
             return view('lead.viewSubscription', compact('subscription'));
         } else {
             return redirect('lead')->with('error', 'permission Denied');
         }
     }
+
+    public function editSubscriptionModal(Request $request)
+    {
+        $subscription = Subscription::where('id',$request->id)->first();
+        $opportunity = Opportunities::where('id',$subscription->opportunity_id)->first(); 
+        $company = $opportunity->lead()->pluck('company_name','id');   
+        $opportunity_products = $opportunity->opportunity_products;
+        $products = [];
+        foreach ($opportunity_products as $op) {
+            $id = $op->product->id;
+            $name = $op->product->name;
+            if ($name) {
+                $products[$id] = $name;
+            }
+        }
+        $products = ['' => 'Select Product'] + $products;  
+        if (\Auth::user()->can('Edit Lead')) {
+            return view('lead.editSubscription', compact('subscription','products','company'));
+        } else {
+            return redirect('lead')->with('error', 'permission Denied');
+        }
+    }
+
+    public function editSubscription(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+            if (\Auth::user()->can('Create Lead')) {
+                $subscription = Subscription::find($request->subscription_id);
+                $subscription->lead_id = $request->lead_id ?: null;
+                $subscription->product_type = $request->product_type ?: null;
+                $subscription->subscription_start_date = $request->subscription_start_date ?: null;
+                $subscription->subscription_end_date = $request->subscription_end_date ?: null;
+                $subscription->contract_value = $request->contract_value ?: null;
+                $subscription->contract_terms = $request->contract_terms ?: null;
+                $subscription->contract_sub_type = $request->contract_sub_type ?: null;
+                $subscription->updated_by = Auth::user()->id;
+                $subscription->save();
+
+                if($request->product_type === 'Network')
+                    if($subscription){
+                        if(isset($request->product_id) && isset($request->quantity) && isset($request->license)){
+                            // old opportunities Details 
+                            $oldIds = SubscriptionProduct::where('subscription_id',$subscription->id)->pluck('id')->toArray();
+                            $newIds = $request->sp_id;
+                            $removedIds = array_diff($oldIds,$newIds);
+                            // old opportunities Details 
+
+                            // delete removed opportunities first
+                            if(!empty($removedIds && $removedIds > 0)){
+                                foreach($removedIds as $rid){
+                                    $opData = SubscriptionProduct::find($rid);
+                                    $opData->delete();
+                                }
+                            }
+                            // delete removeed person first
+
+                            if(!empty($request->product_id)){
+                                foreach ($request->product_id as $k => $item) 
+                                {
+                                    // check in orderDetails db by id
+                                    $spAlreadyExist = SubscriptionProduct::find($request->sp_id[$k]);
+                                    // check in orderDetails db by id 
+                                    if($spAlreadyExist)
+                                    {   
+                                        $spAlreadyExist->update([
+                                            'license' => $request->license[$k],
+                                            'product_id' => $request->product_id[$k],
+                                            'quantity' => $request->quantity[$k],
+                                            'updated_by' => Auth::user()->id,
+                                        ]);
+                                    }else{
+                                        SubscriptionProduct::create([
+                                            'opportunity_id'=> $opportunity->id,
+                                            'license'=>$request->license[$k],
+                                            'product_id'=> $request->product_id[$k],
+                                            'quantity'=>$request->quantity[$k],
+                                            'updated_by'=>Auth::user()->id
+                                        ]);  
+                                    }
+                                    
+                                }
+                            }
+
+                        }
+
+                        DB::commit();
+
+                        return redirect('lead')->with('success', __('Subscription Updated Successfully.'));
+                    }
+
+                else
+                {
+                    // dd('down',$opportunity,$request->all());
+                    $spUpdate['license'] = $request->license[0] ?: NULL;
+                    $spUpdate['product_id'] = $request->product_id[0] ?: NULL;
+                    $spUpdate['quantity'] = $request->quantity[0] ?: NULL;
+                    $spUpdate['updated_by'] = Auth::user()->id;
+
+                    $sp_Data = SubscriptionProduct::where('id',$request->sp_id[0])->update($spUpdate);
+
+                    DB::commit();
+
+                    return redirect('lead')->with('success', __('Opportunity Created Successfully.'));
+                }
+            } else {
+                return redirect('lead')->with('error', 'Permission Denied');
+            }
+        }catch(\Exception $e){
+            dd($e);
+            DB::rollback();
+            return redirect('lead')->with('error', 'Something Went Wrong');
+        }   
+    }
+
     // Subscription
 
     public function getProductPrice(Request $request)

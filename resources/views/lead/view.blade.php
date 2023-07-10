@@ -408,6 +408,16 @@
                                         </a>
                                     </div>
                                     @endcan
+                                    @can('Edit Lead')
+                                        <div class="action-btn bg-info ms-2">
+                                            <a href="javascript:void(0)" data-url="{{ route('editSubscriptionModal', $subscription->id) }}" data-ajax-popup="true"
+                                                class="mx-3 btn btn-sm d-inline-flex align-items-center text-white"
+                                                data-bs-toggle="tooltip" title="{{ __('Edit') }}"
+                                                data-title="{{ __('Edit Subscription') }}">
+                                                <i class="ti ti-edit"></i>
+                                            </a>
+                                        </div>
+                                    @endcan
                                 </td>
                             </tr>
                             @php $i++; @endphp
@@ -657,5 +667,118 @@ $(document).on('change','#interaction_activity_type',function() {
     }
 });
 // interaction modal js
+
+
+// edit Subscription modal js
+$(document).on('change', '#edit_subscription_product_type', function() {
+    var productType = $(this).val();
+    var addButton = $('.edit_subscription_repeater_buttons');
+    var deleteButton = $('.edit-subscription-deleteButton');
+  
+    if (productType === 'Network') 
+    {
+        addButton.show();
+        deleteButton.show();
+    } 
+    else
+    {
+        addButton.hide();
+        deleteButton.hide();
+        // Remove all the rows except the first one
+        $('.edit-subscription-repeater:not(:first)').remove();
+    }
+});
+
+// $(document).on('change', '.edit-subscription-product-select', function() {
+//     var $row = $(this).closest('.edit-subscription-repeater');
+//     var $quantityInput = $row.find('.edit-subscription-quantityInput');
+//     var $priceInput = $row.find('.subscription-price-input');
+    
+//     var productId = $(this).val();
+    
+//     if (productId !== '') {
+//         // Make an AJAX request to fetch the product price
+//         $.ajax({
+//             url: '/get-product-price',
+//             type: 'GET',
+//             data: { productId: productId },
+//             success: function(response) {
+//                 // Update the price input with the fetched price
+//                 var productPrice = response.price;
+//                 var quantity = parseInt($quantityInput.val());
+//                 var totalPrice = parseFloat(productPrice) * quantity;
+//                 console.log($quantityInput.val(),productPrice);
+//                 $priceInput.val(totalPrice);
+//             },
+//             error: function() {
+//                 // Handle error if the AJAX request fails
+//                 console.log('Error occurred while fetching the product price.');
+//             }
+//         });
+//     } else {
+//         // Clear the price input if no product is selected
+//         $priceInput.val('');
+//     }
+// });
+
+$(document).on('click', '.edit-subscription-increaseButton', function() {
+    var row = $(this).closest('.edit-subscription-repeater');
+    var quantityInput = row.find('.edit-subscription-quantityInput');
+    // var priceInput = row.find('.subscription-price-input');
+    
+    // var price = parseFloat(priceInput.val());
+    var quantity = parseInt(quantityInput.val());
+    
+    // if (!isNaN(quantity) && !isNaN(price)) {
+        // var unitPrice = price / quantity;
+        quantity++;
+        quantityInput.val(quantity);
+        // var updatedPrice = unitPrice * quantity;
+        // priceInput.val(updatedPrice);
+    // }
+});
+
+$(document).on('click', '.edit-subscription-decreaseButton', function() {
+    var row = $(this).closest('.edit-subscription-repeater');
+    var quantityInput = row.find('.edit-subscription-quantityInput');
+    // var priceInput = row.find('.subscription-price-input');
+
+    // var price = parseFloat(priceInput.val());
+    var quantity = parseInt(quantityInput.val());
+
+    // if (!isNaN(quantity) && quantity > 1 && !isNaN(price)) {
+        // var unitPrice = price / quantity;
+        quantity--;
+        quantityInput.val(quantity);
+        // var updatedPrice = unitPrice.toFixed(2) * quantity;
+        // priceInput.val(updatedPrice);
+    // }
+});
+
+$(document).on('click', '#edit-subscription-add-field', function() {
+    const container = $('.editSubscription');
+    const lastRow = $('.edit-subscription-repeater:last');
+    if (lastRow.length) {
+        const newRow = lastRow.clone(true);
+        newRow.find('input').val('');
+        newRow.find('select').prop('selectedIndex', 0);
+        newRow.find('.edit-subscription-quantityInput').val(1);
+        newRow.find('.sp_id').val(0);
+        newRow.insertBefore($(this).closest('.edit_subscription_repeater_buttons'));
+    } else {
+        console.error('No row to clone found');
+    }
+});
+
+$(document).on('click', '.edit-subscription-remove-field', function() {
+    const row = $(this).closest('.edit-subscription-repeater');
+    if ($('.edit-subscription-repeater').length > 1) {
+        row.remove();
+    } else {
+        console.log('Cannot remove the only row');
+    }
+});
+// edit Subscription modal js
+
 </script>
 @endpush
