@@ -71,6 +71,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\PayfastController;
 use App\Http\Controllers\UserlogController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\NotificationTemplatesController;
 
 /*
@@ -328,6 +329,12 @@ Route::group(['middleware' => ['verified']], function () {
             
             Route::get('leadSearch', [LeadController::class, 'leadSearch'])->name('lead.leadSearch');
             Route::get('/companies/search', [LeadController::class, 'companySearch'])->name('lead.companySearch');
+            Route::get('/license/search', [LeadController::class, 'licenseSearch'])->name('lead.licenseSearch');
+            Route::get('/get-poc-options', [LeadController::class, 'getpPocOptions'])->name('lead.getpPocOptions');
+            Route::get('/get-license-products', [LeadController::class, 'getLicenseProductsOptions'])->name('lead.getLicenseProductsOptions');
+            Route::get('/get-subscription-end-date', [LeadController::class, 'getSubscriptionEndDate'])->name('lead.getSubscriptionEndDate');
+            // Route::get('/get-license-options', [LeadController::class, 'getLicenseOptions'])->name('lead.getLicenseOptions');
+            Route::get('/get-poc-data', [LeadController::class, 'getpPocData'])->name('lead.getpPocData');
             Route::get('leadTab', [LeadController::class, 'leadTab'])->name('lead.leadTab');
             Route::get('get-product-price', [LeadController::class, 'getProductPrice'])->name('get-product-price');
             Route::get('addInteraction/{id}', [LeadController::class, 'addInteraction'])->name('addInteraction');
@@ -362,6 +369,20 @@ Route::group(['middleware' => ['verified']], function () {
             Route::post('sendApprovalEmail', [LeadController::class, 'sendApprovalEmail'])->name('sendApprovalEmail'); 
         }
     );
+
+    Route::group(
+        [
+            'middleware' => [
+                'auth',
+                'XSS',
+            ],
+        ],
+        function () {
+            Route::resource('support', SupportController::class);
+            // Route::get('support/create', [SupportController::class, 'create'])->name('support.create');
+        }
+    );
+
     Route::group(
         [
             'middleware' => [

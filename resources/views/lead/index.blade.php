@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('page-title')
-{{__('Lead')}}
+{{__('Company')}}
 @endsection
 @section('title')
 
@@ -49,13 +49,13 @@
 
 
 <div class="page-header-title">
-    {{__('Lead')}}
+    {{__('Company')}}
 </div>
 
 @endsection
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{__('Home')}}</a></li>
-<li class="breadcrumb-item">{{__('Lead')}}</li>
+<li class="breadcrumb-item">{{__('Company')}}</li>
 @endsection
 @section('action-btn')
 <!-- <a href="{{ route('lead.grid') }}" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip" title="{{ __('Kanban View') }}">
@@ -64,7 +64,7 @@
 
 @can('Create Lead')
 <a href="{{ route('lead.create') }}" 
-    data-bs-toggle="tooltip" data-title="{{__('Create New Lead')}}" title="{{__('Create')}}"
+    data-bs-toggle="tooltip" data-title="{{__('Create New Company')}}" title="{{__('Create')}}"
     class="btn btn-sm btn-primary btn-icon m-1">
     <i class="ti ti-plus"></i>
 </a>
@@ -219,11 +219,6 @@
                                                 <a href="#" data-size="lg" data-url="{{ route('addQuotation',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Generate Quotation')}}">Generate Quotation</a>
                                                 @endif
                                                 <a href="#" data-size="lg" data-url="{{ route('addQuotation',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Generate Quotation')}}">Generate Quotation</a>
-                                                <a href="#" data-size="lg" data-url="{{ route('addPerforma',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Generate Quotation')}}">Generate Performa</a>
-                                                <a href="#" data-size="lg" data-url="{{ route('addinternalPO',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Generate Quotation')}}">Generate Internal PO</a>
-                                                @if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1)
-                                                    <a href="#" data-size="lg" data-url="{{ route('addPerforma',$lead->id) }}" class="dropdown-item" data-ajax-popup="true" data-title="{{__('Generate Performa Invoice')}}">Generate Performa Invoice</a>
-                                                @endif
                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['lead.destroy', $lead->id]]) !!}
                                                     <button type="submit" class="dropdown-item">Delete</button>
                                                 {!! Form::close() !!}

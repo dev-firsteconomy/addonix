@@ -2,7 +2,7 @@
 
 @section('title')
 <div class="page-header-title">
-    {{__('View Lead')}}
+    {{__('View Company')}}
 </div>
 @endsection
 <style>
@@ -55,8 +55,8 @@
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{__('Home')}}</a></li>
-<li class="breadcrumb-item"><a href="{{route('lead.index')}}">{{__('Lead')}}</a></li>
-<li class="breadcrumb-item">{{__('View Lead')}}</li>
+<li class="breadcrumb-item"><a href="{{route('lead.index')}}">{{__('Company')}}</a></li>
+<li class="breadcrumb-item">{{__('View Company')}}</li>
 @endsection
 
 @section('content')

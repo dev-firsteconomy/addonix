@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 @section('page-title')
-    {{__('Lead Edit')}}
+    {{__('Company Edit')}}
 @endsection
 @section('title')
         <div class="page-header-title">
-           {{__('Edit Lead')}} {{ '('. $lead->company_name .')' }}
+           {{__('Edit Company')}} {{ '('. $lead->company_name .')' }}
         </div>
 @endsection
 @section('action-btn')
@@ -20,7 +20,7 @@
 @endsection
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{__('Home')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('lead.index')}}">{{__('Lead')}}</a></li>
+    <li class="breadcrumb-item"><a href="{{route('lead.index')}}">{{__('Company')}}</a></li>
     <li class="breadcrumb-item">{{__('Details')}}</li>
 @endsection
 @section('content')

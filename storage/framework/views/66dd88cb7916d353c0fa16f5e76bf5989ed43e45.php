@@ -224,11 +224,6 @@
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Quotation</a>
                                                 <?php endif; ?>
                                                 <a href="#" data-size="lg" data-url="<?php echo e(route('addQuotation',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Quotation</a>
-                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addPerforma',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Performa</a>
-                                                <a href="#" data-size="lg" data-url="<?php echo e(route('addinternalPO',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Quotation')); ?>">Generate Internal PO</a>
-                                                <?php if($lead->type == 'Opportunity' && $lead->industryProduct->isNotEmpty() && $lead->lead_interaction->isNotEmpty() && $lead->mail_sent == 1): ?>
-                                                    <a href="#" data-size="lg" data-url="<?php echo e(route('addPerforma',$lead->id)); ?>" class="dropdown-item" data-ajax-popup="true" data-title="<?php echo e(__('Generate Performa Invoice')); ?>">Generate Performa Invoice</a>
-                                                <?php endif; ?>
                                                 <?php echo Form::open(['method' => 'DELETE', 'route' => ['lead.destroy', $lead->id]]); ?>
 
                                                     <button type="submit" class="dropdown-item">Delete</button>

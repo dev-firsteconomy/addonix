@@ -1433,10 +1433,84 @@ class LeadController extends Controller
     {
         $query = $request->get('term');
 
-        $companies = Lead::where('company_name','LIKE','%'.$query.'%')->pluck('company_name');
+        $companies = Lead::where('company_name','LIKE','%'.$query.'%')->orWhere('company_name', 'LIKE', '%' . $this->getInitials($query) . '%')->pluck('company_name');
 
-            
         return response()->json($companies);
+    }
+
+    private function getInitials($string)
+    {
+        $words = preg_split("/\s+/", $string);
+        $initials = '';
+
+        foreach ($words as $key => $word) {
+            if($key == 0){
+                $initials = strtoupper($word);
+            }
+        }
+
+        return $initials;
+    }
+
+    public function licenseSearch(Request $request)
+    {
+        $query = $request->get('term');
+
+        $licenses = SubscriptionProduct::where('license','LIKE','%'.$query.'%')->pluck('license');
+
+        return response()->json($licenses);
+    }
+
+    public function getpPocOptions(Request $request)
+    {
+        $lead_id = $request->get('id');
+
+        $pocOptions = IndustryPerson::where('lead_id',$lead_id)->get()->pluck('name','id');
+
+        return response()->json($pocOptions);
+    }
+
+    // public function getpLicenseOptions(Request $request)
+    // {
+    //     $lead_id = $request->get('id');
+
+    //     $pocOptions = Lead::where('lead_id',$lead_id)->get()->pluck('name','id');
+
+    //     return response()->json($pocOptions);
+    // }
+
+    public function getLicenseProductsOptions(Request $request)
+    {
+        $license = $request->get('license');
+
+        $productIds = SubscriptionProduct::where('license',$license)->get()->pluck('product_id');
+        $productOptions = [];
+        foreach ($productIds as $productId) {
+            $product = Product::find($productId);
+            if ($product) {
+                $productOptions[$product->id] = $product->name;
+            }
+        }
+        return response()->json($productOptions);
+    }
+
+    public function getSubscriptionEndDate(Request $request)
+    {
+        $license = $request->get('license');
+
+        $sp = SubscriptionProduct::where('license',$license)->first();
+        $subscription = Subscription::where('id',$sp->id)->first();
+        
+        return response()->json($subscription);
+    }
+
+    public function getpPocData(Request $request)
+    {
+        $poc_id = $request->get('poc_id');
+
+        $pocData = IndustryPerson::where('id',$poc_id)->first();
+
+        return response()->json($pocData);
     }
 
 }

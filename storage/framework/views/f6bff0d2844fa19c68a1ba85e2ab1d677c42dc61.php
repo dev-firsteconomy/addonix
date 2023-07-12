@@ -97,7 +97,14 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Lead')): ?>
                     <li class="dash-item <?php echo e(\Request::route()->getName() == 'lead' || \Request::route()->getName() == 'lead.create' || \Request::route()->getName() == 'lead.edit' || \Request::route()->getName() == 'lead.leadTab' || \Request::route()->getName() == 'lead.leadSearch' ? ' active' : ''); ?>">
                         <a href="<?php echo e(!empty(\Auth::user()->getDefualtViewRouteByModule('lead')) ? route(\Auth::user()->getDefualtViewRouteByModule('lead')) : route('lead.index')); ?>" class="dash-link">
-                            <span class="dash-micon"><i class="ti ti-filter"></i></span><span class="dash-mtext"><?php echo e(__('Leads')); ?></span>
+                            <span class="dash-micon"><i class="ti ti-filter"></i></span><span class="dash-mtext"><?php echo e(__('Company')); ?></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Lead')): ?>
+                    <li class="dash-item <?php echo e(\Request::route()->getName() == 'support' || \Request::route()->getName() == 'support.create' || \Request::route()->getName() == 'support.edit' ? ' active' : ''); ?>">
+                        <a href="<?php echo e(!empty(\Auth::user()->getDefualtViewRouteByModule('support')) ? route(\Auth::user()->getDefualtViewRouteByModule('support')) : route('support.index')); ?>" class="dash-link">
+                            <span class="dash-micon"><i class="ti ti-filter"></i></span><span class="dash-mtext"><?php echo e(__('Support')); ?></span>
                         </a>
                     </li>
                 <?php endif; ?>

@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
 @section('page-title')
-    {{__('Lead Create')}}
+    {{__('Company Create')}}
 @endsection
 
 @section('title')
 <div class="page-header-title">
-    {{__('Create Lead')}}
+    {{__('Create Company')}}
 </div>
 @endsection
 
@@ -22,7 +22,7 @@
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{__('Home')}}</a></li>
-<li class="breadcrumb-item"><a href="{{route('lead.index')}}">{{__('Lead')}}</a></li>
+<li class="breadcrumb-item"><a href="{{route('lead.index')}}">{{__('Company')}}</a></li>
 <li class="breadcrumb-item">{{__('Create')}}</li>
 @endsection
 

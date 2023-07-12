@@ -98,7 +98,14 @@ $emailTemplate     = App\Models\EmailTemplate::first();
                 @can('Manage Lead')
                     <li class="dash-item {{ \Request::route()->getName() == 'lead' || \Request::route()->getName() == 'lead.create' || \Request::route()->getName() == 'lead.edit' || \Request::route()->getName() == 'lead.leadTab' || \Request::route()->getName() == 'lead.leadSearch' ? ' active' : '' }}">
                         <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('lead')) ? route(\Auth::user()->getDefualtViewRouteByModule('lead')) : route('lead.index') }}" class="dash-link">
-                            <span class="dash-micon"><i class="ti ti-filter"></i></span><span class="dash-mtext">{{ __('Leads') }}</span>
+                            <span class="dash-micon"><i class="ti ti-filter"></i></span><span class="dash-mtext">{{ __('Company') }}</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('Manage Lead')
+                    <li class="dash-item {{ \Request::route()->getName() == 'support' || \Request::route()->getName() == 'support.create' || \Request::route()->getName() == 'support.edit' ? ' active' : '' }}">
+                        <a href="{{ !empty(\Auth::user()->getDefualtViewRouteByModule('support')) ? route(\Auth::user()->getDefualtViewRouteByModule('support')) : route('support.index') }}" class="dash-link">
+                            <span class="dash-micon"><i class="ti ti-filter"></i></span><span class="dash-mtext">{{ __('Support') }}</span>
                         </a>
                     </li>
                 @endcan
